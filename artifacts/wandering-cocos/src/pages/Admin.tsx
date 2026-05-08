@@ -275,9 +275,9 @@ function BakeWindowsTab({ token }: { token: string }) {
                   <div className="flex items-center gap-3 mb-1 flex-wrap">
                     <span className="font-serif text-sm text-foreground">{w.label}</span>
                     <Badge status={w.status} />
-                    {w.items.length > 0 && (
+                    {(w.items ?? []).length > 0 && (
                       <span className="text-[9px] tracking-widest uppercase text-foreground/25 border border-border/25 px-2 py-0.5">
-                        {w.items.length} items
+                        {(w.items ?? []).length} items
                       </span>
                     )}
                   </div>
@@ -324,7 +324,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden">
-                    <ItemsPanel windowId={w.id} items={w.items} token={token} onRefetch={refetch} />
+                    <ItemsPanel windowId={w.id} items={w.items ?? []} token={token} onRefetch={refetch} />
                   </motion.div>
                 )}
               </AnimatePresence>
