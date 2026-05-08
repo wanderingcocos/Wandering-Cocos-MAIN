@@ -1,0 +1,57 @@
+This Privacy Policy outlines how Wandering Cocos collects, uses, and protects your information as we grow from a subscription-based pre-order service into a physical bakery cafe. Since we currently operate via WhatsApp and UPI, this policy is designed to be transparent about our manual and digital data handling.
+
+1. Information We Collect
+Because our current model relies on direct communication, we collect the following "Personal Identifiable Information" (PII) when you place a pre-order:
+
+Contact Details: Your name and WhatsApp phone number.
+
+Delivery Information: Your physical home or office address.
+
+Payment Records: Transaction screenshots and UPI IDs used to confirm your order.
+
+Preferences: Information regarding your choice of toppings (e.g., Pistachio vs. Coconut cream) and any noted allergies.
+
+2. How We Use Your Data
+We use your information strictly for operational purposes to ensure your "Wandering Box" arrives fresh and on time:
+
+Order Fulfillment: To bake the correct quantity and deliver to the right location.
+
+Communication: To send order confirmations, payment acknowledgments, and delivery ETAs via WhatsApp.
+
+Business Records: To maintain the legal and financial records required for our LLP.
+
+Future Updates: We may occasionally notify you about new menu launches or the opening of our physical cafe, unless you ask us not to.
+
+3. Data Sharing & Third Parties
+We value your privacy and do not sell your data to third-party marketers. However, we share necessary details with:
+
+Delivery Partners: Your name, address, and phone number are shared with our delivery personnel or third-party courier services to facilitate drop-off.
+
+Legal Compliance: We may disclose information if required to do so by law or to protect the rights and safety of our LLP and its owners.
+
+4. Security of Manual Transactions
+Since you are currently paying via personal UPI and sharing data over WhatsApp, please note:
+
+WhatsApp Security: While WhatsApp uses end-to-end encryption, you are responsible for the security of your own device and account.
+
+Payment Data: We do not store your bank account details. We only retain the confirmation of payment (screenshots) for accounting purposes within the LLP.
+
+5. Perishable Goods & Health Data
+Allergy Information: Any health-related data you provide (e.g., nut allergies) is treated with high sensitivity and is used solely to ensure your safety during food preparation.
+
+6. Your Rights
+You have the right to:
+
+Access: Ask us what data we have stored for you.
+
+Correct: Update your delivery address or contact details.
+
+Delete: Request that we delete your contact information from our records after your order is fulfilled (noting that we must keep financial records for tax purposes).
+
+7. Changes to This Policy
+As Wandering Cocos transitions to a website-based checkout or a physical cafe, this policy will be updated to reflect new data collection methods (such as cookies or email marketing). We recommend checking this page periodically.
+
+Contact Us
+If you have questions about this policy or how your data is handled, please reach out to us directly on WhatsApp.
+
+Legal Disclaimer: This policy is issued by [Your LLP Name]. By placing a pre-order, you consent to the collection and use of your information as described above.

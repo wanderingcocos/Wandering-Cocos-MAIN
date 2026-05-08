@@ -1,0 +1,18 @@
+packages:
+  "framer-motion": "For elegant scroll animations, fade-ins, and page transitions matching the premium brand feel"
+  "lucide-react": "For minimal, elegant SVG icons"
+
+images:
+  - path: "artifacts/wandering-cocos/public/images/hero-texture.png"
+    description: "Subtle, elegant linen texture in warm cream and soft beige tones, minimalist abstract background, very soft lighting"
+    aspect_ratio: "16:9"
+  - path: "artifacts/wandering-cocos/public/images/pastry-cardamom.png"
+    description: "Artistic macro photography of a beautifully laminated cardamom twist pastry on a minimalist warm stone surface, elegant premium food styling, natural moody directional light, generous negative space"
+    aspect_ratio: "3:4"
+  - path: "artifacts/wandering-cocos/public/images/cocoa-shortbread.png"
+    description: "Artistic close up of a dark cocoa shortbread cookie on a minimalist warm beige surface, elegant premium food styling, rich contrast, soft natural light, generous negative space"
+    aspect_ratio: "3:4"
+
+notes:
+  - Static landing page only as requested (no backend API integrations)
+  - Colors and typography carefully selected to match the "minimalist luxury" and "warm natural tones" brief

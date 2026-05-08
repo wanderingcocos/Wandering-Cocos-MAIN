@@ -1,0 +1,115 @@
+To capture a minimal yet premium feel for Wandering Cocos's front page, we'll design a layout focused on negative space, elegant typography, and carefully chosen visual elements that evoke discovery and high quality. The goal is to make the experience feel sophisticated and curated, matching your brand ethos of providing rare, travel-inspired treats with meticulous ingredient standards.
+Web Page Structure and Style Guide
+Our design philosophy will be: Minimalist sophistication with curated depth. The palette should lean towards muted, natural tones with a single metallic or rich accent color.
+Core Principles:
+	•	Negative Space is Luxury: Embrace empty space to allow each element, whether text or imagery, to breathe and hold significance. This prevents clutter and elevates the content.
+	•	Refined Typography: Utilize a pairing of a timeless, legible serif font for headlines and key taglines, combined with a clean, modern sans-serif for body text and navigational elements.
+	•	Curated Imagery: If photography is used, it should be highly styled and artistic. Consider close-up, textural shots of unique ingredients or beautifully plated treats against minimalist backdrops, perhaps implying a global context without explicit travel clichés. Subtle, high-quality illustrations or iconographic textures can also replace or complement photography.
+	•	Subtle Animation: Minimalistic, elegant scroll effects or hover interactions add a touch of modern premium feel without being distracting.
+Front Page Wireframe and Content Flow
+Here’s a conceptual flow for your front page, using some of the taglines we previously developed to reinforce the brand identity.
+1. The "Live Status" Header
+Since your schedule is fluid, the top of your site should feel like a "live signal."
+	•	Top Bar (Thin, Black with White text): > Status: Sourcing for the next Chapter. [Bake Day Announcement: Expected in 4 days]
+	•	Navigation (Right or Burger Menu): A very sparse menu: The Philosophy | Current Menu | Join the Circle (WA)
+This section remains consistently visible or easily accessible.
+	•	Logo (Center or Left): Place the "Wandering Cocos" logo prominently but with ample padding. Logo uploaded
+
+2. Hero Section: The Announcement
+This is the first thing they see. It changes based on where you are in the bake cycle.
+	•	Headline: The Next Chapter.
+	•	Wandering Cocos: Rare Finds. Reimagined.
+	•	Sub-headline: Curated treats with uncompromised ingredients. You control the journey.
+Sub-headline: Using a clean sans-serif font to provide immediate context and introduce your core values. This is an ideal place to integrate the quality-calories message subtly.
+
+Visual Component: Avoid generic photos of pastries. Instead, consider:
+	•	Artistic Macro Shot: A stunningly lit, hyper-detailed photograph capturing the texture of a truly unique ingredient (vanilla beans, unique spices, or the specific cocoa pods you source).
+	•	Abstract Map: A very minimal, stylized line map showing key global inspiration points for your bakes, connecting them to Bengaluru with a delicate line, using your accent color.
+	•	Minimalist Illustration: An elegant line drawing of a compass interwoven with ingredients or a traditional Indian motif integrated with a global element.
+	•	The Action: * If menu is live: [RESERVE YOUR BOX - PREPAID ONLY]
+	◦	If menu is pending: [JOIN WHATSAPP FOR THE SIGNAL]
+
+3. Featured Collection / Current Focus (Body Content)
+Introduce a couple of signature items or thematic collections, emphasizing their uniqueness and rare origin or ingredients.
+Heading:
+CURRENT DISCOVERIES
+Layout Concept:
+	•	Left Column: A captivating, minimalist photo or illustration of a unique bake (e.g., 'Aromatic Cardamom Pistachio Cream Twist' or ‘Almond Croissant Blondie). Include a very brief, poetic description highlighting its origin or rare element.
+	•	Right Column: A second, complementary item or collection introduction. Ensure balanced visual weight and clean separation.
+
+4. The "How We Wander" Process
+A minimal 3-step guide to manage customer expectations about the "no fixed date" rule.
+The Find
+We source high quality ingredients. We don't bake until the quality is perfect for our "rare recipes." to perfect. Also add 100% natural. Zero chemicals. Inspired by the journey.
+The Signal
+We announce the Bake Day and the Menu on the website, WhatsApp and Instagram 72 hours in advance.
+The Reservation
+Secure your find via prepaid booking. We bake exactly what is reserved no waste, total quality control.
+
+5. The Quality Manifesto / Philosophy (Secondary Hero or Scrolling Section)
+This section explicitly addresses your philosophy on cravings and ingredient quality, subtly reinforcing the premium nature of your products.
+Heading:
+cravings aren't the enemy; the quality of what we use to satisfy them is.
+
+Body Text: A short paragraph explaining your stance on quality.  in the form of a founder’s note: This is your brand's "North Star."
+"Cravings aren't the enemy; the quality of what we use to satisfy them is. We control the craft, so you can enjoy the journey."
+
+The Founder's Note
+
+"We built this for the conscious eater." "As someone who balances a love for fitness with a passion for baking, I got tired of the 'hidden' ingredients in local bakeries. I wanted a bread that didn't leave me bloated and a blondie that didn't cause a sugar crash.
+Seeing the impact of poor nutrition on ourselves as well as the people we love changed how we look at a kitchen. At Wandering Cocos, we provide the highest quality possible in India—from multi dimentional flour  to natural nectar and high quality fats—so that when you choose to indulge, you're choosing the best version of that craving." We realized that "cravings" aren't the enemy—the quality of what we use to satisfy them is.
+
+
+The Wandering Cocos Balance
+We believe in the 90/10 rule. Eat clean, move your body, and when you do decide to satisfy a craving, make it count. By controlling the quality of the fats, the sugars, and the grains, we give you the freedom to indulge a few times a month without the toxic baggage.
+
+
+For us, this isn't just a business—it’s a personal mission. After watching friends and family struggle with health issues rooted in years of poor dietary choices, we realized a simple truth: cravings aren't the enemy; the quality of what we use to satisfy them is.
+We believe in the 90/10 rule: eat clean, move your body, and when you do decide to indulge, make it count. By sourcing the highest quality ingredients available in India—from TWF flours to natural nectars—we’ve eliminated the toxic baggage. At Wandering Cocos, we control the fats, the sugars, and the grains so you have the freedom to satisfy your cravings with the best version possible.
+
+
+The Wandering Cocos Philosophy: Mindful Indulgence
+This isn't about eating bread every day—it’s about the art of the Weekly Reward. We believe that health isn't defined by deprivation, but by the quality of your choices. Our subscription is designed to fit into a life of balance, honoring the hard work you put in all week with a ritual that actually fuels you.
+Your Saturday Morning Ritual. One box. Zero regrets. High-quality fuel for your weekend.
+By subscribing, you aren't just ordering a delivery; you’re committing to a standard. We’ve curated this experience for the conscious eater who moves their body, eats clean, and wants their "90/10" moments to be as intentional as their workouts. No mystery fillers, no sugar crashes—just the best version of your favorite cravings, delivered to your door.
+
+Visual: Consider a more textural or process-oriented visual element here, like beautifully styled measuring spoons holding unique spices or a minimalist graphic illustrating your ingredient selection process.
+
+6. The "Current Menu" (The Drop)
+When you announce a bake, this section populates with 1–3 items max.
+	•	Item Title: CURRENT DROP: THE GLOBAL COLLECTION
+	•	Prepaid reservations open until [Date/Time] or until fully booked.
+	•	01. The New York Style Bagels
+	•	Hand-rolled, boiled, and baked for that authentic, chewy pull that’s missing from the everyday market. 100% natural, no dough conditioners.
+	•	
+	•	
+	•	Cream Cheese & Toasted Onion: A classic reimagined with savory, golden onion flakes and a velvety cream cheese center.
+	•	Sharp Cheddar & Charred Jalapeño: A bold, spicy-savory balance featuring aged cheddar crust and the kick of real jalapeño heat.
+	•	02. The Brown Butter Almond Blondie
+	•	The sophisticated cousin of the brownie. We toast our butter until it reaches a nutty, golden hazelnut aroma, folding in premium almonds for a deep, caramelized crunch. A dense, fudgy masterpiece that celebrates simplicity.
+	•	03. The Chickpea & Peanut Butter Choco-Chip Blondie
+	•	An adventurous find for the conscious palate. Using a base of protein-rich chickpeas and creamy peanut butter, this blondie is surprisingly decadent, 100% natural, and packed with dark chocolate shards. High quality, zero compromise.
+	•	
+	•	
+	•	04. The Nordic-Inspired Cinnamon Rolls
+	•	Soft, pillowy clouds of spice-infused dough. These aren't your average rolls; they are a travel-inspired ritual.
+	•	The Classic: Signature Cream Cheese Frosting – Silky, tangy, and rich.
+	•	The Mediterranean: Sicilian Pistachio Cream – A rare, nutty indulgence using premium pistachios for a vibrant, earthy sweetness.
+	•	The Tropical: Velvet Coconut Cream – A nod to coastal travels; light, fragrant, and completely plant-based.
+	•	
+	•	How to Display This on the Site:
+	•	Visuals: Use high-contrast, "macro" photography. One shot of the cross-section of a bagel showing the chew, and one of the pistachio cream dripping off a cinnamon roll.
+	•	The "Prepaid" Button: Under the menu, use a single, elegant button: [RESERVE MY BAKE BOX].
+	•	The Disclaimer: Add a small note at the bottom: "Because we use zero chemicals and 100% natural ingredients, these treats are best enjoyed the day they arrive. We bake only what is reserved to ensure zero waste." 
+	•	
+	•	The "Rare" Factor: 
+	•	The Transparency: [Full Macro & Ingredient List Link]
+	•	The Button: PREPAY & RESERVE
+
+7. Footer
+Minimalist and informative.
+	•	Social Media Icons: Simple, elegant glyphs.
+	•	Newsletter Signup: Clean, unobtrusive input field for emails.
+	•	Simplified Navigation: Links for FAQ, Contact, Shipping, and Legal (Privacy Policy).
+	•	Subtle Brand Touch: Perhaps your mission statement or tagline repeated subtly: "Globally Inspired. Consciously Baked."
+

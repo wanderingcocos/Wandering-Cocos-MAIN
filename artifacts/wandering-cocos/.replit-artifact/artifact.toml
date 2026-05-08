@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Wandering Cocos"
+version = "1.0.0"
+id = "artifacts/wandering-cocos"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 25271
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/wandering-cocos run dev"
+
+[services.env]
+PORT = "25271"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/wandering-cocos", "run", "build"]
+publicDir = "artifacts/wandering-cocos/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

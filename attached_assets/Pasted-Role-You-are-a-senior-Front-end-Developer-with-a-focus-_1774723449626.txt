@@ -1,0 +1,16 @@
+Role: You are a senior Front-end Developer with a focus on immersive UI.
+Task: Add a new, full-width section called 'The Wa’y of the coco” 
+Layout Specs: > - Background: Use a huge, high-resolution background image of a Solitaire, Namibia road trip scene. The image should feature: A lone, tiny, cozy desert cafe with a rustic pickup truck parked outside, surrounded by cacti. The setting is an arid desert under a massive, clear blue sky with a few clouds. A smooth, paved black road stretches to the horizon. (You can use an equivalent royalty-free image from Unsplash or Pexels, searching for 'Namibia Desert Roadtrip Solitaire Cafe'). The image should have a subtle dark overlay (about 30%) to ensure text contrast.
+	•	The Content: > - Section Header: "The Journey" (Centered, Large Serif, white text).
+	◦	The Cards: A 3-column grid layout (desktop) that stacks vertically (mobile). Each card should have:
+	▪	The large number (01, 02, 03) in a light grey serif font.
+	▪	card 1:The heading ("The Discovery") in white serif.
+	▪	The body text in white, spaced-out sans-serif. 01 | The Discovery
+                        We bake on nature’s timing, not a schedule. If the elements are not at their peak, the ovens stay cold. We choose patience over production. Nature’s rhythm, not a commercial one.
+	▪	card 2: 02 | The 72-Hour Signal
+                       Watch the horizon. When the alignment is perfect, we release the signal: our Bake Window is announced 72 hours in advance. A curated menu, revealed only when certain.
+card3: 03 | The Secure Find
+Exclusively by reservation. We bake only for those who commit. By eliminating waste and prioritizing integrity, we maintain absolute control. Once the oven is full, the window closes.
+
+
+	•	Card Style: The cards themselves should be ultra-minimal—perhaps just a soft, slightly translucent border (rgba(255,255,255,0.1)) and ample padding, without a heavy background fill, allowing the Namibia image to shine through. The text should align center or left-justified.

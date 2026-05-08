@@ -1,0 +1,60 @@
+"Build a premium, high-conversion single-page website for Wandering Cocos, a luxury home bakery based in HSR Layout (Ambalipura). Use a color palette of Forest Green (#228B22) and Warm Cream (#F5F5DC) with elegant serif typography.
+
+1. Navigation Bar (Sticky):
+
+Include a minimalist logo on the left and links on the right: 'The Box', 'Gifting', 'FAQ'.
+
+2. Hero Section (The Landing):
+
+Background: Full-width high-definition video of a kraft paper box with a forest green logo being opened to reveal fresh bakes.
+
+Headline: 'The Weekend Edit: [Date]'.
+
+Sub-headline: 'Artisanal bakes from our HSR kitchen to your doorstep'.
+
+CTA Button: 'Reserve Your Box' — Crucial: This button must be an anchor link (href="#the-box") that smooth-scrolls the user down to the Product/Menu section.
+
+3. The Order Flow (1-2-3 Graphic):
+
+A clean horizontal section:
+
+1. Browse Menu
+
+2. Confirm on WhatsApp
+
+3. Secure via UPI
+
+4. The Product Page Section (ID: "the-box"):
+
+Header: 'The Launch Drop: The Wandering Box'.
+
+Display: Showcase the curated box containing:
+
+Bagels: Cream Cheese & Onion Flakes and Cheddar & Jalapeño.
+
+Blondies: Almond Croissant (Brown Butter) and Chickpea Peanut Butter Chocolate Chip.
+
+Cinnamon Rolls: With choice of Cream Cheese, Pistachio, or Coconut cream.
+
+CTA: 'Pre-Order via WhatsApp' button linking to wa.link with pre-filled message: 'Hi Wandering Cocos! I’d like to reserve the Launch Box for [Date].'.
+
+5. Priority Section: Elevated Gifting & Bulk Orders:
+
+Highlight the 'ultimate unboxing experience' with kraft paper and signature ribbons.
+
+Include specific blocks for 'Send a Wandering Box' and 'Corporate & Event Catering'.
+
+Mention free delivery within a 7km radius of HSR.
+
+6. Legal Footer:
+
+Mandatory text: 'Wandering Cocos is a brand owned and operated by [Your LLP Name]'.
+
+Include the Allergy Notice (handles wheat, nuts, dairy) and Shipping Policy."
+
+Strategic Launch Tips for Wandering Cocos
+LLP Separation: Since you are using personal UPI for now, ensure the website explicitly states the brand is operated by your LLP to maintain legal protection for your personal assets.
+
+Third-Party Shipping: The FAQ must clearly state that while you dispatch from HSR on time, you are not liable for "unfortunate situations" caused by third-party delivery personnel.
+
+Free Delivery: The 7km free delivery radius is a strong selling point for your Ambalipura neighborhood.

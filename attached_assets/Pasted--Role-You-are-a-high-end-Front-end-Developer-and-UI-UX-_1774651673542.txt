@@ -1,0 +1,39 @@
+
+
+Role: You are a high-end Front-end Developer and UI/UX Designer.
+Task: Create a premium, minimalist section
+Design Philosophy: > - Inspiration: Use a layout similar to the Guardio 'Premium Support' section (split-screen with text on the left and visual cards on the right).
+	•	Aesthetic: Minimalist luxury. High-contrast typography (Serif for headings, clean Sans-serif for body), generous white space, and a sophisticated color palette (soft stone, charcoal, and forest green accents).
+Key Interactive Feature: > Implement a "Sticky Stacking Card" effect. As the user scrolls, the left-side heading stays pinned (sticky), while three cards on the right "swipe up" and stack on top of each other.
+Content Structure:
+	1	Hero Section: 
+	2	The Stacking Cards (Section: 'Our Standard'):
+	◦	Card 1: Wandering Cocos
+	◦	Built for the Conscious Eater
+	◦	Calories can be burnt. Hidden ingredients cannot.
+	◦	We keep it transparent. Elevated. Honest. Because true luxury isn’t excess—it’s clarity.
+	◦	
+	◦	
+	◦	We don’t do ordinary indulgence.
+	◦	At Wandering Cocos, every creation begins with intent—no hidden ingredients, no unnecessary sugars, no compromises.
+	◦	Only what belongs. Nothing that doesn’t.
+card 2: The Cocos Balance
+A quiet discipline. A conscious rhythm. We advocate for the 90/10 rule:
+	•	90% Clean. Move well. Eat with awareness.
+	•	10% Indulgence. When you do it—do it exceptionally.
+
+	◦	Card 3: Our Standard
+               We believe in a blueprint of purity. Every bite is an architectural feat of clean sourcing:
+                Multi-dimensional flours | For depth and texture.
+               Natural nectars | Sweetness, refined.
+             Premium fats | Sourced for quality, not convenience.
+	Clean. Refined. Considered. > Each element is chosen with precision, crafted to deliver indulgence that feels as good as it tastes.
+
+	◦	Card 4: The Experience
+               No noise. No guilt. No compromise. Just the freedom to indulge in its cleanest, most intentional form.
+
+CTA: Create a prominent, elegant button: "[ RESERVE YOUR BOX ]" with the subtext "Limited batches. Crafted with intent."
+Technical Requirements:
+	•	Use HTML5, CSS3 (Flexbox/Grid), and Vanilla JavaScript for the scroll-trigger animations.
+	•	Ensure the cards have large border-radii (24px) and subtle, high-end shadows.
+	•	The page must be fully responsive (stack the split-layout vertically on mobile).
