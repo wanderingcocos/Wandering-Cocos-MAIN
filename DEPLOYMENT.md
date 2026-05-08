@@ -82,11 +82,88 @@ If you changed the database schema, also re-run the migration step above.
 
 ---
 
+## Keeping the app alive with PM2 (auto-restart on crash)
+
+Hostinger's built-in Node.js panel only restarts the app manually. PM2 is a process manager that automatically restarts the app if it crashes or if the server reboots, and provides structured logs.
+
+### Install PM2 (one-time setup)
+
+In the hPanel terminal (or via SSH):
+
+```bash
+npm install -g pm2
+```
+
+### Build the app first
+
+Before starting with PM2, make sure you've built the app:
+
+```bash
+npm run build:prod
+```
+
+### Start the app via PM2
+
+First, create the log directory if it doesn't exist:
+
+```bash
+mkdir -p logs
+```
+
+Then start the server:
+
+```bash
+PORT=$(cat ~/public_html/.htaccess 2>/dev/null | grep -oP '(?<=RewriteRule \. http://localhost:)\d+' || echo 3000) \
+  pm2 start ecosystem.config.cjs --env production
+```
+
+> **How PORT works with PM2:** Hostinger normally injects `PORT` automatically when it starts a Node.js app via hPanel. When running PM2 from the terminal instead, you need to pass `PORT` explicitly. The command above tries to detect it from your hPanel config — if that doesn't work, check hPanel → Node.js → Application settings for the assigned port number and run:
+> ```bash
+> PORT=<your-port> pm2 start ecosystem.config.cjs --env production
+> ```
+
+This reads the `ecosystem.config.cjs` file at the repo root and starts the server under PM2's supervision.
+
+### Make PM2 restart on server reboot
+
+```bash
+pm2 startup
+```
+
+Run the command it outputs (it will look like `sudo env PATH=... pm2 startup systemd -u ...`), then save the current process list:
+
+```bash
+pm2 save
+```
+
+### Useful PM2 commands
+
+| Command | What it does |
+|---|---|
+| `pm2 status` | Show running processes and their status |
+| `pm2 logs wandering-cocos` | Stream live logs |
+| `pm2 restart wandering-cocos` | Restart the app (e.g. after a deploy) |
+| `pm2 stop wandering-cocos` | Stop the app |
+| `pm2 delete wandering-cocos` | Remove from PM2 process list |
+
+### Deploying updates with PM2
+
+After `git pull origin main`, rebuild and restart:
+
+```bash
+npm run build:prod && pm2 restart wandering-cocos
+```
+
+> **Note:** If Hostinger's hPanel "Start" button conflicts with PM2, use PM2 exclusively via the terminal and leave the hPanel start command unused. PM2 will keep the process running independently.
+
+---
+
 ## Verifying the deployment
 
 - Visit your domain — you should see the Wandering Cocos website
 - Visit `yourdomain.com/api/healthz` — should return a health status response
-- Check the hPanel Node.js logs if the app fails to start
+- Run `pm2 status` in the terminal to confirm the app shows `online`
+- Check `logs/pm2-error.log` or run `pm2 logs wandering-cocos` if the app fails to start
 
 ---
 
