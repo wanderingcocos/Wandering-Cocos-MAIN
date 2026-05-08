@@ -14,6 +14,14 @@ export const bakeWindowsTable = pgTable("bake_windows", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const bakeWindowItemsTable = pgTable("bake_window_items", {
+  id: serial("id").primaryKey(),
+  bakeWindowId: integer("bake_window_id").notNull().references(() => bakeWindowsTable.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  description: text("description"),
+  position: integer("position").notNull().default(0),
+});
+
 export const ordersTable = pgTable("orders", {
   id: serial("id").primaryKey(),
   bakeWindowId: integer("bake_window_id").references(() => bakeWindowsTable.id, { onDelete: "set null" }),
@@ -35,9 +43,11 @@ export const siteSettingsTable = pgTable("site_settings", {
 });
 
 export const insertBakeWindowSchema = createInsertSchema(bakeWindowsTable).omit({ id: true, createdAt: true });
+export const insertBakeWindowItemSchema = createInsertSchema(bakeWindowItemsTable).omit({ id: true });
 export const insertOrderSchema = createInsertSchema(ordersTable).omit({ id: true, createdAt: true });
 
 export type BakeWindow = typeof bakeWindowsTable.$inferSelect;
+export type BakeWindowItem = typeof bakeWindowItemsTable.$inferSelect;
 export type Order = typeof ordersTable.$inferSelect;
 export type SiteSetting = typeof siteSettingsTable.$inferSelect;
 export type InsertBakeWindow = z.infer<typeof insertBakeWindowSchema>;

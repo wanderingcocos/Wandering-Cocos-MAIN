@@ -8,18 +8,29 @@ const HEADER_OFFSET = 96;
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const FALLBACK_STRIP = "Bake Date Coming Soon\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002Free delivery within 7km of HSR Layout, Bengaluru";
 
+function formatBakeDateShort(dateStr: string) {
+  try {
+    const d = new Date(dateStr + "T00:00:00");
+    return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+  } catch { return dateStr; }
+}
+
 function InfoStrip() {
   const [message, setMessage] = useState(FALLBACK_STRIP);
   const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
-    fetch(`${BASE}/api/settings`)
-      .then(r => r.ok ? r.json() : {})
-      .then((s: Record<string, string>) => {
-        if (s.strip_message) setMessage(s.strip_message);
-        if (s.strip_enabled === "false") setEnabled(false);
-      })
-      .catch(() => {});
+    Promise.all([
+      fetch(`${BASE}/api/settings`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+      fetch(`${BASE}/api/bake-window/current`).then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(([settings, window]: [Record<string, string>, { bakeDate: string; label: string } | null]) => {
+      if (settings.strip_enabled === "false") { setEnabled(false); return; }
+      if (settings.strip_message) { setMessage(settings.strip_message); return; }
+      if (window?.bakeDate) {
+        const dateStr = formatBakeDateShort(window.bakeDate);
+        setMessage(`${window.label ?? "Next Drop"}\u2002\u00b7\u2002${dateStr}\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002Free delivery within 7km of HSR Layout, Bengaluru`);
+      }
+    });
   }, []);
 
   if (!enabled) return null;
@@ -35,7 +46,7 @@ function InfoStrip() {
       <motion.div
         className="flex whitespace-nowrap text-[10px] md:text-xs tracking-widest font-medium uppercase"
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 28, ease: "linear", repeat: Infinity }}
+        transition={{ duration: 50, ease: "linear", repeat: Infinity }}
         style={{ width: "max-content" }}
       >
         <span className="px-8">{repeated}</span>

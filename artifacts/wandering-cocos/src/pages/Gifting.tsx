@@ -396,15 +396,15 @@ export default function Gifting() {
                         disabled={!canProceed}
                         className="w-full flex items-center justify-center gap-3 py-4 text-[11px] tracking-[0.22em] uppercase font-medium transition-all duration-300"
                         style={{
-                          background: canProceed ? "#0f2419" : "rgba(15,36,25,0.12)",
-                          color: canProceed ? "rgba(245,238,224,0.92)" : "rgba(15,36,25,0.3)",
+                          background: canProceed ? "#2d5a3d" : "rgba(45,90,61,0.15)",
+                          color: canProceed ? "#ffffff" : "rgba(45,90,61,0.4)",
                           cursor: canProceed ? "pointer" : "not-allowed",
                         }}
                         onMouseEnter={(e) => {
-                          if (canProceed) (e.currentTarget as HTMLElement).style.background = "#1a3d2b";
+                          if (canProceed) (e.currentTarget as HTMLElement).style.background = "#245033";
                         }}
                         onMouseLeave={(e) => {
-                          if (canProceed) (e.currentTarget as HTMLElement).style.background = "#0f2419";
+                          if (canProceed) (e.currentTarget as HTMLElement).style.background = "#2d5a3d";
                         }}
                       >
                         <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 shrink-0">

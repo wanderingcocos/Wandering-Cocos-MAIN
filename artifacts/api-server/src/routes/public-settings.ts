@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { db, siteSettingsTable, bakeWindowsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, siteSettingsTable, bakeWindowsTable, bakeWindowItemsTable } from "@workspace/db";
+import { eq, asc } from "drizzle-orm";
 
 const router = Router();
 
@@ -24,9 +24,21 @@ router.get("/bake-window/current", async (_req, res) => {
       .select()
       .from(bakeWindowsTable)
       .where(eq(bakeWindowsTable.status, "announced"))
-      .orderBy(bakeWindowsTable.bakeDate)
+      .orderBy(asc(bakeWindowsTable.bakeDate))
       .limit(1);
-    res.json(window ?? null);
+
+    if (!window) {
+      res.json(null);
+      return;
+    }
+
+    const items = await db
+      .select()
+      .from(bakeWindowItemsTable)
+      .where(eq(bakeWindowItemsTable.bakeWindowId, window.id))
+      .orderBy(asc(bakeWindowItemsTable.position));
+
+    res.json({ ...window, items });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch current bake window" });
