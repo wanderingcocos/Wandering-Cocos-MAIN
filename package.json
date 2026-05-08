@@ -6,7 +6,7 @@
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "build:prod": "npx --yes pnpm@9 install && BASE_PATH=/ npx pnpm@9 --filter @workspace/wandering-cocos run build && npx pnpm@9 --filter @workspace/api-server run build",
+    "build:prod": "npx --yes pnpm@9 install && BASE_PATH=/ npx --yes pnpm@9 --filter @workspace/wandering-cocos run build && npx --yes pnpm@9 --filter @workspace/api-server run build",
     "prestart": "npm run build:prod",
     "start": "node artifacts/api-server/dist/index.cjs"
   },
