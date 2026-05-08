@@ -26,6 +26,7 @@
       "@img/sharp-linux-arm64",
       "@img/sharp-darwin-x64",
       "@img/sharp-darwin-arm64"
-    ]
+    ],
+    "allowedBuilds": ["esbuild", "sharp"]
   }
 }
