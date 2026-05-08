@@ -17,5 +17,15 @@
   },
   "dependencies": {
     "sharp": "^0.34.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "@img/sharp-linux-x64",
+      "@img/sharp-linux-arm64",
+      "@img/sharp-darwin-x64",
+      "@img/sharp-darwin-arm64"
+    ]
   }
 }
