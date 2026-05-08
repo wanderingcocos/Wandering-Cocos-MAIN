@@ -150,7 +150,8 @@ export default function Gifting() {
         </div>
 
         {/* WHAT'S INSIDE */}
-        <section className="py-20 px-6 md:px-14 lg:px-24 max-w-7xl mx-auto">
+        <section className="py-20" style={{ background: "hsl(38 25% 96%)" }}>
+        <div className="px-6 md:px-14 lg:px-24 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
             <motion.div
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
@@ -198,6 +199,7 @@ export default function Gifting() {
               ))}
             </motion.div>
           </div>
+        </div>
         </section>
 
         {/* OCCASIONS */}
@@ -233,23 +235,28 @@ export default function Gifting() {
           </div>
         </section>
 
+        {/* DIVIDER BAND */}
+        <div style={{ background: "#2d5a3d", height: "3px", width: "100%" }} />
+
         {/* ORDER FORM */}
-        <section className="pb-28 px-6 md:px-14 lg:px-24 max-w-7xl mx-auto">
-          <div style={{ borderTop: "1px solid rgba(15,36,25,0.1)", paddingTop: "4rem" }}>
+        <section className="pb-28" style={{ background: "hsl(38 25% 97%)" }}>
+          <div className="px-6 md:px-14 lg:px-24 max-w-7xl mx-auto" style={{ paddingTop: "4rem" }}>
+          <div style={{ borderLeft: "3px solid #2d5a3d", paddingLeft: "1.5rem", marginBottom: "3rem" }}>
             <motion.span
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
-              className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-3"
+              className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-2"
               style={{ color: "rgba(15,36,25,0.38)" }}
             >
               Gift Order
             </motion.span>
             <motion.h2
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}
-              className="font-serif italic leading-snug mb-12"
+              className="font-serif italic leading-snug"
               style={{ fontSize: "clamp(1.6rem, 3vw, 2.6rem)", color: "#0f2419" }}
             >
               Ready to send a gift?
             </motion.h2>
+          </div>
 
             <AnimatePresence mode="wait">
               {step === "form" ? (

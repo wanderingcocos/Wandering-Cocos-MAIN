@@ -30,6 +30,29 @@ function formatBakeDate(dateStr: string) {
   } catch { return dateStr; }
 }
 
+function ComingSoonBadge({ dark = false }: { dark?: boolean }) {
+  return dark ? (
+    <span style={{
+      display: "inline-block", fontSize: "8px", letterSpacing: "0.3em", fontWeight: 600,
+      textTransform: "uppercase", background: "rgba(200,168,130,0.12)",
+      border: "1px solid rgba(200,168,130,0.45)", color: "rgba(200,168,130,0.9)",
+      padding: "3px 9px", verticalAlign: "middle",
+    }}>Coming Soon</span>
+  ) : (
+    <span style={{
+      display: "inline-block", fontSize: "8px", letterSpacing: "0.3em", fontWeight: 600,
+      textTransform: "uppercase", background: "rgba(45,90,61,0.07)",
+      border: "1px solid rgba(45,90,61,0.22)", color: "#2d5a3d",
+      padding: "3px 9px", verticalAlign: "middle",
+    }}>Coming Soon</span>
+  );
+}
+
+function BakeDateDisplay({ date, dark = false }: { date: string; dark?: boolean }) {
+  if (date === "Coming Soon") return <ComingSoonBadge dark={dark} />;
+  return <>{date}</>;
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i = 0) => ({
@@ -113,7 +136,7 @@ export default function Reserve() {
             <motion.span initial="hidden" animate="visible" custom={0} variants={fadeUp}
               className="text-[9px] tracking-[0.38em] font-medium uppercase block mb-4"
               style={{ color: "rgba(255,255,255,0.3)" }}>
-              {bakeWindow ? bakeWindow.label : "The Weekend Edit"} · {BAKE_DATE}
+              {bakeWindow ? bakeWindow.label : "The Weekend Edit"} · <BakeDateDisplay date={BAKE_DATE} dark />
             </motion.span>
             <motion.h1 initial="hidden" animate="visible" custom={1} variants={fadeUp}
               className="font-serif italic leading-tight"
@@ -211,7 +234,7 @@ export default function Reserve() {
                 </div>
               )}
               <p className="mt-5 text-[10px] text-foreground/28 leading-relaxed">
-                Every box contains all {menuItems.length} items. Baked on {BAKE_DATE}.
+                Every box contains all {menuItems.length} items. Baked on <BakeDateDisplay date={BAKE_DATE} />.
               </p>
             </motion.div>
 
@@ -227,23 +250,27 @@ export default function Reserve() {
                       How would you like to order?
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                      {/* PRIMARY — WhatsApp */}
                       <button onClick={() => setMethod("whatsapp")}
-                        className="group flex flex-col text-left p-6 border border-border/40 hover:border-accent transition-all duration-250 focus:outline-none"
-                        style={{ background: "hsl(38 25% 97%)" }}>
-                        <span className="text-[10px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-4 block">01</span>
+                        className="relative group flex flex-col text-left p-6 focus:outline-none transition-all duration-200 hover:shadow-lg"
+                        style={{ background: "hsl(150 20% 96%)", border: "2px solid #2d5a3d" }}>
+                        <span className="absolute top-3 right-3 text-[8px] tracking-[0.25em] uppercase font-semibold px-2 py-0.5 text-white"
+                          style={{ background: "#2d5a3d" }}>Fastest</span>
+                        <span className="text-[10px] tracking-[0.28em] uppercase font-medium mb-4 block" style={{ color: "#2d5a3d" }}>01</span>
                         <span className="font-serif text-base text-foreground leading-snug mb-2">Message us on WhatsApp</span>
-                        <span className="text-xs text-foreground/45 leading-relaxed">Chat with us directly. We'll guide you through the order on WhatsApp.</span>
-                        <span className="mt-5 text-[9px] tracking-[0.22em] uppercase font-medium group-hover:text-accent transition-colors" style={{ color: "#2d5a3d" }}>
+                        <span className="text-xs text-foreground/50 leading-relaxed">Chat with us directly. We'll guide you through the order on WhatsApp.</span>
+                        <span className="mt-5 text-[9px] tracking-[0.22em] uppercase font-semibold transition-colors" style={{ color: "#2d5a3d" }}>
                           Open WhatsApp →
                         </span>
                       </button>
+                      {/* SECONDARY — Form */}
                       <button onClick={() => setMethod("form")}
-                        className="group flex flex-col text-left p-6 border border-border/40 hover:border-accent transition-all duration-250 focus:outline-none"
-                        style={{ background: "hsl(38 25% 97%)" }}>
-                        <span className="text-[10px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-4 block">02</span>
-                        <span className="font-serif text-base text-foreground leading-snug mb-2">Fill in your details here</span>
-                        <span className="text-xs text-foreground/45 leading-relaxed">Enter your order and delivery details on the website, then confirm via WhatsApp.</span>
-                        <span className="mt-5 text-[9px] tracking-[0.22em] uppercase font-medium group-hover:text-accent transition-colors" style={{ color: "#2d5a3d" }}>
+                        className="group flex flex-col text-left p-6 border border-border/35 hover:border-foreground/30 transition-all duration-200 focus:outline-none"
+                        style={{ background: "hsl(38 15% 98%)" }}>
+                        <span className="text-[10px] tracking-[0.28em] uppercase font-medium text-foreground/25 mb-4 block">02</span>
+                        <span className="font-serif text-base text-foreground/70 leading-snug mb-2">Fill in your details here</span>
+                        <span className="text-xs text-foreground/38 leading-relaxed">Enter your order and delivery details on the website, then confirm via WhatsApp.</span>
+                        <span className="mt-5 text-[9px] tracking-[0.22em] uppercase font-medium text-foreground/35 group-hover:text-foreground/60 transition-colors">
                           Fill order form →
                         </span>
                       </button>
