@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useSiteStatus } from "@/hooks/useSiteStatus";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const UPI_ID = "snhshbhm2-1@okhdfcbank";
@@ -62,6 +63,7 @@ const fadeUp = {
 };
 
 export default function Reserve() {
+  const { mode: siteMode, loaded: siteModeLoaded } = useSiteStatus();
   const [bakeWindow, setBakeWindow] = useState<BakeWindow | null>(null);
   const [windowLoaded, setWindowLoaded] = useState(false);
 
@@ -242,6 +244,37 @@ export default function Reserve() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }}
               variants={fadeUp} custom={1} className="lg:pt-0">
 
+              {!siteModeLoaded ? (
+                <div className="h-64 animate-pulse rounded bg-foreground/5" />
+              ) : siteMode === "popup" ? (
+                <div className="border border-border/30 p-8 text-center" style={{ background: "hsl(38 25% 97%)" }}>
+                  <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-foreground/35 mb-5">Orders Paused</p>
+                  <p className="font-serif text-lg text-foreground leading-snug mb-4">We're at a pop-up this week.</p>
+                  <p className="text-sm text-foreground/55 leading-relaxed mb-6">We are at a private residential pop-up this week! Online orders are closed, but we'll be back next week.</p>
+                  <a href="https://chat.whatsapp.com/HH1IixIyMcCCY8jHnrlHei" target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium text-white transition-all hover:opacity-90"
+                    style={{ background: "#25D366" }}>
+                    Join our WhatsApp Community
+                  </a>
+                </div>
+              ) : siteMode === "maintenance" ? (
+                <div className="border border-border/30 p-8 text-center" style={{ background: "hsl(38 25% 97%)" }}>
+                  <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-foreground/35 mb-5">Coming Soon</p>
+                  <p className="font-serif text-lg text-foreground leading-snug mb-4">Baking in progress.</p>
+                  <p className="text-sm text-foreground/55 leading-relaxed">Check back soon — something delicious is on its way.</p>
+                </div>
+              ) : siteMode === "sold_out" ? (
+                <div className="border border-border/30 p-8 text-center" style={{ background: "hsl(38 25% 97%)" }}>
+                  <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-foreground/35 mb-5">Sold Out</p>
+                  <p className="font-serif text-lg text-foreground leading-snug mb-4">All boxes are claimed.</p>
+                  <p className="text-sm text-foreground/55 leading-relaxed mb-6">Every box for this bake is reserved. Follow us to be the first to know about the next drop.</p>
+                  <a href="https://instagram.com/wandering.cocos" target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium border border-foreground/30 text-foreground/60 hover:border-foreground/50 hover:text-foreground transition-all">
+                    Follow on Instagram
+                  </a>
+                </div>
+              ) : (
+              <>
               <AnimatePresence mode="wait">
                 {method === "choose" && (
                   <motion.div key="choose" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
@@ -461,6 +494,8 @@ export default function Reserve() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+              )}
+              </>
               )}
             </motion.div>
           </div>

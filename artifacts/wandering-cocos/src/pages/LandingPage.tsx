@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useLocation } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useSiteStatus } from "@/hooks/useSiteStatus";
 
 const wanderSteps = [
   {
@@ -80,6 +81,7 @@ function WayOfTheCocoSection({ fadeInUp }: { fadeInUp: Record<string, unknown> }
 
 function PhilosophyStackSection() {
   const [, navigate] = useLocation();
+  const { mode: siteMode } = useSiteStatus();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -207,15 +209,21 @@ function PhilosophyStackSection() {
                 Just the freedom to indulge in its cleanest, most intentional form.
               </p>
               <motion.div style={{ opacity: ctaOpacity, pointerEvents: ctaPointerEvents }} className="flex flex-col items-center">
-                <button
-                  onClick={() => navigate("/reserve")}
-                  className="w-72 h-14 text-xs tracking-[0.22em] font-medium uppercase transition-all duration-300"
-                  style={{ background: "transparent", color: "#ffffff", border: "1px solid rgba(255,255,255,0.4)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
-                >
-                  RESERVE YOUR BOX
-                </button>
+                {siteMode === "bake_day" ? (
+                  <button
+                    onClick={() => navigate("/reserve")}
+                    className="w-72 h-14 text-xs tracking-[0.22em] font-medium uppercase transition-all duration-300"
+                    style={{ background: "transparent", color: "#ffffff", border: "1px solid rgba(255,255,255,0.4)" }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
+                  >
+                    RESERVE YOUR BOX
+                  </button>
+                ) : (
+                  <span className="text-xs tracking-[0.22em] uppercase font-medium px-6 py-2" style={{ color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.18)" }}>
+                    {siteMode === "sold_out" ? "Sold Out · Next drop coming soon" : siteMode === "popup" ? "Pop-Up this week · Orders resume next week" : "Baking in progress · Check back soon"}
+                  </span>
+                )}
                 <p className="text-xs tracking-widest uppercase mt-4 font-light" style={{ color: "rgba(255,255,255,0.25)" }}>
                   Limited batches. Crafted with intent.
                 </p>
@@ -231,6 +239,7 @@ function PhilosophyStackSection() {
 
 export default function LandingPage() {
   const [, navigate] = useLocation();
+  const { mode: siteMode } = useSiteStatus();
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
@@ -310,12 +319,18 @@ export default function LandingPage() {
               id="join"
               className="mt-12 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              <button
-                onClick={() => { const el = document.getElementById("menu"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: "smooth" }); }}
-                className="w-full sm:w-64 h-14 text-xs tracking-[0.2em] font-medium uppercase whitespace-nowrap border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all"
-              >
-                RESERVE YOUR BOX
-              </button>
+              {siteMode === "bake_day" ? (
+                <button
+                  onClick={() => { const el = document.getElementById("menu"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: "smooth" }); }}
+                  className="w-full sm:w-64 h-14 text-xs tracking-[0.2em] font-medium uppercase whitespace-nowrap border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all"
+                >
+                  RESERVE YOUR BOX
+                </button>
+              ) : (
+                <span className="w-full sm:w-64 h-14 flex items-center justify-center text-xs tracking-[0.18em] uppercase font-medium whitespace-nowrap border border-white/20 text-white/40">
+                  {siteMode === "sold_out" ? "Sold Out" : siteMode === "popup" ? "Orders Paused" : "Coming Soon"}
+                </span>
+              )}
               <button
                 onClick={() => navigate("/join")}
                 className="w-full sm:w-64 h-14 text-xs tracking-[0.2em] font-medium uppercase whitespace-nowrap border border-white/70 text-white hover:bg-white hover:text-[#0a1a0f] transition-all"
@@ -461,9 +476,17 @@ export default function LandingPage() {
             variants={fadeInUp}
             className="mt-14 text-center"
           >
-            <button onClick={() => navigate("/reserve")} className="w-full max-w-md px-8 py-5 text-sm tracking-[0.2em] font-medium uppercase border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all mb-6">
-              RESERVE MY BAKE BOX
-            </button>
+            {siteMode === "bake_day" ? (
+              <button onClick={() => navigate("/reserve")} className="w-full max-w-md px-8 py-5 text-sm tracking-[0.2em] font-medium uppercase border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all mb-6">
+                RESERVE MY BAKE BOX
+              </button>
+            ) : (
+              <div className="w-full max-w-md px-8 py-5 mb-6 border border-border/30 text-center">
+                <p className="text-xs tracking-[0.2em] uppercase font-medium text-foreground/40">
+                  {siteMode === "sold_out" ? "Sold Out · Follow us for the next drop" : siteMode === "popup" ? "Pop-Up this week · Online orders resume next week" : "Baking in progress · Check back soon"}
+                </p>
+              </div>
+            )}
             <p className="text-xs text-foreground/50 max-w-lg mx-auto leading-relaxed">
               Because we use zero chemicals and 100% natural ingredients, these treats are best enjoyed the day they arrive. We bake only what is reserved to ensure zero waste.
             </p>

@@ -187,7 +187,7 @@ function ItemsPanel({ windowId, items, token, onRefetch }: {
 function BakeWindowsTab({ token }: { token: string }) {
   const { data: windows, loading, refetch } = useAdminFetch<BakeWindow[]>(`${API}/admin/bake-windows`, token);
   const [creating, setCreating] = useState(false);
-  const [form, setForm] = useState({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 15, notes: "" });
+  const [form, setForm] = useState({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 10, notes: "" });
   const [saving, setSaving] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [editStatus, setEditStatus] = useState("");
@@ -437,6 +437,91 @@ function OrdersTab({ token }: { token: string }) {
             </div>
           ))}
         </div>
+      )}
+    </div>
+  );
+}
+
+// ── Site Mode Tab ──────────────────────────────────────────────────────────────
+
+const SITE_MODES = [
+  {
+    id: "bake_day",
+    label: "Bake Day",
+    description: "Full menu visible. Order Now buttons active. Orders open for the current bake window.",
+  },
+  {
+    id: "popup",
+    label: "Pop-Up Mode",
+    description: "Hides the order form. Shows: 'We are at a private residential pop-up this week! Online orders are closed, but we'll be back next week.'",
+  },
+  {
+    id: "maintenance",
+    label: "Maintenance",
+    description: "Shows a holding message: 'Baking in progress — check back soon.'",
+  },
+] as const;
+
+function SiteModeTab({ token }: { token: string }) {
+  const { data: settings, loading } = useAdminFetch<Setting[]>(`${API}/admin/settings`, token);
+  const [selected, setSelected] = useState<string>("bake_day");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (settings) {
+      const modeSetting = settings.find(s => s.key === "site_mode");
+      if (modeSetting) setSelected(modeSetting.value);
+    }
+  }, [settings]);
+
+  async function handleSave() {
+    setSaving(true);
+    setSaved(false);
+    const res = await apiCall(`${API}/admin/settings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ key: "site_mode", value: selected }),
+    });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  }
+
+  return (
+    <div>
+      <h2 className="font-serif text-xl text-foreground mb-2">Site Status</h2>
+      <p className="text-xs text-foreground/40 mb-6 leading-relaxed">Controls what visitors see on the homepage and Reserve page. Changes take effect immediately after saving.</p>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      {loading ? (
+        <p className="text-xs text-foreground/40">Loading…</p>
+      ) : (
+        <>
+          <div className="space-y-3 mb-6">
+            {SITE_MODES.map(mode => (
+              <button key={mode.id} onClick={() => setSelected(mode.id)}
+                className={`w-full text-left p-5 border transition-all duration-150 ${selected === mode.id ? "border-accent bg-accent/5" : "border-border/40 hover:border-foreground/25"}`}>
+                <div className="flex items-start gap-4">
+                  <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5 transition-colors ${selected === mode.id ? "border-accent bg-accent" : "border-border/50"}`} />
+                  <div>
+                    <p className={`text-sm font-medium mb-1 ${selected === mode.id ? "text-foreground" : "text-foreground/55"}`}>{mode.label}</p>
+                    <p className="text-xs text-foreground/38 leading-relaxed">{mode.description}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="border border-border/25 p-4 mb-6 bg-muted/20">
+            <p className="text-[10px] tracking-[0.18em] uppercase font-medium text-foreground/35 mb-1">Sold Out — Automatic</p>
+            <p className="text-xs text-foreground/35 leading-relaxed">When confirmed + pending orders for the active bake window reach the Max Boxes limit, the site automatically shows a sold-out message. No manual action needed.</p>
+          </div>
+          <button onClick={handleSave} disabled={saving}
+            className="text-xs tracking-[0.18em] uppercase font-medium px-8 h-10 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+            {saving ? "Saving…" : saved ? "Saved ✓" : "Save Mode"}
+          </button>
+        </>
       )}
     </div>
   );
@@ -1067,6 +1152,7 @@ export default function Admin() {
   const TABS = [
     { id: "windows", label: "Bake Windows" },
     { id: "orders", label: "Orders" },
+    { id: "site_mode", label: "Site Status" },
     { id: "archive", label: "Archive" },
     { id: "recipes", label: "Recipes" },
     { id: "settings", label: "Settings" },
@@ -1116,6 +1202,7 @@ export default function Admin() {
 
               {tab === "windows" && <BakeWindowsTab token={token} />}
               {tab === "orders" && <OrdersTab token={token} />}
+              {tab === "site_mode" && <SiteModeTab token={token} />}
               {tab === "archive" && <ArchiveTab token={token} />}
               {tab === "recipes" && <RecipesTab token={token} />}
               {tab === "settings" && <SettingsTab token={token} />}
