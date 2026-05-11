@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 const WA_NUMBER = "919899225273";
-const BOX_PRICE = 1299;
-const BOX_ORIGINAL_PRICE = 1999;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const fadeUp = {
   hidden: { opacity: 0, y: 22 },
@@ -73,6 +72,18 @@ export default function Gifting() {
   const [qty, setQty] = useState<number | "">(1);
   const [giftNote, setGiftNote] = useState("");
   const [step, setStep] = useState<"form" | "sent">("form");
+  const [BOX_PRICE, setBoxPrice] = useState(1299);
+  const [BOX_ORIGINAL_PRICE, setBoxOriginalPrice] = useState(1999);
+
+  useEffect(() => {
+    fetch(`${BASE}/api/settings`)
+      .then(r => r.ok ? r.json() : {})
+      .then((s: Record<string, string>) => {
+        if (s.gift_price && !isNaN(Number(s.gift_price))) setBoxPrice(Number(s.gift_price));
+        if (s.gift_original_price && !isNaN(Number(s.gift_original_price))) setBoxOriginalPrice(Number(s.gift_original_price));
+      })
+      .catch(() => {});
+  }, []);
 
   const resolvedQty = qty === "" ? 1 : qty;
   const total = resolvedQty * BOX_PRICE;
@@ -142,6 +153,16 @@ export default function Gifting() {
             A Wandering Box is not a generic hamper. It is a curated selection of artisanal bakes,
             made in small batches with honest ingredients, boxed and delivered with intention.
           </motion.p>
+          <motion.button
+            variants={fadeUp} initial="hidden" animate="visible" custom={3}
+            onClick={() => { document.getElementById("gift-form")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+            className="mt-10 inline-flex items-center gap-3 text-xs tracking-[0.22em] uppercase font-medium px-8 h-12 transition-all duration-300"
+            style={{ background: "#2d5a3d", color: "#ffffff" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#245033"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "#2d5a3d"; }}
+          >
+            Gift a Box
+          </motion.button>
         </section>
 
         {/* DIVIDER */}
@@ -172,9 +193,6 @@ export default function Gifting() {
                   ₹{BOX_ORIGINAL_PRICE.toLocaleString("en-IN")}
                 </span>
               </div>
-              <p className="font-light text-sm" style={{ color: "rgba(15,36,25,0.4)" }}>
-                First 15 orders · Launch Drop
-              </p>
             </motion.div>
 
             <motion.div
@@ -239,7 +257,7 @@ export default function Gifting() {
         <div style={{ background: "#2d5a3d", height: "3px", width: "100%" }} />
 
         {/* ORDER FORM */}
-        <section className="pb-28" style={{ background: "hsl(38 25% 97%)" }}>
+        <section id="gift-form" className="pb-28" style={{ background: "hsl(38 25% 97%)" }}>
           <div className="px-6 md:px-14 lg:px-24 max-w-7xl mx-auto" style={{ paddingTop: "4rem" }}>
           <div style={{ borderLeft: "3px solid #2d5a3d", paddingLeft: "1.5rem", marginBottom: "3rem" }}>
             <motion.span

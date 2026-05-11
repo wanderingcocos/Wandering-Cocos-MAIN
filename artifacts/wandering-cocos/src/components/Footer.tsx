@@ -78,7 +78,7 @@ export function Footer() {
               <Instagram className="w-3.5 h-3.5 stroke-[1.5]" />
             </a>
             <a
-              href="https://wa.me/919899225273"
+              href="https://wa.me/917019673652"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"

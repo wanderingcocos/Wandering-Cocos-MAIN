@@ -292,7 +292,7 @@ export default function LandingPage() {
               className="flex flex-col gap-2 md:gap-6"
             >
               <span className="font-serif text-5xl md:text-7xl lg:text-[6rem] leading-none text-white font-bold drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)]">
-                Wandering Cocos: <br className="hidden md:block"/> Rare Finds. Reimagined.
+                Wandering Cocos: <br className="hidden md:block"/> Artisanal Sourdough &amp; Bakes.
               </span>
             </motion.h1>
 
@@ -305,8 +305,8 @@ export default function LandingPage() {
               }}
               className="mt-8 md:mt-12 text-base md:text-lg text-white/80 max-w-xl mx-auto leading-relaxed font-light"
             >
-              Curated treats with uncompromised ingredients.<br className="hidden md:block"/>
-              You control the journey.
+              Stay Fit. Eat Real. Indulge often.<br className="hidden md:block"/>
+              Curated treats with uncompromised ingredients.
             </motion.p>
 
             <motion.div
@@ -321,7 +321,7 @@ export default function LandingPage() {
             >
               {siteMode === "bake_day" ? (
                 <button
-                  onClick={() => { const el = document.getElementById("menu"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: "smooth" }); }}
+                  onClick={() => navigate("/reserve")}
                   className="w-full sm:w-64 h-14 text-xs tracking-[0.2em] font-medium uppercase whitespace-nowrap border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all"
                 >
                   RESERVE YOUR BOX
@@ -337,226 +337,6 @@ export default function LandingPage() {
               >
                 JOIN THE CIRCLE
               </button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* CURRENT DROP SECTION */}
-        <section id="menu" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
-            className="mb-16 md:mb-20 text-center"
-          >
-            <span className="text-xs tracking-[0.2em] text-muted-foreground/60 font-medium uppercase block mb-5">The Launch Drop</span>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-foreground mb-4">
-              The Wandering Box
-            </h2>
-            <p className="font-serif italic text-lg text-foreground/60 mb-1">
-              Do you eat with your eyes first?
-            </p>
-            <p className="font-serif italic text-sm text-foreground/40 mb-3">
-              (Good, because this is a "Don't Lick the Screen" Gallery)
-            </p>
-          </motion.div>
-
-          {/* 6-item product grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {/* Card 1 — Bagels */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/bagels.png`} alt="New York Style Bagels" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">The New York Bagels</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Blistered, chewy crust. Pillowy interior. Cream Cheese + Toasted Onion or Sharp Cheddar + Charred Jalapeño. Hand-rolled, boiled, baked to order.</p>
-              </div>
-            </motion.div>
-
-            {/* Card 2 — Almond Croissant Blondie */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/almond-croissant-blondie.png`} alt="Almond Croissant Blondie" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">Almond Croissant Blondie</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Fudgy, butter-rich center layered with silky almond frangipane. Crackled sugar crust. Toasted almond finish. Indulgent without apology.</p>
-              </div>
-            </motion.div>
-
-            {/* Card 3 — Cardamom Pistachio Twist */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/pastry-cardamom.png`} alt="Aromatic Cardamom Pistachio Cream Twist" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">Aromatic Cardamom Pistachio Cream Twist</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Cardamom-spiced dough wound with pistachio cream, finished with crushed pistachios. Warm, fragrant, and quietly rich.</p>
-              </div>
-            </motion.div>
-
-            {/* Card 4 — Pistachio Cream Rolls */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/pistachio-cream-rolls.png`} alt="Pistachio Cream Rolls" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">Pistachio Cream Rolls</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Pull-apart brioche drenched in silky pistachio cream. Soft, fragrant layers. Finished with crushed pistachios. Rich and unmistakable.</p>
-              </div>
-            </motion.div>
-
-            {/* Card 5 — Spiced Phyllo Rolls */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/phyllo-rolls.png`} alt="Spiced Phyllo Rolls" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">Spiced Phyllo Rolls</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Paper-thin phyllo, shatteringly crisp. Feta cheese filling. Warm honey glaze, scattered sesame and dried chili. Sweet heat with every crunch.</p>
-              </div>
-            </motion.div>
-
-            {/* Card 6 — Kerala Mutta Puffs */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] } } }}
-              className="flex flex-col group"
-            >
-              <div className="w-full aspect-[3/4] overflow-hidden mb-0">
-                <img src={`${import.meta.env.BASE_URL}images/kerala-mutta-puffs.png`} alt="Kerala Mutta Puffs" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-4 pb-5 px-1 border-t-2 mt-0" style={{ borderColor: "#2d5a3d" }}>
-                <p className="font-serif text-sm font-medium text-foreground leading-snug mb-1">Kerala Mutta Puffs</p>
-                <p className="text-xs text-foreground/50 leading-relaxed font-light">Burnished, laminated pastry. Shatters at the edge, yields at the heart. Spiced Kerala egg masala within. A classic, made with intention.</p>
-              </div>
-            </motion.div>
-
-          </div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={fadeInUp}
-            className="mt-14 text-center"
-          >
-            {siteMode === "bake_day" ? (
-              <button onClick={() => navigate("/reserve")} className="w-full max-w-md px-8 py-5 text-sm tracking-[0.2em] font-medium uppercase border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all mb-6">
-                RESERVE MY BAKE BOX
-              </button>
-            ) : (
-              <div className="w-full max-w-md px-8 py-5 mb-6 border border-border/30 text-center">
-                <p className="text-xs tracking-[0.2em] uppercase font-medium text-foreground/40">
-                  {siteMode === "sold_out" ? "Sold Out · Follow us for the next drop" : siteMode === "popup" ? "Pop-Up this week · Online orders resume next week" : "Baking in progress · Check back soon"}
-                </p>
-              </div>
-            )}
-            <p className="text-xs text-foreground/50 max-w-lg mx-auto leading-relaxed">
-              Because we use zero chemicals and 100% natural ingredients, these treats are best enjoyed the day they arrive. We bake only what is reserved to ensure zero waste.
-            </p>
-          </motion.div>
-        </section>
-
-        {/* CURRENT DISCOVERIES SECTION */}
-        <section id="discoveries" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
-            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
-          >
-            <h2 className="text-xs md:text-sm tracking-[0.2em] font-medium uppercase text-muted-foreground">
-              CURRENT DISCOVERIES
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
-            {/* Card 1 */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="group cursor-pointer"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden mb-8 bg-surface">
-                <img 
-                  src={`${import.meta.env.BASE_URL}images/pastry-cardamom.png`}
-                  alt="Aromatic Cardamom Pistachio Cream Twist"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-[0.22,1,0.36,1]"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
-              </div>
-              <h3 className="font-serif text-3xl text-foreground mb-4 group-hover:text-accent transition-colors duration-300">
-                Aromatic Cardamom Pistachio Cream Twist
-              </h3>
-              <p className="text-foreground/70 text-sm leading-relaxed mb-6 font-light max-w-md">
-                Hand-picked cardamom from Kerala's misty highlands, folded into delicate laminated pastry with a pistachio cream heart.
-              </p>
-            </motion.div>
-
-            {/* Card 2 - Offset slightly on desktop */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={{
-                hidden: { opacity: 0, y: 60 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] } }
-              }}
-              className="group cursor-pointer md:mt-24"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden mb-8 bg-surface">
-                <img 
-                  src={`${import.meta.env.BASE_URL}images/almond-croissant-blondie.png`}
-                  alt="Almond Croissant Blondie"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-[0.22,1,0.36,1]"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
-              </div>
-              <h3 className="font-serif text-3xl text-foreground mb-4 group-hover:text-accent transition-colors duration-300">
-                Almond Croissant Blondie
-              </h3>
-              <p className="text-foreground/70 text-sm leading-relaxed mb-6 font-light max-w-md">
-                A love letter to almond croissant lovers. A buttery, chewy blondie layered with house-made almond frangipane and finished with toasted almonds and a delicate dusting of sugar. Familiar, refined, and deeply indulgent.
-              </p>
             </motion.div>
           </div>
         </section>

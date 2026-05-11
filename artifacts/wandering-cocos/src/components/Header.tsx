@@ -23,12 +23,16 @@ function InfoStrip() {
     Promise.all([
       fetch(`${BASE}/api/settings`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
       fetch(`${BASE}/api/bake-window/current`).then(r => r.ok ? r.json() : null).catch(() => null),
-    ]).then(([settings, window]: [Record<string, string>, { bakeDate: string; label: string } | null]) => {
+      fetch(`${BASE}/api/site-status`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+    ]).then(([settings, bakeWindow, status]: [Record<string, string>, { bakeDate: string; label: string } | null, { mode?: string }]) => {
       if (settings.strip_enabled === "false") { setEnabled(false); return; }
       if (settings.strip_message) { setMessage(settings.strip_message); return; }
-      if (window?.bakeDate) {
-        const dateStr = formatBakeDateShort(window.bakeDate);
-        setMessage(`${window.label ?? "Next Drop"}\u2002\u00b7\u2002${dateStr}\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002Free delivery within 7km of HSR Layout, Bengaluru`);
+      const mode = status?.mode ?? "maintenance";
+      if (mode === "bake_day" && bakeWindow?.bakeDate) {
+        const dateStr = formatBakeDateShort(bakeWindow.bakeDate);
+        setMessage(`${bakeWindow.label ?? "Next Drop"}\u2002\u00b7\u2002${dateStr}\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002Free delivery within 7km of HSR Layout, Bengaluru`);
+      } else {
+        setMessage(`Will be back soon\u2002\u00b7\u2002Wandering Cocos\u2002\u00b7\u2002Bengaluru`);
       }
     });
   }, []);
@@ -78,12 +82,11 @@ const navLinks: NavLink[] = [
     name: "THE STORY",
     dropdown: [
       { name: "The Philosophy", section: "philosophy" },
-      { name: "Current Discoveries", section: "discoveries" },
       { name: "Way of the Coco", section: "way-of-the-coco" },
-      { name: "Recipes", href: "/recipes" },
     ],
   },
-  { name: "CURRENT MENU", section: "menu" },
+  { name: "ARCHIVES", href: "/archive" },
+  { name: "RECIPES", href: "/recipes" },
   { name: "PRE-ORDER", href: "/reserve" },
   { name: "GIFTING", href: "/gifting" },
   { name: "JOIN THE CIRCLE", href: "/join" },

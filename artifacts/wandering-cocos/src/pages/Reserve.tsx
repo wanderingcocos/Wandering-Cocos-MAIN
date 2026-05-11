@@ -157,7 +157,7 @@ export default function Reserve() {
               </span>
               <span className="font-light tracking-wide"
                 style={{ fontSize: "clamp(0.75rem, 1vw, 0.85rem)", color: "rgba(255,255,255,0.38)" }}>
-                per box · first {MAX_BOXES} orders only
+                per box
               </span>
             </motion.div>
 
@@ -185,7 +185,7 @@ export default function Reserve() {
             </div>
             <div className="text-center sm:text-left flex-grow">
               <p className="font-serif italic" style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", color: "#ffffff", marginBottom: "0.2rem" }}>
-                First {MAX_BOXES} orders come with a Wandering Coco's Tote Bag.
+                First 50 orders come with a Wandering Coco's Tote Bag.
               </p>
               <p className="font-light" style={{ fontSize: "clamp(0.72rem, 0.9vw, 0.8rem)", color: "rgba(255,255,255,0.38)", letterSpacing: "0.04em" }}>
                 Carry it everywhere. Let others wonder.
@@ -200,9 +200,10 @@ export default function Reserve() {
 
         {/* MAIN TWO-COLUMN */}
         <section className="px-6 md:px-14 lg:px-20 py-16 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24">
+          <div className={`grid grid-cols-1 gap-14 lg:gap-24 ${siteMode === "bake_day" ? "lg:grid-cols-2" : ""}`}>
 
-            {/* LEFT — What's inside */}
+            {/* LEFT — What's inside (bake_day only) */}
+            {siteMode === "bake_day" && (
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
               <span className="text-[9px] tracking-[0.32em] font-medium uppercase text-foreground/30 block mb-6">
                 What's in the box
@@ -239,6 +240,7 @@ export default function Reserve() {
                 Every box contains all {menuItems.length} items. Baked on <BakeDateDisplay date={BAKE_DATE} />.
               </p>
             </motion.div>
+            )}
 
             {/* RIGHT — Method picker + Form */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }}

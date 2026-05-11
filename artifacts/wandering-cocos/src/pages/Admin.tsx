@@ -533,6 +533,8 @@ const DEFAULT_SETTINGS: { key: string; label: string; placeholder: string }[] = 
   { key: "strip_message", label: "Info Strip Message (overrides auto-generated)", placeholder: "Leave blank to auto-generate from live bake window" },
   { key: "strip_enabled", label: "Info Strip Enabled (true/false)", placeholder: "true" },
   { key: "delivery_zone", label: "Delivery Zone", placeholder: "Free delivery within 7km of HSR Layout, Bengaluru" },
+  { key: "gift_price", label: "Gifting Box Price (₹)", placeholder: "1299" },
+  { key: "gift_original_price", label: "Gifting Box Original Price / Strikethrough (₹)", placeholder: "1999" },
 ];
 
 function SettingsTab({ token }: { token: string }) {
