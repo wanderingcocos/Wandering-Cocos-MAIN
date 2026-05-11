@@ -614,8 +614,22 @@ function ArchiveTab({ token }: { token: string }) {
   const [form, setForm] = useState({ title: "", bakeDate: "", slug: "", notes: "" });
   const [saving, setSaving] = useState(false);
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState({ title: "", bakeDate: "", slug: "", notes: "" });
 
   function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
+
+  async function handleEditSave(id: number) {
+    setSaving(true);
+    await fetch(`${API}/admin/launches/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify(editForm),
+    });
+    setSaving(false);
+    setEditId(null);
+    refetch();
+  }
 
   async function handleCreate() {
     setSaving(true);
@@ -706,6 +720,10 @@ function ArchiveTab({ token }: { token: string }) {
                     {l.notes && <>&nbsp;·&nbsp;<span className="italic">{l.notes}</span></>}
                   </p>
                 </div>
+                <button onClick={() => { setEditId(editId === l.id ? null : l.id); setEditForm({ title: l.title, bakeDate: l.bakeDate, slug: l.slug, notes: l.notes ?? "" }); }}
+                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${editId === l.id ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
+                  Edit
+                </button>
                 <button onClick={() => setOpenItems(s => ({ ...s, [l.id]: !s[l.id] }))}
                   className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[l.id] ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
                   Items {openItems[l.id] ? "▲" : "▼"}
@@ -715,10 +733,40 @@ function ArchiveTab({ token }: { token: string }) {
                   Del
                 </button>
               </div>
+
+              <AnimatePresence>
+                {editId === l.id && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
+                    className="overflow-hidden">
+                    <div className="mt-3 p-4 border border-border/30 bg-muted/20 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {(["title", "bakeDate", "slug", "notes"] as const).map(field => (
+                        <div key={field}>
+                          <label className="text-[10px] tracking-[0.2em] uppercase text-foreground/40 block mb-1">{field === "bakeDate" ? "Bake Date" : field.charAt(0).toUpperCase() + field.slice(1)}</label>
+                          <input type={field === "bakeDate" ? "date" : "text"} value={editForm[field]}
+                            onChange={e => setEditForm(f => ({ ...f, [field]: e.target.value }))}
+                            className="w-full h-8 border border-border/40 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
+                        </div>
+                      ))}
+                      <div className="sm:col-span-2 flex gap-2 justify-end">
+                        <button onClick={() => setEditId(null)}
+                          className="text-[10px] tracking-widest uppercase px-4 h-8 border border-border/40 text-foreground/40 hover:text-foreground transition-all">
+                          Cancel
+                        </button>
+                        <button onClick={() => handleEditSave(l.id)} disabled={saving}
+                          className="text-[10px] tracking-[0.18em] uppercase font-medium px-5 h-8 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all disabled:opacity-40">
+                          {saving ? "Saving…" : "Save"}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <AnimatePresence>
                 {openItems[l.id] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                     className="overflow-hidden">
                     <LaunchItemsPanel launchId={l.id} items={l.items} token={token} onRefetch={refetch} />
                   </motion.div>
