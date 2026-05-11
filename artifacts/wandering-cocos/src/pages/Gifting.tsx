@@ -59,7 +59,7 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: "0.3em",
   textTransform: "uppercase",
   fontWeight: 500,
-  color: "rgba(15,36,25,0.4)",
+  color: "#0F2419",
   marginBottom: "0.5rem",
 };
 
@@ -134,7 +134,7 @@ export default function Gifting() {
           <motion.span
             variants={fadeUp} initial="hidden" animate="visible" custom={0}
             className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-6"
-            style={{ color: "rgba(15,36,25,0.4)" }}
+            style={{ color: "#0F2419" }}
           >
             Gifting
           </motion.span>
@@ -148,7 +148,7 @@ export default function Gifting() {
           <motion.p
             variants={fadeUp} initial="hidden" animate="visible" custom={2}
             className="font-light leading-relaxed max-w-xl"
-            style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "rgba(15,36,25,0.55)" }}
+            style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "#0F2419" }}
           >
             A Wandering Box is not a generic hamper. It is a curated selection of artisanal bakes,
             made in small batches with honest ingredients, boxed and delivered with intention.
@@ -178,7 +178,7 @@ export default function Gifting() {
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
             >
               <span className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-5"
-                style={{ color: "rgba(15,36,25,0.38)" }}>
+                style={{ color: "#0F2419" }}>
                 The Box
               </span>
               <h2 className="font-serif italic leading-snug mb-6"
@@ -189,7 +189,7 @@ export default function Gifting() {
                 <span className="font-serif italic" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "#0f2419" }}>
                   ₹{BOX_PRICE.toLocaleString("en-IN")}
                 </span>
-                <span className="font-light line-through" style={{ fontSize: "1rem", color: "rgba(15,36,25,0.3)" }}>
+                <span className="font-light line-through" style={{ fontSize: "1rem", color: "#2D2926" }}>
                   ₹{BOX_ORIGINAL_PRICE.toLocaleString("en-IN")}
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default function Gifting() {
                   style={{ borderBottom: "1px solid rgba(15,36,25,0.08)" }}
                 >
                   <span className="font-serif italic shrink-0 mt-0.5"
-                    style={{ fontSize: "0.85rem", color: "rgba(15,36,25,0.3)" }}>
+                    style={{ fontSize: "0.85rem", color: "#2D2926" }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="font-light leading-snug"
@@ -226,7 +226,7 @@ export default function Gifting() {
             <motion.span
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
               className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-10"
-              style={{ color: "rgba(245,238,224,0.35)" }}
+              style={{ color: "rgba(245,238,224,0.88)" }}
             >
               Occasions
             </motion.span>
@@ -240,7 +240,7 @@ export default function Gifting() {
                   style={{ borderRight: i < occasions.length - 1 ? "1px solid rgba(245,238,224,0.1)" : "none" }}
                 >
                   <span className="block mb-3 font-serif"
-                    style={{ fontSize: "1.4rem", color: "rgba(245,238,224,0.25)" }}>
+                    style={{ fontSize: "1.4rem", color: "rgba(245,238,224,0.75)" }}>
                     {o.icon}
                   </span>
                   <span className="text-[11px] tracking-[0.18em] uppercase font-medium"
@@ -263,7 +263,7 @@ export default function Gifting() {
             <motion.span
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
               className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-2"
-              style={{ color: "rgba(15,36,25,0.38)" }}
+              style={{ color: "#0F2419" }}
             >
               Gift Order
             </motion.span>
@@ -383,7 +383,7 @@ export default function Gifting() {
                         >
                           +
                         </button>
-                        <span className="font-light text-sm" style={{ color: "rgba(15,36,25,0.4)" }}>
+                        <span className="font-light text-sm" style={{ color: "#0F2419" }}>
                           × ₹{BOX_PRICE.toLocaleString("en-IN")}
                         </span>
                       </div>
@@ -407,7 +407,7 @@ export default function Gifting() {
                       <div className="flex items-baseline justify-between mb-6 pb-5"
                         style={{ borderBottom: "1px solid rgba(15,36,25,0.08)" }}>
                         <span className="text-[10px] tracking-[0.3em] uppercase font-medium"
-                          style={{ color: "rgba(15,36,25,0.4)" }}>
+                          style={{ color: "#0F2419" }}>
                           Total
                         </span>
                         <span className="font-serif italic"
@@ -440,7 +440,7 @@ export default function Gifting() {
 
                       {!canProceed && (
                         <p className="text-center mt-3 text-[10px] tracking-wide"
-                          style={{ color: "rgba(15,36,25,0.3)" }}>
+                          style={{ color: "#2D2926" }}>
                           Fill in your name, phone, recipient, and address to continue.
                         </p>
                       )}
@@ -465,13 +465,13 @@ export default function Gifting() {
                     Gift order sent.
                   </h3>
                   <p className="font-light leading-relaxed mb-8"
-                    style={{ fontSize: "1rem", color: "rgba(15,36,25,0.55)", maxWidth: "440px" }}>
+                    style={{ fontSize: "1rem", color: "#0F2419", maxWidth: "440px" }}>
                     Your details have opened in WhatsApp. Once we receive your message, we will confirm the order, share payment details, and coordinate delivery.
                   </p>
                   <button
                     onClick={() => setStep("form")}
                     className="text-[10px] tracking-[0.25em] uppercase font-medium transition-opacity hover:opacity-60"
-                    style={{ color: "rgba(15,36,25,0.45)" }}
+                    style={{ color: "#0F2419" }}
                   >
                     Send another gift
                   </button>

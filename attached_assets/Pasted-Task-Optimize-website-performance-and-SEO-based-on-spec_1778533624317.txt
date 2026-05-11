@@ -1,0 +1,39 @@
+Task: Optimize website performance and SEO based on specific Lighthouse audit failures. Execute the following technical fixes:
+
+1. Critical Asset Compression & Caching:
+
+Set a long-term cache header (Cache-Control: max-age=31536000) for all static assets in the /images/ and /assets/ folders.
+
+Identify /images/bakery-ref-video.mp4. Ensure it is compressed and use the poster attribute to show a small WebP image while the video loads.
+
+2. Image Optimization (Savings: 2.6 MB):
+
+Logo Fix: Resize /images/wc-logo-wb.png from 4000x4000 to 128x128 (for retina) and convert it to WebP format. Update the source in the code.
+
+Background Fix: Convert /images/woc-bg.png to WebP or AVIF and ensure it is resized to a maximum width of 1920px (currently oversized).
+
+Implement Responsive Images: Use the srcset attribute for the background image so mobile devices don't download the desktop-sized file.
+
+3. Eliminate Render-Blocking Resources:
+
+CSS Optimization: Inline the critical CSS from /assets/index-DOG-Ysqa.css into the <head> to fix the 1,670ms render delay.
+
+Font Loading: Use font-display: swap; for all Google Font imports. Add a link rel="preconnect" for [https://fonts.gstatic.com](https://fonts.gstatic.com) if not already present.
+
+4. JavaScript Cleanup:
+
+Audit /assets/index-CtHmUGZX.js. Remove unused code and ensure the script is loaded with the defer attribute.
+
+Fix Forced Reflow: Check the JS at line 10 (or equivalent in current build) for geometric queries like offsetWidth that are triggering layout recalculations and optimize them.
+
+5. Fix API Latency:
+
+The network tree shows /api/settings and /api/site-status are taking over 2,000ms. Optimize these backend calls or cache the responses to prevent them from blocking the page load.
+
+6. Accessibility & SEO (Failing Audits):
+
+Viewport: Change to <meta name="viewport" content="width=device-width, initial-scale=1.0"> (remove zoom restrictions).
+
+Contrast: Update text colors for "Wandering Cocos" and footer links to meet a 4.5:1 ratio (remove rgba low-opacity values).
+
+Hierarchy: Reorder headings so they follow a logical h1 > h2 > h3 sequence.

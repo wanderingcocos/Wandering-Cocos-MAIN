@@ -47,7 +47,7 @@ export default function Recipes() {
           <motion.span
             variants={fadeUp} initial="hidden" animate="visible" custom={0}
             className="text-[10px] tracking-[0.35em] uppercase font-medium block mb-6"
-            style={{ color: "rgba(15,36,25,0.4)" }}
+            style={{ color: "#0F2419" }}
           >
             The Story · Recipes
           </motion.span>
@@ -63,7 +63,7 @@ export default function Recipes() {
           <motion.p
             variants={fadeUp} initial="hidden" animate="visible" custom={2}
             className="font-light leading-relaxed max-w-lg"
-            style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "rgba(15,36,25,0.55)" }}
+            style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "#0F2419" }}
           >
             The techniques, the ratios, the small obsessions behind each dish.
             Recipes will be added here as we document them.
@@ -78,7 +78,7 @@ export default function Recipes() {
         {/* RECIPE LIST */}
         <section className="py-16 px-6 md:px-14 lg:px-24 max-w-4xl mx-auto">
           {loading ? (
-            <p className="font-light" style={{ fontSize: "0.95rem", color: "rgba(15,36,25,0.4)" }}>Loading…</p>
+            <p className="font-light" style={{ fontSize: "0.95rem", color: "#0F2419" }}>Loading…</p>
           ) : recipes.length === 0 ? (
             <motion.div
               variants={fadeUp} initial="hidden" animate="visible" custom={3}
@@ -88,7 +88,7 @@ export default function Recipes() {
                 style={{ width: 56, height: 56, border: "1px solid rgba(15,36,25,0.12)" }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"
                   strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"
-                  style={{ color: "rgba(15,36,25,0.3)" }}>
+                  style={{ color: "#0F2419" }}>
                   <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z" />
                   <path d="M12 8v4l3 3" />
                 </svg>
@@ -99,7 +99,7 @@ export default function Recipes() {
                   Recipes coming soon.
                 </h2>
                 <p className="font-light leading-relaxed"
-                  style={{ fontSize: "clamp(0.9rem, 1.1vw, 1.05rem)", color: "rgba(15,36,25,0.5)" }}>
+                  style={{ fontSize: "clamp(0.9rem, 1.1vw, 1.05rem)", color: "#0F2419" }}>
                   We are in the middle of documenting our process.
                   Each recipe will be added here when it is ready to be shared.
                 </p>
@@ -126,7 +126,7 @@ export default function Recipes() {
                           <div className="flex flex-wrap gap-2 mb-3">
                             {tags.map(tag => (
                               <span key={tag} className="text-[9px] tracking-[0.25em] uppercase font-medium px-2 py-0.5"
-                                style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.45)" }}>
+                                style={{ background: "rgba(15,36,25,0.06)", color: "#0F2419" }}>
                                 {tag}
                               </span>
                             ))}
@@ -137,7 +137,7 @@ export default function Recipes() {
                           {recipe.title}
                         </h3>
                         {recipe.subtitle && (
-                          <p className="font-light mb-3" style={{ fontSize: "0.88rem", color: "rgba(15,36,25,0.5)" }}>
+                          <p className="font-light mb-3" style={{ fontSize: "0.88rem", color: "#0F2419" }}>
                             {recipe.subtitle}
                           </p>
                         )}
@@ -145,13 +145,13 @@ export default function Recipes() {
                           <div className="flex gap-6 mt-2">
                             {recipe.serves && (
                               <span className="text-[10px] tracking-[0.2em] uppercase font-medium"
-                                style={{ color: "rgba(15,36,25,0.35)" }}>
+                                style={{ color: "#0F2419" }}>
                                 Serves {recipe.serves}
                               </span>
                             )}
                             {recipe.time && (
                               <span className="text-[10px] tracking-[0.2em] uppercase font-medium"
-                                style={{ color: "rgba(15,36,25,0.35)" }}>
+                                style={{ color: "#0F2419" }}>
                                 {recipe.time}
                               </span>
                             )}
@@ -159,9 +159,9 @@ export default function Recipes() {
                         )}
                       </div>
                       <span className="text-xl flex-shrink-0 mt-1 transition-colors"
-                        style={{ color: "rgba(15,36,25,0.2)" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "rgba(15,36,25,0.55)")}
-                        onMouseLeave={e => (e.currentTarget.style.color = "rgba(15,36,25,0.2)")}>
+                        style={{ color: "#2D2926" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "#0F2419")}
+                        onMouseLeave={e => (e.currentTarget.style.color = "#2D2926")}>
                         →
                       </span>
                     </button>

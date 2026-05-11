@@ -307,7 +307,7 @@ export function Header() {
                                   if (sub.href) navigate(sub.href);
                                   else if (sub.section) navigateToSection(sub.section);
                                 }}
-                                className="text-sm tracking-[0.14em] uppercase font-medium text-foreground/55 hover:text-accent transition-colors duration-200 cursor-pointer"
+                                className="text-sm tracking-[0.14em] uppercase font-medium text-[#2D2926] hover:text-accent transition-colors duration-200 cursor-pointer"
                               >
                                 {sub.name}
                               </button>

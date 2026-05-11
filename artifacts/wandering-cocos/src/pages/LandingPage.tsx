@@ -28,11 +28,11 @@ function TestimonialCard({ t }: { t: Testimonial }) {
       <div style={{ borderTop: "1px solid rgba(15,36,25,0.08)", paddingTop: "1rem" }}>
         <p
           className="text-[10px] tracking-[0.22em] uppercase font-medium"
-          style={{ color: "rgba(15,36,25,0.5)" }}
+          style={{ color: "#0F2419" }}
         >
           {t.authorName}
           {t.location && (
-            <span style={{ color: "rgba(15,36,25,0.3)" }}> · {t.location}</span>
+            <span style={{ color: "#0F2419" }}> · {t.location}</span>
           )}
         </p>
       </div>
@@ -65,7 +65,7 @@ function TestimonialsSection() {
         initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="block text-[10px] tracking-[0.35em] uppercase font-medium mb-14 text-center px-6"
-        style={{ color: "rgba(15,36,25,0.35)" }}
+        style={{ color: "#0F2419" }}
       >
         What people are saying
       </motion.span>
@@ -205,7 +205,7 @@ function PhilosophyStackSection() {
               style={{ borderRadius: "24px", background: "#f5f0e8", boxShadow: "0 12px 60px rgba(0,0,0,0.14)" }}
             >
               <div>
-                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "rgba(26,26,26,0.35)" }}>
+                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   Wandering Cocos
                 </span>
                 <h3 className="font-serif italic leading-snug mb-2 md:mb-3" style={{ fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
@@ -226,19 +226,19 @@ function PhilosophyStackSection() {
               className="absolute inset-0 flex flex-col justify-between p-6 sm:p-8 md:p-14"
             >
               <div>
-                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "rgba(26,26,26,0.35)" }}>
+                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   The Philosophy
                 </span>
                 <h3 className="font-serif italic leading-snug mb-3 md:mb-5" style={{ fontSize: "clamp(1.5rem, 3vw, 2.6rem)", color: "#1a1a1a" }}>
                   "Calories can be burnt.<br />Hidden ingredients cannot."
                 </h3>
-                <p className="font-light leading-relaxed" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "rgba(26,26,26,0.55)", maxWidth: "520px" }}>
+                <p className="font-light leading-relaxed" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "#2D2926", maxWidth: "520px" }}>
                   We keep it transparent. Elevated. Honest. Because in a world of excess, true luxury is Clarity.
                 </p>
               </div>
               <div>
                 <div className="mb-5 md:mb-8">
-                  <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-2 md:mb-3" style={{ color: "rgba(26,26,26,0.35)" }}>
+                  <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-2 md:mb-3" style={{ color: "#2D2926" }}>
                     The Cocos Balance
                   </span>
                   <p className="font-serif italic" style={{ fontSize: "clamp(1rem, 1.5vw, 1.25rem)", color: "rgba(26,26,26,0.6)" }}>
@@ -248,11 +248,11 @@ function PhilosophyStackSection() {
                 <div className="flex gap-4 md:gap-5">
                   <div className="flex-1 rounded-2xl py-6 px-5 md:py-10 md:px-8 text-center" style={{ background: "rgba(26,26,26,0.06)" }}>
                     <span className="font-serif italic block mb-2 md:mb-3" style={{ fontSize: "clamp(2rem, 3.5vw, 3.5rem)", color: "#1a1a1a" }}>90%</span>
-                    <span className="font-light leading-snug" style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)", color: "rgba(26,26,26,0.5)" }}>Clean. Move well.<br />Eat with awareness.</span>
+                    <span className="font-light leading-snug" style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)", color: "#2D2926" }}>Clean. Move well.<br />Eat with awareness.</span>
                   </div>
                   <div className="flex-1 rounded-2xl py-6 px-5 md:py-10 md:px-8 text-center" style={{ background: "rgba(26,26,26,0.06)" }}>
                     <span className="font-serif italic block mb-2 md:mb-3" style={{ fontSize: "clamp(2rem, 3.5vw, 3.5rem)", color: "#1a1a1a" }}>10%</span>
-                    <span className="font-light leading-snug" style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)", color: "rgba(26,26,26,0.5)" }}>Indulgence. And when<br />you do, do it exceptionally.</span>
+                    <span className="font-light leading-snug" style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)", color: "#2D2926" }}>Indulgence. And when<br />you do, do it exceptionally.</span>
                   </div>
                 </div>
               </div>
@@ -264,13 +264,13 @@ function PhilosophyStackSection() {
               className="absolute inset-0 flex flex-col justify-between p-6 sm:p-8 md:p-14"
             >
               <div>
-                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "rgba(26,26,26,0.35)" }}>
+                <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   The Earthy Way
                 </span>
                 <h3 className="font-serif italic leading-snug mb-3 md:mb-6" style={{ fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
                   True luxury is found<br />in the soil.
                 </h3>
-                <p className="font-light leading-relaxed mb-5 md:mb-10" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "rgba(26,26,26,0.55)", maxWidth: "560px" }}>
+                <p className="font-light leading-relaxed mb-5 md:mb-10" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "#2D2926", maxWidth: "560px" }}>
                   We believe the most refined flavour is the one closest to the earth. Our process is a return to purity, where every element is chosen for its raw origin.
                 </p>
               </div>
@@ -282,7 +282,7 @@ function PhilosophyStackSection() {
                 ].map(({ name, note }, i) => (
                   <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
                     <span className="font-serif italic flex-shrink-0" style={{ fontSize: "clamp(1rem, 1.5vw, 1.3rem)", color: "#1a1a1a" }}>{name}</span>
-                    <span className="font-light" style={{ fontSize: "clamp(0.78rem, 1vw, 0.9rem)", color: "rgba(26,26,26,0.45)" }}>{note}</span>
+                    <span className="font-light" style={{ fontSize: "clamp(0.78rem, 1vw, 0.9rem)", color: "#2D2926" }}>{note}</span>
                   </div>
                 ))}
               </div>
@@ -293,7 +293,7 @@ function PhilosophyStackSection() {
               style={{ y: card4Y, borderRadius: "24px", background: "#1a3a2a", boxShadow: "0 20px 80px rgba(0,0,0,0.3)" }}
               className="absolute inset-0 flex flex-col justify-center items-center text-center p-6 sm:p-8 md:p-16"
             >
-              <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-5 md:mb-10" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-5 md:mb-10" style={{ color: "rgba(245,238,224,0.85)" }}>
                 The Experience
               </span>
               <p className="font-serif italic leading-tight mb-5 md:mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3.8rem)", color: "#ffffff" }}>
@@ -318,7 +318,7 @@ function PhilosophyStackSection() {
                     {siteMode === "sold_out" ? "Sold Out · Next drop coming soon" : siteMode === "popup" ? "Pop-Up this week · Orders resume next week" : "Baking in progress · Check back soon"}
                   </span>
                 )}
-                <p className="text-xs tracking-widest uppercase mt-4 font-light" style={{ color: "rgba(255,255,255,0.25)" }}>
+                <p className="text-xs tracking-widest uppercase mt-4 font-light" style={{ color: "rgba(245,238,224,0.75)" }}>
                   Limited batches. Crafted with intent.
                 </p>
               </motion.div>

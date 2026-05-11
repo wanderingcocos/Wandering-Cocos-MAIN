@@ -24,7 +24,7 @@ export default function Contact() {
           {/* Contact details — bottom-left editorial grid */}
           <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-x-14 gap-y-8">
             <div>
-              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-foreground/35 block mb-3">
+              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-[#2D2926] block mb-3">
                 Email Us
               </span>
               <a
@@ -37,7 +37,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-foreground/35 block mb-3">
+              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-[#2D2926] block mb-3">
                 WhatsApp
               </span>
               <a
@@ -52,7 +52,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-foreground/35 block mb-3">
+              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-[#2D2926] block mb-3">
                 Based In
               </span>
               <p className="font-serif italic text-foreground/70" style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)" }}>
@@ -61,7 +61,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-foreground/35 block mb-3">
+              <span className="text-[9px] tracking-[0.3em] font-medium uppercase text-[#2D2926] block mb-3">
                 Order Window
               </span>
               <p className="font-serif italic text-foreground/70" style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)" }}>

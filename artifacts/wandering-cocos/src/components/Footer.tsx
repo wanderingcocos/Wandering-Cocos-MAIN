@@ -30,7 +30,7 @@ export function Footer() {
         {/* Tagline */}
         <p
           className="font-serif italic mt-4"
-          style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)", color: "rgba(245,238,224,0.4)" }}
+          style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)", color: "rgba(245,238,224,0.88)" }}
         >
           Dark Roast &amp; Open Road
         </p>
@@ -48,9 +48,9 @@ export function Footer() {
                 key={link.name}
                 href={link.href}
                 className="text-[11px] tracking-[0.18em] uppercase font-medium transition-colors duration-200"
-                style={{ color: "rgba(245,238,224,0.45)" }}
+                style={{ color: "rgba(245,238,224,0.88)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(245,238,224,0.9)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,238,224,0.45)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,238,224,0.88)")}
               >
                 {link.name}
               </Link>
@@ -65,14 +65,14 @@ export function Footer() {
               rel="noopener noreferrer"
               aria-label="Instagram"
               className="w-9 h-9 flex items-center justify-center border transition-all duration-300"
-              style={{ borderColor: "rgba(245,238,224,0.18)", color: "rgba(245,238,224,0.55)", borderRadius: 0 }}
+              style={{ borderColor: "rgba(245,238,224,0.18)", color: "rgba(245,238,224,0.88)", borderRadius: 0 }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "rgba(245,238,224,0.7)";
                 (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,1)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "rgba(245,238,224,0.18)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,0.55)";
+                (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,0.88)";
               }}
             >
               <Instagram className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -83,14 +83,14 @@ export function Footer() {
               rel="noopener noreferrer"
               aria-label="WhatsApp"
               className="w-9 h-9 flex items-center justify-center border transition-all duration-300"
-              style={{ borderColor: "rgba(245,238,224,0.18)", color: "rgba(245,238,224,0.55)", borderRadius: 0 }}
+              style={{ borderColor: "rgba(245,238,224,0.18)", color: "rgba(245,238,224,0.88)", borderRadius: 0 }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "rgba(245,238,224,0.7)";
                 (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,1)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "rgba(245,238,224,0.18)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,0.55)";
+                (e.currentTarget as HTMLElement).style.color = "rgba(245,238,224,0.88)";
               }}
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -102,7 +102,7 @@ export function Footer() {
           {/* Copyright */}
           <p
             className="text-[10px] tracking-[0.15em] uppercase"
-            style={{ color: "rgba(245,238,224,0.28)" }}
+            style={{ color: "rgba(245,238,224,0.80)" }}
           >
             © {new Date().getFullYear()} Wandering Cocos · Bengaluru
           </p>
@@ -110,7 +110,7 @@ export function Footer() {
           {/* Compliance */}
           <p
             className="text-[9px] tracking-[0.12em] uppercase"
-            style={{ color: "rgba(245,238,224,0.18)" }}
+            style={{ color: "rgba(245,238,224,0.72)" }}
           >
             FSSAI Lic. 21226010002381 · Udyam UDYAM-KR-03-0682199
           </p>

@@ -68,7 +68,7 @@ export function WelcomeGreeting() {
           {/* Sub line */}
           <motion.p
             className="font-light tracking-widest uppercase text-center mt-4"
-            style={{ fontSize: "clamp(0.65rem, 0.85vw, 0.78rem)", color: "rgba(200,168,130,0.75)", letterSpacing: "0.32em" }}
+            style={{ fontSize: "clamp(0.65rem, 0.85vw, 0.78rem)", color: "rgba(200,168,130,0.92)", letterSpacing: "0.32em" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 1, ease: "easeOut" }}
@@ -79,7 +79,7 @@ export function WelcomeGreeting() {
           {/* Dismiss hint */}
           <motion.p
             className="absolute bottom-8 font-light tracking-widest uppercase"
-            style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.28em" }}
+            style={{ fontSize: "9px", color: "rgba(245,238,224,0.78)", letterSpacing: "0.28em" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 1 }}

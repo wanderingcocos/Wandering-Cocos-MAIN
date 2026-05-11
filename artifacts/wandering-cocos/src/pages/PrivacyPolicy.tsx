@@ -90,7 +90,7 @@ export default function PrivacyPolicy() {
           {sections.map((section) => (
             <div key={section.number} className="border-t border-border/40 pt-10">
               <div className="flex items-baseline gap-4 mb-5">
-                <span className="font-serif italic text-foreground/20 text-2xl leading-none flex-shrink-0">
+                <span className="font-serif italic text-[#2D2926] text-2xl leading-none flex-shrink-0">
                   {section.number}.
                 </span>
                 <h2 className="font-serif italic text-foreground" style={{ fontSize: "clamp(1.2rem, 2vw, 1.5rem)" }}>
@@ -122,7 +122,7 @@ export default function PrivacyPolicy() {
             <p className="text-sm font-light text-muted-foreground leading-relaxed mb-6">
               If you have questions about this policy or how your data is handled, please reach out to us directly on WhatsApp.
             </p>
-            <p className="text-xs font-light text-muted-foreground/60 leading-relaxed italic">
+            <p className="text-xs font-light text-[#2D2926] leading-relaxed italic">
               Legal Disclaimer: This policy is issued by Wandering Cocos. By placing a pre-order, you consent to the collection and use of your information as described above.
             </p>
           </div>

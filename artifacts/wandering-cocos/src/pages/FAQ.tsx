@@ -118,7 +118,7 @@ export default function FAQ() {
                     style={{
                       transform: open === i ? "rotate(45deg)" : "rotate(0deg)",
                       display: "inline-block",
-                      color: open === i ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
+                      color: open === i ? "rgba(255,255,255,0.9)" : "rgba(245,238,224,0.80)",
                     }}
                   >
                     +

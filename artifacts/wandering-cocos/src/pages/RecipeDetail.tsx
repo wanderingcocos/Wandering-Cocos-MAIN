@@ -72,7 +72,7 @@ export default function RecipeDetail() {
         <div className="pt-32 pb-0 px-6 md:px-14 lg:px-24 max-w-4xl mx-auto">
           <button
             onClick={() => navigate("/recipes")}
-            style={{ color: "rgba(15,36,25,0.38)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            style={{ color: "#0F2419", background: "none", border: "none", cursor: "pointer", padding: 0 }}
             className="text-[10px] tracking-[0.28em] uppercase font-medium mb-10 flex items-center gap-2 transition-colors hover:text-foreground"
           >
             ← Recipes
@@ -86,7 +86,7 @@ export default function RecipeDetail() {
           </div>
         ) : notFound || !recipe ? (
           <div className="px-6 md:px-14 lg:px-24 max-w-4xl mx-auto pb-24">
-            <p className="font-serif italic" style={{ color: "rgba(15,36,25,0.4)" }}>Recipe not found.</p>
+            <p className="font-serif italic" style={{ color: "#0F2419" }}>Recipe not found.</p>
           </div>
         ) : (
           <article className="px-6 md:px-14 lg:px-24 max-w-4xl mx-auto pb-24">
@@ -94,7 +94,7 @@ export default function RecipeDetail() {
               <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0} className="flex flex-wrap gap-2 mb-5">
                 {tags.map(tag => (
                   <span key={tag} className="text-[9px] tracking-[0.25em] uppercase font-medium px-2 py-1"
-                    style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.45)" }}>
+                    style={{ background: "rgba(15,36,25,0.06)", color: "#0F2419" }}>
                     {tag}
                   </span>
                 ))}
@@ -112,7 +112,7 @@ export default function RecipeDetail() {
             {recipe.subtitle && (
               <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
                 className="font-light mb-5"
-                style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)", color: "rgba(15,36,25,0.5)" }}>
+                style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)", color: "#0F2419" }}>
                 {recipe.subtitle}
               </motion.p>
             )}
@@ -121,13 +121,13 @@ export default function RecipeDetail() {
               <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3} className="flex gap-8 mb-8">
                 {recipe.serves && (
                   <div>
-                    <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5" style={{ color: "rgba(15,36,25,0.35)" }}>Serves</span>
+                    <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5" style={{ color: "#0F2419" }}>Serves</span>
                     <span className="font-light text-sm" style={{ color: "rgba(15,36,25,0.65)" }}>{recipe.serves}</span>
                   </div>
                 )}
                 {recipe.time && (
                   <div>
-                    <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5" style={{ color: "rgba(15,36,25,0.35)" }}>Time</span>
+                    <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5" style={{ color: "#0F2419" }}>Time</span>
                     <span className="font-light text-sm" style={{ color: "rgba(15,36,25,0.65)" }}>{recipe.time}</span>
                   </div>
                 )}

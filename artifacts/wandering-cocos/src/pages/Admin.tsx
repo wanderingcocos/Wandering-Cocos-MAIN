@@ -125,13 +125,13 @@ function ItemsPanel({ windowId, items, token, onRefetch }: {
   return (
     <div className="mt-4 ml-0 border-t border-border/25 pt-4">
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
-      <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-3">Box Items ({items.length})</p>
+      <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-[#2D2926] mb-3">Box Items ({items.length})</p>
 
       {items.length > 0 && (
         <div className="space-y-1.5 mb-4">
           {items.map((item, i) => (
             <div key={item.id} className="flex items-start gap-3 group">
-              <span className="text-[9px] text-foreground/25 font-medium w-4 mt-1 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-[9px] text-[#2D2926] font-medium w-4 mt-1 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
               {editItemId === item.id ? (
                 <div className="flex-1 flex flex-col gap-2">
                   <input value={editName} onChange={e => setEditName(e.target.value)}
@@ -140,18 +140,18 @@ function ItemsPanel({ windowId, items, token, onRefetch }: {
                     className="w-full h-8 border border-border/50 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
                   <div className="flex gap-2">
                     <button onClick={() => handleSaveEdit(item.id)} className="text-[10px] tracking-widest uppercase px-3 h-7 bg-accent text-accent-foreground">Save</button>
-                    <button onClick={() => setEditItemId(null)} className="text-[10px] tracking-widest uppercase px-3 h-7 border border-border/40 text-foreground/40">Cancel</button>
+                    <button onClick={() => setEditItemId(null)} className="text-[10px] tracking-widest uppercase px-3 h-7 border border-border/40 text-[#2D2926]">Cancel</button>
                   </div>
                 </div>
               ) : (
                 <div className="flex-1 flex items-start justify-between gap-2">
                   <div>
                     <p className="text-xs text-foreground leading-snug">{item.name}</p>
-                    {item.description && <p className="text-[11px] text-foreground/40 leading-relaxed">{item.description}</p>}
+                    {item.description && <p className="text-[11px] text-[#2D2926] leading-relaxed">{item.description}</p>}
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button onClick={() => { setEditItemId(item.id); setEditName(item.name); setEditDesc(item.description ?? ""); }}
-                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-foreground/35 hover:text-foreground hover:border-foreground/50 transition-all">
+                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
                       Edit
                     </button>
                     <button onClick={() => handleDelete(item.id)}
@@ -255,20 +255,20 @@ function BakeWindowsTab({ token }: { token: string }) {
         {creating && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             className="border border-border/50 p-6 mb-6 bg-muted/30">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">New Bake Window</p>
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">New Bake Window</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Label</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Label</label>
                 <input value={form.label} onChange={e => setForm(f => ({ ...f, label: e.target.value }))} placeholder="e.g. Weekend Drop #3"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Bake Date</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Bake Date</label>
                 <input type="date" value={form.bakeDate} onChange={e => setForm(f => ({ ...f, bakeDate: e.target.value }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Status</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Status</label>
                 <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent">
                   <option value="draft">Draft</option>
@@ -278,23 +278,23 @@ function BakeWindowsTab({ token }: { token: string }) {
                 </select>
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Box Price (₹)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Box Price (₹)</label>
                 <input type="number" value={form.boxPrice} onChange={e => setForm(f => ({ ...f, boxPrice: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Original Price (₹)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Original Price (₹)</label>
                 <input type="number" value={form.originalPrice} onChange={e => setForm(f => ({ ...f, originalPrice: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Max Boxes</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Max Boxes</label>
                 <input type="number" value={form.maxBoxes} onChange={e => setForm(f => ({ ...f, maxBoxes: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
             </div>
             <div className="mb-5">
-              <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Notes</label>
+              <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Notes</label>
               <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={2}
                 className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-none" />
             </div>
@@ -304,7 +304,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                 {saving ? "Saving…" : "Create"}
               </button>
               <button onClick={() => setCreating(false)}
-                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
                 Cancel
               </button>
             </div>
@@ -313,9 +313,9 @@ function BakeWindowsTab({ token }: { token: string }) {
       </AnimatePresence>
 
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : !windows?.length ? (
-        <p className="text-xs text-foreground/40">No bake windows yet. Create one above.</p>
+        <p className="text-xs text-[#2D2926]">No bake windows yet. Create one above.</p>
       ) : (
         <div className="divide-y divide-border/30">
           {windows.map((w) => (
@@ -326,20 +326,20 @@ function BakeWindowsTab({ token }: { token: string }) {
                     <span className="font-serif text-sm text-foreground">{w.label}</span>
                     <Badge status={w.status} />
                     {(w.items ?? []).length > 0 && (
-                      <span className="text-[9px] tracking-widest uppercase text-foreground/25 border border-border/25 px-2 py-0.5">
+                      <span className="text-[9px] tracking-widest uppercase text-[#2D2926] border border-border/25 px-2 py-0.5">
                         {(w.items ?? []).length} items
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-foreground/40">
+                  <p className="text-xs text-[#2D2926]">
                     {new Date(w.bakeDate + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}&nbsp;·&nbsp;
                     ₹{w.boxPrice.toLocaleString("en-IN")}&nbsp;·&nbsp;Max {w.maxBoxes} boxes
                   </p>
-                  {w.notes && <p className="text-xs text-foreground/30 mt-0.5 italic">{w.notes}</p>}
+                  {w.notes && <p className="text-xs text-[#2D2926] mt-0.5 italic">{w.notes}</p>}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button onClick={() => setOpenItems(s => ({ ...s, [w.id]: !s[w.id] }))}
-                    className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[w.id] ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
+                    className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[w.id] ? "border-accent text-accent" : "border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50"}`}>
                     Items {openItems[w.id] ? "▲" : "▼"}
                   </button>
                   {editId === w.id ? (
@@ -352,12 +352,12 @@ function BakeWindowsTab({ token }: { token: string }) {
                         <option value="completed">Completed</option>
                       </select>
                       <button onClick={() => handleStatusUpdate(w.id)} className="text-[10px] tracking-widest uppercase px-3 h-8 bg-accent text-accent-foreground">Save</button>
-                      <button onClick={() => setEditId(null)} className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/50 text-foreground/40">×</button>
+                      <button onClick={() => setEditId(null)} className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/50 text-[#2D2926]">×</button>
                     </>
                   ) : (
                     <>
                       <button onClick={() => { setEditId(w.id); setEditStatus(w.status); }}
-                        className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
+                        className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
                         Status
                       </button>
                       <button
@@ -366,7 +366,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                         className="text-[10px] tracking-widest uppercase px-3 h-8 border transition-all disabled:opacity-60"
                         style={{
                           borderColor: archiveStatus[w.id] === "done" ? "rgba(45,90,61,0.45)" : archiveStatus[w.id] === "error" ? "rgba(239,68,68,0.35)" : "rgba(15,36,25,0.2)",
-                          color: archiveStatus[w.id] === "done" ? "hsl(150 40% 28%)" : archiveStatus[w.id] === "error" ? "rgba(239,68,68,0.75)" : "rgba(15,36,25,0.45)",
+                          color: archiveStatus[w.id] === "done" ? "hsl(150 40% 28%)" : archiveStatus[w.id] === "error" ? "rgba(239,68,68,0.75)" : "#0F2419",
                         }}>
                         {archiveStatus[w.id] === "loading" ? "Archiving…" : archiveStatus[w.id] === "done" ? "Archived ✓" : archiveStatus[w.id] === "exists" ? "Already Archived" : archiveStatus[w.id] === "error" ? "Error" : "→ Archive"}
                       </button>
@@ -423,7 +423,7 @@ function OrdersTab({ token }: { token: string }) {
         <div className="flex gap-2">
           {["all", "pending", "confirmed", "cancelled"].map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`text-[10px] tracking-[0.18em] uppercase px-3 h-7 border transition-all ${filter === s ? "border-accent bg-accent text-accent-foreground" : "border-border/40 text-foreground/40 hover:text-foreground"}`}>
+              className={`text-[10px] tracking-[0.18em] uppercase px-3 h-7 border transition-all ${filter === s ? "border-accent bg-accent text-accent-foreground" : "border-border/40 text-[#2D2926] hover:text-foreground"}`}>
               {s}
             </button>
           ))}
@@ -431,9 +431,9 @@ function OrdersTab({ token }: { token: string }) {
       </div>
 
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : !filtered.length ? (
-        <p className="text-xs text-foreground/40">No orders {filter !== "all" ? `with status "${filter}"` : "yet"}.</p>
+        <p className="text-xs text-[#2D2926]">No orders {filter !== "all" ? `with status "${filter}"` : "yet"}.</p>
       ) : (
         <div className="divide-y divide-border/30">
           {filtered.map((o) => (
@@ -442,14 +442,14 @@ function OrdersTab({ token }: { token: string }) {
                 <div className="flex items-center gap-3 mb-1 flex-wrap">
                   <span className="font-serif text-sm text-foreground">{o.name}</span>
                   <Badge status={o.status} />
-                  {o.occasion === "gift" && <span className="text-[9px] tracking-widest uppercase text-foreground/30 border border-border/30 px-2 py-0.5">Gift</span>}
+                  {o.occasion === "gift" && <span className="text-[9px] tracking-widest uppercase text-[#2D2926] border border-border/30 px-2 py-0.5">Gift</span>}
                 </div>
-                <p className="text-xs text-foreground/40">
+                <p className="text-xs text-[#2D2926]">
                   {o.phone}&nbsp;·&nbsp;{o.qty} {o.qty === 1 ? "box" : "boxes"}&nbsp;·&nbsp;₹{o.totalAmount.toLocaleString("en-IN")}
                 </p>
-                <p className="text-xs text-foreground/30 mt-0.5 leading-relaxed">{o.address}</p>
-                {o.giftMessage && <p className="text-xs text-foreground/30 mt-0.5 italic">"{o.giftMessage}"</p>}
-                <p className="text-[10px] text-foreground/22 mt-1">{new Date(o.createdAt).toLocaleString("en-IN")}</p>
+                <p className="text-xs text-[#2D2926] mt-0.5 leading-relaxed">{o.address}</p>
+                {o.giftMessage && <p className="text-xs text-[#2D2926] mt-0.5 italic">"{o.giftMessage}"</p>}
+                <p className="text-[10px] text-[#2D2926] mt-1">{new Date(o.createdAt).toLocaleString("en-IN")}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value)}
@@ -518,10 +518,10 @@ function SiteModeTab({ token }: { token: string }) {
   return (
     <div>
       <h2 className="font-serif text-xl text-foreground mb-2">Site Status</h2>
-      <p className="text-xs text-foreground/40 mb-6 leading-relaxed">Controls what visitors see on the homepage and Reserve page. Changes take effect immediately after saving.</p>
+      <p className="text-xs text-[#2D2926] mb-6 leading-relaxed">Controls what visitors see on the homepage and Reserve page. Changes take effect immediately after saving.</p>
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : (
         <>
           <div className="space-y-3 mb-6">
@@ -531,16 +531,16 @@ function SiteModeTab({ token }: { token: string }) {
                 <div className="flex items-start gap-4">
                   <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5 transition-colors ${selected === mode.id ? "border-accent bg-accent" : "border-border/50"}`} />
                   <div>
-                    <p className={`text-sm font-medium mb-1 ${selected === mode.id ? "text-foreground" : "text-foreground/55"}`}>{mode.label}</p>
-                    <p className="text-xs text-foreground/38 leading-relaxed">{mode.description}</p>
+                    <p className={`text-sm font-medium mb-1 ${selected === mode.id ? "text-foreground" : "text-[#2D2926]"}`}>{mode.label}</p>
+                    <p className="text-xs text-[#2D2926] leading-relaxed">{mode.description}</p>
                   </div>
                 </div>
               </button>
             ))}
           </div>
           <div className="border border-border/25 p-4 mb-6 bg-muted/20">
-            <p className="text-[10px] tracking-[0.18em] uppercase font-medium text-foreground/35 mb-1">Sold Out — Automatic</p>
-            <p className="text-xs text-foreground/35 leading-relaxed">When confirmed + pending orders for the active bake window reach the Max Boxes limit, the site automatically shows a sold-out message. No manual action needed.</p>
+            <p className="text-[10px] tracking-[0.18em] uppercase font-medium text-[#2D2926] mb-1">Sold Out — Automatic</p>
+            <p className="text-xs text-[#2D2926] leading-relaxed">When confirmed + pending orders for the active bake window reach the Max Boxes limit, the site automatically shows a sold-out message. No manual action needed.</p>
           </div>
           <button onClick={handleSave} disabled={saving}
             className="text-xs tracking-[0.18em] uppercase font-medium px-8 h-10 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
@@ -592,14 +592,14 @@ function SettingsTab({ token }: { token: string }) {
     <div>
       <h2 className="font-serif text-xl text-foreground mb-2">Site Settings</h2>
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
-      <p className="text-xs text-foreground/40 mb-6 leading-relaxed">The info strip message auto-generates from the live bake window. Override it here if needed.</p>
+      <p className="text-xs text-[#2D2926] mb-6 leading-relaxed">The info strip message auto-generates from the live bake window. Override it here if needed.</p>
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : (
         <div className="space-y-6">
           {DEFAULT_SETTINGS.map(({ key, label, placeholder }) => (
             <div key={key}>
-              <label className="text-[10px] tracking-[0.22em] uppercase font-medium text-foreground/45 block mb-1.5">{label}</label>
+              <label className="text-[10px] tracking-[0.22em] uppercase font-medium text-[#2D2926] block mb-1.5">{label}</label>
               <div className="flex gap-3">
                 <input value={values[key] ?? ""} onChange={e => setValues(v => ({ ...v, [key]: e.target.value }))} placeholder={placeholder}
                   className="flex-1 h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent transition-colors" />
@@ -700,18 +700,18 @@ function LaunchItemsPanel({ launchId, items, token, onRefetch }: { launchId: num
   return (
     <div className="mt-4 border-t border-border/25 pt-4">
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
-      <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-3">Items ({items.length})</p>
+      <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-[#2D2926] mb-3">Items ({items.length})</p>
       {items.length > 0 && (
         <div className="space-y-2 mb-4">
           {items.map((item, i) => (
             <div key={item.id} className="flex items-start gap-3 group">
-              <span className="text-[9px] text-foreground/25 font-medium w-4 mt-1 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-[9px] text-[#2D2926] font-medium w-4 mt-1 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
               <div className="flex-shrink-0">
                 {getImageSrc(item.imageFilename) ? (
                   <img src={getImageSrc(item.imageFilename)!} alt={item.name} className="w-10 h-10 object-cover rounded-sm" />
                 ) : (
                   <div className="w-10 h-10 rounded-sm flex items-center justify-center" style={{ background: "rgba(15,36,25,0.06)" }}>
-                    <span className="text-[9px] text-foreground/20">IMG</span>
+                    <span className="text-[9px] text-[#2D2926]">IMG</span>
                   </div>
                 )}
               </div>
@@ -723,22 +723,22 @@ function LaunchItemsPanel({ launchId, items, token, onRefetch }: { launchId: num
                     className="w-full h-8 border border-border/50 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
                   <div className="flex gap-2">
                     <button onClick={() => handleSaveEdit(item.id)} className="text-[10px] tracking-widest uppercase px-3 h-7 bg-accent text-accent-foreground">Save</button>
-                    <button onClick={() => setEditId(null)} className="text-[10px] tracking-widest uppercase px-3 h-7 border border-border/40 text-foreground/40">Cancel</button>
+                    <button onClick={() => setEditId(null)} className="text-[10px] tracking-widest uppercase px-3 h-7 border border-border/40 text-[#2D2926]">Cancel</button>
                   </div>
                 </div>
               ) : (
                 <div className="flex-1 flex items-start justify-between gap-2">
                   <div>
                     <p className="text-xs text-foreground leading-snug">{item.name}</p>
-                    {item.description && <p className="text-[11px] text-foreground/40">{item.description}</p>}
+                    {item.description && <p className="text-[11px] text-[#2D2926]">{item.description}</p>}
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <label className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-foreground/35 hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
+                    <label className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
                       {uploadingId === item.id ? "…" : "Img"}
                       <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleImageUpload(item.id, e.target.files[0])} />
                     </label>
                     <button onClick={() => { setEditId(item.id); setEditName(item.name); setEditDesc(item.description ?? ""); }}
-                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-foreground/35 hover:text-foreground hover:border-foreground/50 transition-all">
+                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
                       Edit
                     </button>
                     <button onClick={() => handleDelete(item.id)}
@@ -830,7 +830,7 @@ function ArchiveTab({ token }: { token: string }) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-xl text-foreground">Archive — Launches</h2>
-          <p className="text-xs text-foreground/40 mt-1">Each launch is a bake day. Items inside show on the public archive page with ratings.</p>
+          <p className="text-xs text-[#2D2926] mt-1">Each launch is a bake day. Items inside show on the public archive page with ratings.</p>
         </div>
         <button onClick={() => setCreating(true)}
           className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
@@ -842,25 +842,25 @@ function ArchiveTab({ token }: { token: string }) {
         {creating && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             className="border border-border/50 p-6 mb-6 bg-muted/30">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">New Launch</p>
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">New Launch</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Title</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Title</label>
                 <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Bake Day #1 — March"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Bake Date</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Bake Date</label>
                 <input type="date" value={form.bakeDate} onChange={e => setForm(f => ({ ...f, bakeDate: e.target.value }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Slug (URL)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Slug (URL)</label>
                 <input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} placeholder={`auto: ${form.title ? slugify(form.title) : "bake-day-1"}`}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Notes</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Notes</label>
                 <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note shown on archive"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
@@ -871,7 +871,7 @@ function ArchiveTab({ token }: { token: string }) {
                 {saving ? "Saving…" : "Create"}
               </button>
               <button onClick={() => setCreating(false)}
-                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
                 Cancel
               </button>
             </div>
@@ -880,9 +880,9 @@ function ArchiveTab({ token }: { token: string }) {
       </AnimatePresence>
 
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : !launches?.length ? (
-        <p className="text-xs text-foreground/40">No launches yet. Create one to start building the archive.</p>
+        <p className="text-xs text-[#2D2926]">No launches yet. Create one to start building the archive.</p>
       ) : (
         <div className="divide-y divide-border/30">
           {launches.map((l) => (
@@ -890,18 +890,18 @@ function ArchiveTab({ token }: { token: string }) {
               <div className="flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="font-serif text-sm text-foreground">{l.title}</p>
-                  <p className="text-xs text-foreground/40 mt-0.5">
+                  <p className="text-xs text-[#2D2926] mt-0.5">
                     {new Date(l.bakeDate + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
                     &nbsp;·&nbsp;{l.items.length} {l.items.length === 1 ? "item" : "items"}
                     {l.notes && <>&nbsp;·&nbsp;<span className="italic">{l.notes}</span></>}
                   </p>
                 </div>
                 <button onClick={() => { setEditId(editId === l.id ? null : l.id); setEditForm({ title: l.title, bakeDate: l.bakeDate, slug: l.slug, notes: l.notes ?? "" }); }}
-                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${editId === l.id ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
+                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${editId === l.id ? "border-accent text-accent" : "border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50"}`}>
                   Edit
                 </button>
                 <button onClick={() => setOpenItems(s => ({ ...s, [l.id]: !s[l.id] }))}
-                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[l.id] ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
+                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[l.id] ? "border-accent text-accent" : "border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50"}`}>
                   Items {openItems[l.id] ? "▲" : "▼"}
                 </button>
                 <button onClick={() => handleDelete(l.id)}
@@ -918,7 +918,7 @@ function ArchiveTab({ token }: { token: string }) {
                     <div className="mt-3 p-4 border border-border/30 bg-muted/20 grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {(["title", "bakeDate", "slug", "notes"] as const).map(field => (
                         <div key={field}>
-                          <label className="text-[10px] tracking-[0.2em] uppercase text-foreground/40 block mb-1">{field === "bakeDate" ? "Bake Date" : field.charAt(0).toUpperCase() + field.slice(1)}</label>
+                          <label className="text-[10px] tracking-[0.2em] uppercase text-[#2D2926] block mb-1">{field === "bakeDate" ? "Bake Date" : field.charAt(0).toUpperCase() + field.slice(1)}</label>
                           <input type={field === "bakeDate" ? "date" : "text"} value={editForm[field]}
                             onChange={e => setEditForm(f => ({ ...f, [field]: e.target.value }))}
                             className="w-full h-8 border border-border/40 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
@@ -926,7 +926,7 @@ function ArchiveTab({ token }: { token: string }) {
                       ))}
                       <div className="sm:col-span-2 flex gap-2 justify-end">
                         <button onClick={() => setEditId(null)}
-                          className="text-[10px] tracking-widest uppercase px-4 h-8 border border-border/40 text-foreground/40 hover:text-foreground transition-all">
+                          className="text-[10px] tracking-widest uppercase px-4 h-8 border border-border/40 text-[#2D2926] hover:text-foreground transition-all">
                           Cancel
                         </button>
                         <button onClick={() => handleEditSave(l.id)} disabled={saving}
@@ -1025,7 +1025,7 @@ function RecipesTab({ token }: { token: string }) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-xl text-foreground">Recipes</h2>
-          <p className="text-xs text-foreground/40 mt-1">Manage recipes shown on the public Recipes page. Tags are comma-separated.</p>
+          <p className="text-xs text-[#2D2926] mt-1">Manage recipes shown on the public Recipes page. Tags are comma-separated.</p>
         </div>
         {!isEditing && (
           <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
@@ -1039,46 +1039,46 @@ function RecipesTab({ token }: { token: string }) {
         {isEditing && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             className="border border-border/50 p-6 mb-6 bg-muted/30">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">{editId ? "Edit Recipe" : "New Recipe"}</p>
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">{editId ? "Edit Recipe" : "New Recipe"}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div className="sm:col-span-2">
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Title *</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Title *</label>
                 <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Recipe title"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div className="sm:col-span-2">
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Subtitle</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Subtitle</label>
                 <input value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} placeholder="e.g. Inspired by Paragon Restaurant, Kozhikode"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Tags (comma-separated)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Tags (comma-separated)</label>
                 <input value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder="e.g. Kerala, Seafood, Curry"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">YouTube URL</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">YouTube URL</label>
                 <input value={form.youtubeUrl} onChange={e => setForm(f => ({ ...f, youtubeUrl: e.target.value }))} placeholder="https://youtu.be/..."
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Serves</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Serves</label>
                 <input value={form.serves} onChange={e => setForm(f => ({ ...f, serves: e.target.value }))} placeholder="e.g. 4"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Time</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Time</label>
                 <input value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} placeholder="e.g. 45 min"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Position (sort order)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Position (sort order)</label>
                 <input type="number" value={form.position} onChange={e => setForm(f => ({ ...f, position: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
             </div>
             <div className="mb-4">
-              <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Recipe Body *</label>
+              <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Recipe Body *</label>
               <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={10}
                 placeholder="INGREDIENTS&#10;&#10;...&#10;&#10;METHOD&#10;&#10;01. ..."
                 className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y font-mono" />
@@ -1089,7 +1089,7 @@ function RecipesTab({ token }: { token: string }) {
                 {saving ? "Saving…" : editId ? "Update" : "Create"}
               </button>
               <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
-                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
                 Cancel
               </button>
             </div>
@@ -1098,9 +1098,9 @@ function RecipesTab({ token }: { token: string }) {
       </AnimatePresence>
 
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : !recipes?.length ? (
-        <p className="text-xs text-foreground/40">No recipes yet. Create one above.</p>
+        <p className="text-xs text-[#2D2926]">No recipes yet. Create one above.</p>
       ) : (
         <div className="divide-y divide-border/30">
           {recipes.map((r) => (
@@ -1113,12 +1113,12 @@ function RecipesTab({ token }: { token: string }) {
                 />
               ) : (
                 <div className="w-12 h-12 rounded-sm flex-shrink-0 flex items-center justify-center" style={{ background: "rgba(15,36,25,0.06)" }}>
-                  <span className="text-[9px] text-foreground/20">IMG</span>
+                  <span className="text-[9px] text-[#2D2926]">IMG</span>
                 </div>
               )}
               <div className="flex-1 min-w-0">
                 <p className="font-serif text-sm text-foreground">{r.title}</p>
-                {r.subtitle && <p className="text-xs text-foreground/40">{r.subtitle}</p>}
+                {r.subtitle && <p className="text-xs text-[#2D2926]">{r.subtitle}</p>}
                 <div className="flex flex-wrap gap-2 mt-1">
                   {r.tags && r.tags.split(",").map(t => t.trim()).filter(Boolean).map(tag => (
                     <span key={tag} className="text-[9px] tracking-[0.15em] uppercase px-1.5 py-0.5" style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.4)" }}>{tag}</span>
@@ -1127,12 +1127,12 @@ function RecipesTab({ token }: { token: string }) {
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <label className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
+                <label className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
                   {uploadingId === r.id ? "…" : "Image"}
                   <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleImageUpload(r.id, e.target.files[0])} />
                 </label>
                 <button onClick={() => { setEditId(r.id); setCreating(false); loadIntoForm(r); }}
-                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
                   Edit
                 </button>
                 <button onClick={() => handleDelete(r.id)}
@@ -1219,7 +1219,7 @@ function ReviewsTab({ token }: { token: string }) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-xl text-foreground">Reviews</h2>
-          <p className="text-xs text-foreground/40 mt-1">Manage customer reviews shown on the homepage. Toggle visibility without deleting.</p>
+          <p className="text-xs text-[#2D2926] mt-1">Manage customer reviews shown on the homepage. Toggle visibility without deleting.</p>
         </div>
         {!isEditing && (
           <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
@@ -1233,31 +1233,31 @@ function ReviewsTab({ token }: { token: string }) {
         {isEditing && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             className="border border-border/50 p-6 mb-6 bg-muted/30">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">{editId ? "Edit Review" : "New Review"}</p>
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">{editId ? "Edit Review" : "New Review"}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Customer name *</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Customer name *</label>
                 <input value={form.authorName} onChange={e => setForm(f => ({ ...f, authorName: e.target.value }))} placeholder="e.g. Priya S."
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Location (optional)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Location (optional)</label>
                 <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} placeholder="e.g. HSR Layout, Bengaluru"
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Position (sort order)</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Position (sort order)</label>
                 <input type="number" value={form.position} onChange={e => setForm(f => ({ ...f, position: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div className="flex items-center gap-3 pt-5">
                 <input type="checkbox" id="visible-check" checked={form.visible} onChange={e => setForm(f => ({ ...f, visible: e.target.checked }))}
                   className="w-4 h-4 accent-accent" />
-                <label htmlFor="visible-check" className="text-[10px] tracking-widest uppercase text-foreground/50 cursor-pointer">Visible on site</label>
+                <label htmlFor="visible-check" className="text-[10px] tracking-widest uppercase text-[#2D2926] cursor-pointer">Visible on site</label>
               </div>
             </div>
             <div className="mb-4">
-              <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Review text *</label>
+              <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Review text *</label>
               <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={4}
                 placeholder="What the customer said…"
                 className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y" />
@@ -1268,7 +1268,7 @@ function ReviewsTab({ token }: { token: string }) {
                 {saving ? "Saving…" : editId ? "Update" : "Create"}
               </button>
               <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
-                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
                 Cancel
               </button>
             </div>
@@ -1277,29 +1277,29 @@ function ReviewsTab({ token }: { token: string }) {
       </AnimatePresence>
 
       {loading ? (
-        <p className="text-xs text-foreground/40">Loading…</p>
+        <p className="text-xs text-[#2D2926]">Loading…</p>
       ) : !testimonials?.length ? (
-        <p className="text-xs text-foreground/40">No reviews yet. Add one above.</p>
+        <p className="text-xs text-[#2D2926]">No reviews yet. Add one above.</p>
       ) : (
         <div className="divide-y divide-border/30">
           {testimonials.map((t) => (
             <div key={t.id} className="py-4 flex items-start gap-4">
-              <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center border border-border/30 text-[10px] text-foreground/30 font-medium">
+              <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center border border-border/30 text-[10px] text-[#2D2926] font-medium">
                 {t.position}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-serif text-sm text-foreground italic leading-snug mb-1">"{t.body}"</p>
-                <p className="text-[10px] tracking-[0.18em] uppercase text-foreground/40">
+                <p className="text-[10px] tracking-[0.18em] uppercase text-[#2D2926]">
                   {t.authorName}{t.location ? ` · ${t.location}` : ""}
                 </p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button onClick={() => handleToggleVisible(t)}
-                  className={`text-[9px] tracking-widest uppercase px-3 h-8 border transition-all ${t.visible ? "border-green-400/40 text-green-600/70 hover:border-green-400/70" : "border-border/30 text-foreground/30 hover:border-foreground/40"}`}>
+                  className={`text-[9px] tracking-widest uppercase px-3 h-8 border transition-all ${t.visible ? "border-green-400/40 text-green-600/70 hover:border-green-400/70" : "border-border/30 text-[#2D2926] hover:border-foreground/40"}`}>
                   {t.visible ? "Visible" : "Hidden"}
                 </button>
                 <button onClick={() => { setEditId(t.id); setCreating(false); loadIntoForm(t); }}
-                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
                   Edit
                 </button>
                 <button onClick={() => handleDelete(t.id)}
@@ -1368,11 +1368,11 @@ export default function Admin() {
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="flex items-center justify-between mb-10">
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-foreground/30 mb-1">Wandering Cocos</p>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-[#2D2926] mb-1">Wandering Cocos</p>
             <h1 className="font-serif text-2xl text-foreground">Admin</h1>
           </div>
           {authed && (
-            <button onClick={handleLogout} className="text-[10px] tracking-[0.22em] uppercase text-foreground/30 hover:text-foreground/60 transition-colors">
+            <button onClick={handleLogout} className="text-[10px] tracking-[0.22em] uppercase text-[#2D2926] hover:text-foreground/60 transition-colors">
               Sign out
             </button>
           )}
@@ -1381,7 +1381,7 @@ export default function Admin() {
         <AnimatePresence mode="wait">
           {!authed ? (
             <motion.div key="login" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-sm">
-              <p className="text-xs text-foreground/40 mb-6 leading-relaxed">Enter the admin password to continue.</p>
+              <p className="text-xs text-[#2D2926] mb-6 leading-relaxed">Enter the admin password to continue.</p>
               <div className="space-y-3">
                 <input type="password" value={input} onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && verifyToken(input)} placeholder="Admin password"
@@ -1399,7 +1399,7 @@ export default function Admin() {
               <div className="flex gap-0 border-b border-border/40 mb-8">
                 {TABS.map(t => (
                   <button key={t.id} onClick={() => setTab(t.id)}
-                    className={`px-5 py-3 text-[11px] tracking-[0.18em] uppercase font-medium transition-all border-b-2 -mb-px ${tab === t.id ? "border-accent text-foreground" : "border-transparent text-foreground/40 hover:text-foreground/70"}`}>
+                    className={`px-5 py-3 text-[11px] tracking-[0.18em] uppercase font-medium transition-all border-b-2 -mb-px ${tab === t.id ? "border-accent text-foreground" : "border-transparent text-[#2D2926] hover:text-foreground/70"}`}>
                     {t.label}
                   </button>
                 ))}

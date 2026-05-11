@@ -105,7 +105,7 @@ export default function JoinTheCircle() {
           <motion.span
             initial="hidden" animate="visible" custom={0} variants={fadeUp}
             className="text-[9px] tracking-[0.4em] font-medium uppercase block mb-6"
-            style={{ color: "rgba(255,255,255,0.45)" }}
+            style={{ color: "rgba(245,238,224,0.88)" }}
           >
             The Circle · Wandering Cocos
           </motion.span>
@@ -163,7 +163,7 @@ export default function JoinTheCircle() {
                 </div>
 
                 {/* Eyebrow tags */}
-                <p className="text-[9px] tracking-[0.18em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
+                <p className="text-[9px] tracking-[0.18em] uppercase mb-3" style={{ color: "rgba(245,238,224,0.80)" }}>
                   {ch.eyebrow}
                 </p>
 

@@ -36,7 +36,7 @@ export default function TheArchives() {
       <main className="flex-grow max-w-3xl mx-auto w-full px-6 md:px-10 pt-20 pb-24">
         <div className="mb-16">
           <p className="text-[9px] tracking-[0.36em] uppercase font-medium mb-5"
-            style={{ color: "rgba(15,36,25,0.35)" }}>
+            style={{ color: "#0F2419" }}>
             Wandering Cocos
           </p>
           <h1 className="font-serif font-medium leading-none mb-5"
@@ -44,7 +44,7 @@ export default function TheArchives() {
             The Archives
           </h1>
           <p className="font-serif italic leading-relaxed max-w-lg"
-            style={{ fontSize: "1.05rem", color: "rgba(15,36,25,0.5)" }}>
+            style={{ fontSize: "1.05rem", color: "#0F2419" }}>
             Every drop, preserved. Rate what you loved so we know what to bring back.
           </p>
         </div>
@@ -64,13 +64,13 @@ export default function TheArchives() {
         )}
 
         {error && (
-          <p className="font-serif italic" style={{ fontSize: "1rem", color: "rgba(15,36,25,0.4)" }}>
+          <p className="font-serif italic" style={{ fontSize: "1rem", color: "#0F2419" }}>
             Could not load the archives. Try again later.
           </p>
         )}
 
         {!loading && !error && launches.length === 0 && (
-          <p className="font-serif italic" style={{ fontSize: "1rem", color: "rgba(15,36,25,0.4)" }}>
+          <p className="font-serif italic" style={{ fontSize: "1rem", color: "#0F2419" }}>
             Nothing in the archives yet. Check back after the first bake day.
           </p>
         )}
@@ -102,14 +102,14 @@ export default function TheArchives() {
                       style={{ fontSize: "1.2rem", color: "#0f2419" }}>
                       {launch.title}
                     </h2>
-                    <p className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "rgba(15,36,25,0.4)" }}>
+                    <p className="text-[10px] tracking-[0.18em] uppercase" style={{ color: "#0F2419" }}>
                       {formattedDate}
                       {itemCount > 0 ? ` · ${itemCount} ${itemCount === 1 ? "item" : "items"}` : ""}
                       {launch.notes ? ` · ${launch.notes}` : ""}
                     </p>
                   </div>
                   <span className="text-xl flex-shrink-0 transition-colors"
-                    style={{ color: "rgba(15,36,25,0.2)" }}>
+                    style={{ color: "#0F2419" }}>
                     →
                   </span>
                 </button>

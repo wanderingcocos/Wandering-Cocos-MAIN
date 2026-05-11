@@ -40,7 +40,7 @@ const sections = [
   {
     number: "6",
     title: "Contact",
-    body: "For any concerns, reach us at hello@wanderingcocos.in or WhatsApp +91 98992 25273. We are a small team and we genuinely care about getting this right.",
+    body: "For any concerns, reach us at hello@wanderingcocos.in or WhatsApp. We are a small team and we genuinely care about getting this right.",
   },
 ];
 
@@ -52,13 +52,13 @@ export default function RefundPolicy() {
       <main className="flex-grow pt-36 pb-20 px-6 md:px-14 lg:px-20">
         <div className="max-w-2xl mx-auto">
 
-          <p className="text-[9px] tracking-[0.35em] font-medium uppercase text-foreground/30 mb-4">
+          <p className="text-[9px] tracking-[0.35em] font-medium uppercase text-[#2D2926] mb-4">
             Wandering Cocos
           </p>
           <h1 className="font-serif italic leading-tight mb-3" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#1a1a1a" }}>
             Refund Policy
           </h1>
-          <p className="text-xs text-foreground/35 mb-14">
+          <p className="text-xs text-[#2D2926] mb-14">
             Effective from April 2026. Operated by Wandering Cocos, Bengaluru.
           </p>
 
@@ -66,7 +66,7 @@ export default function RefundPolicy() {
             {sections.map((section) => (
               <div key={section.number} className="border-t border-border/25 pt-8">
                 <div className="flex gap-5 items-baseline mb-3">
-                  <span className="text-[9px] tracking-[0.2em] font-medium uppercase text-foreground/22 flex-shrink-0">
+                  <span className="text-[9px] tracking-[0.2em] font-medium uppercase text-[#2D2926] flex-shrink-0">
                     {section.number.padStart(2, "0")}
                   </span>
                   <h2 className="font-serif text-base font-medium text-foreground">
@@ -74,7 +74,7 @@ export default function RefundPolicy() {
                   </h2>
                 </div>
                 <div className="pl-8">
-                  <p className="text-sm text-foreground/55 leading-relaxed mb-4">
+                  <p className="text-sm text-[#2D2926] leading-relaxed mb-4">
                     {section.body}
                   </p>
                   {section.items && (
@@ -85,7 +85,7 @@ export default function RefundPolicy() {
                             className="flex-shrink-0 w-1 mt-2"
                             style={{ height: "1px", background: "#2d5a3d", marginTop: "10px" }}
                           />
-                          <p className="text-sm text-foreground/50 leading-relaxed">
+                          <p className="text-sm text-[#2D2926] leading-relaxed">
                             <span className="font-medium text-foreground/70">{item.label}. </span>
                             {item.text}
                           </p>
