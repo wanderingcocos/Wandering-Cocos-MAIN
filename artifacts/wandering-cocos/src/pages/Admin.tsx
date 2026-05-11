@@ -471,7 +471,7 @@ async function uploadImage(file: File, endpoint: string, token: string): Promise
       try {
         const base64 = (reader.result as string).split(",")[1];
         const res = await fetch(endpoint, {
-          method: "POST",
+          method: "PATCH",
           headers: { "Content-Type": "application/json", "x-admin-token": token },
           body: JSON.stringify({ base64, contentType: file.type }),
         });

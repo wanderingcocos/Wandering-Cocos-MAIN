@@ -8,6 +8,13 @@ const objectStorageService = new ObjectStorageService();
 
 router.use("/storage/objects", async (req: Request, res: Response, next: NextFunction) => {
   if (req.method !== "GET") { next(); return; }
+
+  // Only serve explicitly uploaded files (uploads/ prefix) — no arbitrary private object access.
+  if (!req.path.startsWith("/uploads/")) {
+    res.status(403).json({ error: "Forbidden" });
+    return;
+  }
+
   const objectPath = "/objects" + req.path;
   try {
     const objectFile = await objectStorageService.getObjectEntityFile(objectPath);

@@ -130,9 +130,9 @@ router.delete("/admin/launch-items/:itemId", adminAuth, async (req, res) => {
 
 // ── Launch Item Image Upload ───────────────────────────────────────────────────
 
-router.post("/admin/launch-items/:itemId/image", adminAuth, async (req, res) => {
+router.patch("/admin/launch-items/:id/image", adminAuth, async (req, res) => {
   try {
-    const itemId = pid(req.params.itemId);
+    const itemId = pid(req.params.id);
     if (!itemId) { res.status(400).json({ error: "Invalid item id" }); return; }
 
     const { base64, contentType } = req.body as { base64: string; contentType: string };
@@ -223,7 +223,7 @@ router.delete("/admin/recipes/:id", adminAuth, async (req, res) => {
   }
 });
 
-router.post("/admin/recipes/:id/image", adminAuth, async (req, res) => {
+router.patch("/admin/recipes/:id/image", adminAuth, async (req, res) => {
   try {
     const id = pid(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
