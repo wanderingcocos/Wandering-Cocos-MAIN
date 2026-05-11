@@ -291,8 +291,8 @@ export default function LandingPage() {
               }}
               className="flex flex-col gap-2 md:gap-6"
             >
-              <span className="font-serif text-5xl md:text-7xl lg:text-[6rem] leading-none text-white font-bold drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)]">
-                Wandering Cocos: <br className="hidden md:block"/> Artisanal Sourdough &amp; Bakes.
+              <span className="font-serif text-3xl md:text-4xl lg:text-5xl leading-none text-white font-bold drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)]">
+                Wandering Cocos: Artisanal Sourdough &amp; Bakes.
               </span>
             </motion.h1>
 

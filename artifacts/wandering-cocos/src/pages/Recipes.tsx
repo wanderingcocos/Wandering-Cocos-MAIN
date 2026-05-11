@@ -32,8 +32,8 @@ export default function Recipes() {
 
   useEffect(() => {
     fetch(`${BASE}/api/recipes`)
-      .then(r => r.json())
-      .then(data => { setRecipes(data); setLoading(false); })
+      .then(r => r.ok ? r.json() : [])
+      .then(data => { setRecipes(Array.isArray(data) ? data : []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 

@@ -85,10 +85,10 @@ const navLinks: NavLink[] = [
       { name: "Way of the Coco", section: "way-of-the-coco" },
     ],
   },
+  { name: "MENU", href: "/reserve" },
+  { name: "GIFTING", href: "/gifting" },
   { name: "ARCHIVES", href: "/archive" },
   { name: "RECIPES", href: "/recipes" },
-  { name: "PRE-ORDER", href: "/reserve" },
-  { name: "GIFTING", href: "/gifting" },
   { name: "JOIN THE CIRCLE", href: "/join" },
 ];
 

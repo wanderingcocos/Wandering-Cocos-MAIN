@@ -138,7 +138,11 @@ export default function Reserve() {
             <motion.span initial="hidden" animate="visible" custom={0} variants={fadeUp}
               className="text-[9px] tracking-[0.38em] font-medium uppercase block mb-4"
               style={{ color: "rgba(255,255,255,0.3)" }}>
-              {bakeWindow ? bakeWindow.label : "The Weekend Edit"} · <BakeDateDisplay date={BAKE_DATE} dark />
+              {siteMode === "popup"
+                ? "Pop-Up This Week · Online Orders Paused"
+                : siteMode === "maintenance"
+                ? "Coming Back Soon · Baking In Progress"
+                : <>{bakeWindow ? bakeWindow.label : "The Weekend Edit"} · <BakeDateDisplay date={BAKE_DATE} dark /></>}
             </motion.span>
             <motion.h1 initial="hidden" animate="visible" custom={1} variants={fadeUp}
               className="font-serif italic leading-tight"
