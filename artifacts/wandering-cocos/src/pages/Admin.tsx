@@ -35,6 +35,20 @@ function Badge({ status }: { status: string }) {
   );
 }
 
+async function apiCall(url: string, options: RequestInit): Promise<{ ok: true; data: unknown } | { ok: false; message: string }> {
+  try {
+    const r = await fetch(url, options);
+    if (!r.ok) {
+      let msg = `Server error ${r.status}`;
+      try { const j = await r.json(); if (j?.error) msg = j.error; } catch { /* ignore */ }
+      return { ok: false, message: msg };
+    }
+    return { ok: true, data: await r.json() };
+  } catch {
+    return { ok: false, message: "Could not reach the server. Check your connection." };
+  }
+}
+
 function useAdminFetch<T>(url: string, token: string) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -54,6 +68,15 @@ function useAdminFetch<T>(url: string, token: string) {
   return { data, loading, error, refetch };
 }
 
+function ErrorBanner({ message, onDismiss }: { message: string; onDismiss: () => void }) {
+  return (
+    <div className="flex items-center justify-between gap-4 mb-5 px-4 py-3 border border-red-300/40 bg-red-50/40 text-red-600 text-xs rounded-sm">
+      <span>{message}</span>
+      <button onClick={onDismiss} className="text-red-400 hover:text-red-600 flex-shrink-0 text-base leading-none">×</button>
+    </div>
+  );
+}
+
 // ── Items sub-panel ────────────────────────────────────────────────────────────
 
 function ItemsPanel({ windowId, items, token, onRefetch }: {
@@ -65,37 +88,43 @@ function ItemsPanel({ windowId, items, token, onRefetch }: {
   const [editItemId, setEditItemId] = useState<number | null>(null);
   const [editName, setEditName] = useState("");
   const [editDesc, setEditDesc] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   async function handleAdd() {
     if (!newName.trim()) return;
     setAdding(true);
-    await fetch(`${API}/admin/bake-windows/${windowId}/items`, {
+    const res = await apiCall(`${API}/admin/bake-windows/${windowId}/items`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ name: newName.trim(), description: newDesc.trim() || null, position: items.length }),
     });
-    setNewName(""); setNewDesc(""); setAdding(false);
+    setAdding(false);
+    if (!res.ok) { setError(res.message); return; }
+    setNewName(""); setNewDesc("");
     onRefetch();
   }
 
   async function handleSaveEdit(id: number) {
-    await fetch(`${API}/admin/bake-window-items/${id}`, {
+    const res = await apiCall(`${API}/admin/bake-window-items/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ name: editName.trim(), description: editDesc.trim() || null }),
     });
+    if (!res.ok) { setError(res.message); return; }
     setEditItemId(null);
     onRefetch();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Remove this item?")) return;
-    await fetch(`${API}/admin/bake-window-items/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    const res = await apiCall(`${API}/admin/bake-window-items/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
     onRefetch();
   }
 
   return (
     <div className="mt-4 ml-0 border-t border-border/25 pt-4">
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-3">Box Items ({items.length})</p>
 
       {items.length > 0 && (
@@ -163,36 +192,42 @@ function BakeWindowsTab({ token }: { token: string }) {
   const [editId, setEditId] = useState<number | null>(null);
   const [editStatus, setEditStatus] = useState("");
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
+  const [error, setError] = useState<string | null>(null);
 
   async function handleCreate() {
     setSaving(true);
-    await fetch(`${API}/admin/bake-windows`, {
+    const res = await apiCall(`${API}/admin/bake-windows`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify(form),
     });
-    setSaving(false); setCreating(false);
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false);
     setForm({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 15, notes: "" });
     refetch();
   }
 
   async function handleStatusUpdate(id: number) {
-    await fetch(`${API}/admin/bake-windows/${id}`, {
+    const res = await apiCall(`${API}/admin/bake-windows/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ status: editStatus }),
     });
+    if (!res.ok) { setError(res.message); return; }
     setEditId(null); refetch();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this bake window and all its items?")) return;
-    await fetch(`${API}/admin/bake-windows/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    const res = await apiCall(`${API}/admin/bake-windows/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
     refetch();
   }
 
   return (
     <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-serif text-xl text-foreground">Bake Windows</h2>
         <button onClick={() => setCreating(true)}
@@ -341,13 +376,15 @@ function BakeWindowsTab({ token }: { token: string }) {
 function OrdersTab({ token }: { token: string }) {
   const { data: orders, loading, refetch } = useAdminFetch<Order[]>(`${API}/admin/orders`, token);
   const [filter, setFilter] = useState("all");
+  const [error, setError] = useState<string | null>(null);
 
   async function handleStatusChange(id: number, status: string) {
-    await fetch(`${API}/admin/orders/${id}`, {
+    const res = await apiCall(`${API}/admin/orders/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ status }),
     });
+    if (!res.ok) { setError(res.message); return; }
     refetch();
   }
 
@@ -355,6 +392,7 @@ function OrdersTab({ token }: { token: string }) {
 
   return (
     <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h2 className="font-serif text-xl text-foreground">Orders</h2>
         <div className="flex gap-2">
@@ -416,6 +454,7 @@ function SettingsTab({ token }: { token: string }) {
   const { data: settings, loading, refetch } = useAdminFetch<Setting[]>(`${API}/admin/settings`, token);
   const [values, setValues] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (settings) {
@@ -427,17 +466,20 @@ function SettingsTab({ token }: { token: string }) {
 
   async function handleSave(key: string) {
     setSaving(key);
-    await fetch(`${API}/admin/settings`, {
+    const res = await apiCall(`${API}/admin/settings`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ key, value: values[key] ?? "" }),
     });
-    setSaving(null); refetch();
+    setSaving(null);
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
   }
 
   return (
     <div>
       <h2 className="font-serif text-xl text-foreground mb-2">Site Settings</h2>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <p className="text-xs text-foreground/40 mb-6 leading-relaxed">The info strip message auto-generates from the live bake window. Override it here if needed.</p>
       {loading ? (
         <p className="text-xs text-foreground/40">Loading…</p>
@@ -497,31 +539,36 @@ function LaunchItemsPanel({ launchId, items, token, onRefetch }: { launchId: num
   const [editName, setEditName] = useState("");
   const [editDesc, setEditDesc] = useState("");
   const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleAdd() {
     if (!newName.trim()) return;
     setAdding(true);
-    await fetch(`${API}/admin/launches/${launchId}/items`, {
+    const res = await apiCall(`${API}/admin/launches/${launchId}/items`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ name: newName.trim(), description: newDesc.trim() || null, position: items.length }),
     });
-    setNewName(""); setNewDesc(""); setAdding(false);
+    setAdding(false);
+    if (!res.ok) { setError(res.message); return; }
+    setNewName(""); setNewDesc("");
     onRefetch();
   }
 
   async function handleSaveEdit(id: number) {
-    await fetch(`${API}/admin/launch-items/${id}`, {
+    const res = await apiCall(`${API}/admin/launch-items/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ name: editName.trim(), description: editDesc.trim() || null }),
     });
+    if (!res.ok) { setError(res.message); return; }
     setEditId(null); onRefetch();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Remove this item?")) return;
-    await fetch(`${API}/admin/launch-items/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    const res = await apiCall(`${API}/admin/launch-items/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
     onRefetch();
   }
 
@@ -540,6 +587,7 @@ function LaunchItemsPanel({ launchId, items, token, onRefetch }: { launchId: num
 
   return (
     <div className="mt-4 border-t border-border/25 pt-4">
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-3">Items ({items.length})</p>
       {items.length > 0 && (
         <div className="space-y-2 mb-4">
@@ -616,41 +664,47 @@ function ArchiveTab({ token }: { token: string }) {
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
   const [editId, setEditId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ title: "", bakeDate: "", slug: "", notes: "" });
+  const [error, setError] = useState<string | null>(null);
 
   function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
   async function handleEditSave(id: number) {
     setSaving(true);
-    await fetch(`${API}/admin/launches/${id}`, {
+    const res = await apiCall(`${API}/admin/launches/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify(editForm),
     });
     setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
     setEditId(null);
     refetch();
   }
 
   async function handleCreate() {
     setSaving(true);
-    await fetch(`${API}/admin/launches`, {
+    const res = await apiCall(`${API}/admin/launches`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ ...form, slug: form.slug || slugify(form.title) }),
     });
-    setSaving(false); setCreating(false);
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false);
     setForm({ title: "", bakeDate: "", slug: "", notes: "" });
     refetch();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this launch and all its items?")) return;
-    await fetch(`${API}/admin/launches/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    const res = await apiCall(`${API}/admin/launches/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
     refetch();
   }
 
   return (
     <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-xl text-foreground">Archive — Launches</h2>
@@ -795,6 +849,7 @@ function RecipesTab({ token }: { token: string }) {
   const [form, setForm] = useState({ title: "", subtitle: "", tags: "", body: "", serves: "", time: "", youtubeUrl: "", position: 0 });
   const [saving, setSaving] = useState(false);
   const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   function resetForm() { setForm({ title: "", subtitle: "", tags: "", body: "", serves: "", time: "", youtubeUrl: "", position: 0 }); }
 
@@ -804,28 +859,33 @@ function RecipesTab({ token }: { token: string }) {
 
   async function handleCreate() {
     setSaving(true);
-    await fetch(`${API}/admin/recipes`, {
+    const res = await apiCall(`${API}/admin/recipes`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ ...form, subtitle: form.subtitle || null, tags: form.tags || null, serves: form.serves || null, time: form.time || null, youtubeUrl: form.youtubeUrl || null }),
     });
-    setSaving(false); setCreating(false); resetForm(); refetch();
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false); resetForm(); refetch();
   }
 
   async function handleUpdate() {
     if (!editId) return;
     setSaving(true);
-    await fetch(`${API}/admin/recipes/${editId}`, {
+    const res = await apiCall(`${API}/admin/recipes/${editId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-token": token },
       body: JSON.stringify({ ...form, subtitle: form.subtitle || null, tags: form.tags || null, serves: form.serves || null, time: form.time || null, youtubeUrl: form.youtubeUrl || null }),
     });
-    setSaving(false); setEditId(null); resetForm(); refetch();
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setEditId(null); resetForm(); refetch();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this recipe?")) return;
-    await fetch(`${API}/admin/recipes/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    const res = await apiCall(`${API}/admin/recipes/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
     refetch();
   }
 
@@ -839,6 +899,7 @@ function RecipesTab({ token }: { token: string }) {
 
   return (
     <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-xl text-foreground">Recipes</h2>
