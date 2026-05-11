@@ -9,8 +9,40 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 type Testimonial = { id: number; authorName: string; location: string | null; body: string; position: number };
 
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <div
+      className="flex-shrink-0 flex flex-col gap-5 p-8"
+      style={{
+        width: "clamp(280px, 32vw, 400px)",
+        border: "1px solid rgba(15,36,25,0.1)",
+        background: "rgba(15,36,25,0.02)",
+      }}
+    >
+      <p
+        className="font-serif italic leading-relaxed flex-1"
+        style={{ fontSize: "clamp(1rem, 1.3vw, 1.1rem)", color: "#0f2419" }}
+      >
+        "{t.body}"
+      </p>
+      <div style={{ borderTop: "1px solid rgba(15,36,25,0.08)", paddingTop: "1rem" }}>
+        <p
+          className="text-[10px] tracking-[0.22em] uppercase font-medium"
+          style={{ color: "rgba(15,36,25,0.5)" }}
+        >
+          {t.authorName}
+          {t.location && (
+            <span style={{ color: "rgba(15,36,25,0.3)" }}> · {t.location}</span>
+          )}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     fetch(`${BASE}/api/testimonials`)
@@ -21,42 +53,48 @@ function TestimonialsSection() {
 
   if (testimonials.length === 0) return null;
 
-  return (
-    <section className="border-t border-border/30 bg-background px-6 md:px-14 lg:px-20 py-24">
-      <div className="max-w-7xl mx-auto">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="block text-[10px] tracking-[0.35em] uppercase font-medium mb-14 text-center"
-          style={{ color: "rgba(15,36,25,0.35)" }}
-        >
-          What people are saying
-        </motion.span>
+  const needsQuad = testimonials.length < 4;
+  const items = needsQuad
+    ? [...testimonials, ...testimonials, ...testimonials, ...testimonials]
+    : [...testimonials, ...testimonials];
+  const duration = testimonials.length * (needsQuad ? 16 : 8);
 
-        <div className={`grid gap-8 ${testimonials.length === 1 ? "max-w-xl mx-auto" : testimonials.length === 2 ? "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-5 p-8"
-              style={{ border: "1px solid rgba(15,36,25,0.1)", background: "rgba(15,36,25,0.02)" }}
-            >
-              <p className="font-serif italic leading-relaxed flex-1"
-                style={{ fontSize: "clamp(1rem, 1.3vw, 1.1rem)", color: "#0f2419" }}>
-                "{t.body}"
-              </p>
-              <div style={{ borderTop: "1px solid rgba(15,36,25,0.08)", paddingTop: "1rem" }}>
-                <p className="text-[10px] tracking-[0.22em] uppercase font-medium"
-                  style={{ color: "rgba(15,36,25,0.5)" }}>
-                  {t.authorName}
-                  {t.location && <span style={{ color: "rgba(15,36,25,0.3)" }}> · {t.location}</span>}
-                </p>
-              </div>
-            </motion.div>
+  return (
+    <section className="border-t border-border/30 bg-background py-24 overflow-hidden">
+      <motion.span
+        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="block text-[10px] tracking-[0.35em] uppercase font-medium mb-14 text-center px-6"
+        style={{ color: "rgba(15,36,25,0.35)" }}
+      >
+        What people are saying
+      </motion.span>
+
+      <div
+        className="relative w-full overflow-hidden"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <div
+          className="flex gap-6"
+          style={{
+            animation: `marquee-scroll ${duration}s linear infinite`,
+            animationPlayState: paused ? "paused" : "running",
+            width: "max-content",
+          }}
+        >
+          {items.map((t, i) => (
+            <TestimonialCard key={`${t.id}-${i}`} t={t} />
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }
