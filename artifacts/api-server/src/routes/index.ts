@@ -6,6 +6,7 @@ import adminRouter from "./admin";
 import adminLaunchesRouter from "./admin-launches";
 import recipesRouter from "./recipes";
 import storageRouter from "./storage";
+import testimonialsRouter from "./testimonials";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(adminRouter);
 router.use(adminLaunchesRouter);
 router.use(recipesRouter);
 router.use(storageRouter);
+router.use(testimonialsRouter);
 
 export default router;

@@ -1,4 +1,4 @@
-import { pgTable, serial, text, date, integer, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, date, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -41,6 +41,18 @@ export const siteSettingsTable = pgTable("site_settings", {
   value: text("value").notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const testimonialsTable = pgTable("testimonials", {
+  id: serial("id").primaryKey(),
+  authorName: text("author_name").notNull(),
+  location: text("location"),
+  body: text("body").notNull(),
+  visible: boolean("visible").notNull().default(true),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Testimonial = typeof testimonialsTable.$inferSelect;
 
 export const insertBakeWindowSchema = createInsertSchema(bakeWindowsTable).omit({ id: true, createdAt: true });
 export const insertBakeWindowItemSchema = createInsertSchema(bakeWindowItemsTable).omit({ id: true });

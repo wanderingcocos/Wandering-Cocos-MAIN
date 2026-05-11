@@ -1,9 +1,65 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+type Testimonial = { id: number; authorName: string; location: string | null; body: string; position: number };
+
+function TestimonialsSection() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    fetch(`${BASE}/api/testimonials`)
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setTestimonials(Array.isArray(d) ? d : []))
+      .catch(() => {});
+  }, []);
+
+  if (testimonials.length === 0) return null;
+
+  return (
+    <section className="border-t border-border/30 bg-background px-6 md:px-14 lg:px-20 py-24">
+      <div className="max-w-7xl mx-auto">
+        <motion.span
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="block text-[10px] tracking-[0.35em] uppercase font-medium mb-14 text-center"
+          style={{ color: "rgba(15,36,25,0.35)" }}
+        >
+          What people are saying
+        </motion.span>
+
+        <div className={`grid gap-8 ${testimonials.length === 1 ? "max-w-xl mx-auto" : testimonials.length === 2 ? "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.id}
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-5 p-8"
+              style={{ border: "1px solid rgba(15,36,25,0.1)", background: "rgba(15,36,25,0.02)" }}
+            >
+              <p className="font-serif italic leading-relaxed flex-1"
+                style={{ fontSize: "clamp(1rem, 1.3vw, 1.1rem)", color: "#0f2419" }}>
+                "{t.body}"
+              </p>
+              <div style={{ borderTop: "1px solid rgba(15,36,25,0.08)", paddingTop: "1rem" }}>
+                <p className="text-[10px] tracking-[0.22em] uppercase font-medium"
+                  style={{ color: "rgba(15,36,25,0.5)" }}>
+                  {t.authorName}
+                  {t.location && <span style={{ color: "rgba(15,36,25,0.3)" }}> · {t.location}</span>}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 const wanderSteps = [
   {
@@ -346,6 +402,9 @@ export default function LandingPage() {
 
         {/* HOW WE WANDER SECTION — Phone Scroll */}
         <WayOfTheCocoSection fadeInUp={fadeInUp} />
+
+        {/* TESTIMONIALS */}
+        <TestimonialsSection />
 
       </main>
 

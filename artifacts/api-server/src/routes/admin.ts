@@ -1,5 +1,5 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
-import { db, bakeWindowsTable, bakeWindowItemsTable, ordersTable, siteSettingsTable, launchesTable, launchItemsTable } from "@workspace/db";
+import { db, bakeWindowsTable, bakeWindowItemsTable, ordersTable, siteSettingsTable, launchesTable, launchItemsTable, testimonialsTable } from "@workspace/db";
 import { eq, desc, asc } from "drizzle-orm";
 
 function pid(param: string | string[]): number { return parseInt(Array.isArray(param) ? param[0] : param); }
@@ -258,6 +258,71 @@ router.post("/admin/bake-windows/:id/archive", adminAuth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to archive bake window" });
+  }
+});
+
+// ── Testimonials ───────────────────────────────────────────────────────────────
+
+router.get("/admin/testimonials", adminAuth, async (_req, res) => {
+  try {
+    const rows = await db.select().from(testimonialsTable).orderBy(asc(testimonialsTable.position), asc(testimonialsTable.createdAt));
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch testimonials" });
+  }
+});
+
+router.post("/admin/testimonials", adminAuth, async (req, res) => {
+  try {
+    const { authorName, location, body, visible, position } = req.body as {
+      authorName: string; location?: string; body: string; visible?: boolean; position?: number;
+    };
+    if (!authorName || !body) { res.status(400).json({ error: "authorName and body are required" }); return; }
+    const [row] = await db.insert(testimonialsTable)
+      .values({ authorName, location: location ?? null, body, visible: visible ?? true, position: position ?? 0 })
+      .returning();
+    res.json(row);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create testimonial" });
+  }
+});
+
+router.patch("/admin/testimonials/:id", adminAuth, async (req, res) => {
+  try {
+    const id = pid(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+    const { authorName, location, body, visible, position } = req.body as Partial<{
+      authorName: string; location: string | null; body: string; visible: boolean; position: number;
+    }>;
+    const [row] = await db.update(testimonialsTable)
+      .set({
+        ...(authorName !== undefined && { authorName }),
+        ...(location !== undefined && { location }),
+        ...(body !== undefined && { body }),
+        ...(visible !== undefined && { visible }),
+        ...(position !== undefined && { position }),
+      })
+      .where(eq(testimonialsTable.id, id))
+      .returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update testimonial" });
+  }
+});
+
+router.delete("/admin/testimonials/:id", adminAuth, async (req, res) => {
+  try {
+    const id = pid(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+    await db.delete(testimonialsTable).where(eq(testimonialsTable.id, id));
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete testimonial" });
   }
 });
 

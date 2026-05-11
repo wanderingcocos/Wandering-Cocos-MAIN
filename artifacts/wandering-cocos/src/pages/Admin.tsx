@@ -1148,6 +1148,173 @@ function RecipesTab({ token }: { token: string }) {
   );
 }
 
+// ── Reviews Tab ────────────────────────────────────────────────────────────────
+
+type AdminTestimonial = {
+  id: number; authorName: string; location: string | null;
+  body: string; visible: boolean; position: number; createdAt: string;
+};
+
+function ReviewsTab({ token }: { token: string }) {
+  const { data: testimonials, loading, refetch } = useAdminFetch<AdminTestimonial[]>(`${API}/admin/testimonials`, token);
+  const [creating, setCreating] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [form, setForm] = useState({ authorName: "", location: "", body: "", visible: true, position: 0 });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function resetForm() { setForm({ authorName: "", location: "", body: "", visible: true, position: 0 }); }
+
+  function loadIntoForm(t: AdminTestimonial) {
+    setForm({ authorName: t.authorName, location: t.location ?? "", body: t.body, visible: t.visible, position: t.position });
+  }
+
+  async function handleCreate() {
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/testimonials`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ ...form, location: form.location || null }),
+    });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false); resetForm(); refetch();
+  }
+
+  async function handleUpdate() {
+    if (!editId) return;
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/testimonials/${editId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ ...form, location: form.location || null }),
+    });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setEditId(null); resetForm(); refetch();
+  }
+
+  async function handleToggleVisible(t: AdminTestimonial) {
+    const res = await apiCall(`${API}/admin/testimonials/${t.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ visible: !t.visible }),
+    });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this review?")) return;
+    const res = await apiCall(`${API}/admin/testimonials/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  const isEditing = creating || editId !== null;
+
+  return (
+    <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Reviews</h2>
+          <p className="text-xs text-foreground/40 mt-1">Manage customer reviews shown on the homepage. Toggle visibility without deleting.</p>
+        </div>
+        {!isEditing && (
+          <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
+            className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
+            + New Review
+          </button>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="border border-border/50 p-6 mb-6 bg-muted/30">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">{editId ? "Edit Review" : "New Review"}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Customer name *</label>
+                <input value={form.authorName} onChange={e => setForm(f => ({ ...f, authorName: e.target.value }))} placeholder="e.g. Priya S."
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Location (optional)</label>
+                <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} placeholder="e.g. HSR Layout, Bengaluru"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Position (sort order)</label>
+                <input type="number" value={form.position} onChange={e => setForm(f => ({ ...f, position: Number(e.target.value) }))}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="flex items-center gap-3 pt-5">
+                <input type="checkbox" id="visible-check" checked={form.visible} onChange={e => setForm(f => ({ ...f, visible: e.target.checked }))}
+                  className="w-4 h-4 accent-accent" />
+                <label htmlFor="visible-check" className="text-[10px] tracking-widest uppercase text-foreground/50 cursor-pointer">Visible on site</label>
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Review text *</label>
+              <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={4}
+                placeholder="What the customer said…"
+                className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y" />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={editId ? handleUpdate : handleCreate} disabled={saving || !form.authorName || !form.body}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+                {saving ? "Saving…" : editId ? "Update" : "Create"}
+              </button>
+              <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {loading ? (
+        <p className="text-xs text-foreground/40">Loading…</p>
+      ) : !testimonials?.length ? (
+        <p className="text-xs text-foreground/40">No reviews yet. Add one above.</p>
+      ) : (
+        <div className="divide-y divide-border/30">
+          {testimonials.map((t) => (
+            <div key={t.id} className="py-4 flex items-start gap-4">
+              <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center border border-border/30 text-[10px] text-foreground/30 font-medium">
+                {t.position}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-serif text-sm text-foreground italic leading-snug mb-1">"{t.body}"</p>
+                <p className="text-[10px] tracking-[0.18em] uppercase text-foreground/40">
+                  {t.authorName}{t.location ? ` · ${t.location}` : ""}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button onClick={() => handleToggleVisible(t)}
+                  className={`text-[9px] tracking-widest uppercase px-3 h-8 border transition-all ${t.visible ? "border-green-400/40 text-green-600/70 hover:border-green-400/70" : "border-border/30 text-foreground/30 hover:border-foreground/40"}`}>
+                  {t.visible ? "Visible" : "Hidden"}
+                </button>
+                <button onClick={() => { setEditId(t.id); setCreating(false); loadIntoForm(t); }}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(t.id)}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
+                  Del
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Admin Page ────────────────────────────────────────────────────────────
 
 export default function Admin() {
@@ -1155,7 +1322,7 @@ export default function Admin() {
   const [input, setInput] = useState("");
   const [authError, setAuthError] = useState("");
   const [authed, setAuthed] = useState(false);
-  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes" | "site_mode">("windows");
+  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes" | "site_mode" | "reviews">("windows");
   const [checking, setChecking] = useState(false);
 
   useEffect(() => { if (token) verifyToken(token); }, []);
@@ -1192,6 +1359,7 @@ export default function Admin() {
     { id: "site_mode", label: "Site Status" },
     { id: "archive", label: "Archive" },
     { id: "recipes", label: "Recipes" },
+    { id: "reviews", label: "Reviews" },
     { id: "settings", label: "Settings" },
   ] as const;
 
@@ -1242,6 +1410,7 @@ export default function Admin() {
               {tab === "site_mode" && <SiteModeTab token={token} />}
               {tab === "archive" && <ArchiveTab token={token} />}
               {tab === "recipes" && <RecipesTab token={token} />}
+              {tab === "reviews" && <ReviewsTab token={token} />}
               {tab === "settings" && <SettingsTab token={token} />}
             </motion.div>
           )}
