@@ -107,6 +107,14 @@ export function Footer() {
             © {new Date().getFullYear()} Wandering Cocos · Bengaluru
           </p>
 
+          {/* Compliance */}
+          <p
+            className="text-[9px] tracking-[0.12em] uppercase"
+            style={{ color: "rgba(245,238,224,0.18)" }}
+          >
+            FSSAI Lic. 21226010002381 · Udyam UDYAM-KR-03-0682199
+          </p>
+
         </div>
       </div>
     </footer>
