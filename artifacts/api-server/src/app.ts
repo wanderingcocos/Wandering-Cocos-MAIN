@@ -1,4 +1,4 @@
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import router from "./routes";
 import path from "path";
@@ -18,12 +18,26 @@ if (process.env.NODE_ENV === "production") {
     "artifacts/wandering-cocos/dist/public",
   );
   if (existsSync(frontendDist)) {
-    app.use(express.static(frontendDist));
-    app.use((req, res, next) => {
+    app.use(
+      express.static(frontendDist, {
+        setHeaders(res, filePath) {
+          if (filePath.endsWith(".html")) {
+            res.setHeader("X-Robots-Tag", "index, follow");
+            res.setHeader("Cache-Control", "no-cache");
+          } else {
+            res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+          }
+        },
+      }),
+    );
+
+    app.use((req: Request, res: Response, next: NextFunction) => {
       if (req.path.startsWith("/api")) {
         next();
         return;
       }
+      res.setHeader("X-Robots-Tag", "index, follow");
+      res.setHeader("Cache-Control", "no-cache");
       res.sendFile(path.join(frontendDist, "index.html"));
     });
   }
