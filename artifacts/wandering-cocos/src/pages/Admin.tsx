@@ -204,7 +204,7 @@ function BakeWindowsTab({ token }: { token: string }) {
     setSaving(false);
     if (!res.ok) { setError(res.message); return; }
     setCreating(false);
-    setForm({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 15, notes: "" });
+    setForm({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 10, notes: "" });
     refetch();
   }
 
@@ -1118,7 +1118,7 @@ export default function Admin() {
   const [input, setInput] = useState("");
   const [authError, setAuthError] = useState("");
   const [authed, setAuthed] = useState(false);
-  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes">("windows");
+  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes" | "site_mode">("windows");
   const [checking, setChecking] = useState(false);
 
   useEffect(() => { if (token) verifyToken(token); }, []);
