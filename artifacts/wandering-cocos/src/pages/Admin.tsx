@@ -462,6 +462,461 @@ function SettingsTab({ token }: { token: string }) {
   );
 }
 
+// ── Image upload helper ────────────────────────────────────────────────────────
+
+async function uploadImage(file: File, endpoint: string, token: string): Promise<string | null> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64 = (reader.result as string).split(",")[1];
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-admin-token": token },
+          body: JSON.stringify({ base64, contentType: file.type }),
+        });
+        if (!res.ok) { resolve(null); return; }
+        const data = await res.json();
+        resolve(data.objectPath ?? null);
+      } catch { resolve(null); }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Archive Tab ────────────────────────────────────────────────────────────────
+
+type LaunchItem = { id: number; launchId: number; name: string; description: string | null; imageFilename: string | null; position: number };
+type Launch = { id: number; slug: string; title: string; bakeDate: string; notes: string | null; items: LaunchItem[] };
+
+function LaunchItemsPanel({ launchId, items, token, onRefetch }: { launchId: number; items: LaunchItem[]; token: string; onRefetch: () => void }) {
+  const [newName, setNewName] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
+
+  async function handleAdd() {
+    if (!newName.trim()) return;
+    setAdding(true);
+    await fetch(`${API}/admin/launches/${launchId}/items`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ name: newName.trim(), description: newDesc.trim() || null, position: items.length }),
+    });
+    setNewName(""); setNewDesc(""); setAdding(false);
+    onRefetch();
+  }
+
+  async function handleSaveEdit(id: number) {
+    await fetch(`${API}/admin/launch-items/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ name: editName.trim(), description: editDesc.trim() || null }),
+    });
+    setEditId(null); onRefetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Remove this item?")) return;
+    await fetch(`${API}/admin/launch-items/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    onRefetch();
+  }
+
+  async function handleImageUpload(id: number, file: File) {
+    setUploadingId(id);
+    await uploadImage(file, `${API}/admin/launch-items/${id}/image`, token);
+    setUploadingId(null);
+    onRefetch();
+  }
+
+  function getImageSrc(imageFilename: string | null): string | null {
+    if (!imageFilename) return null;
+    if (imageFilename.startsWith("/objects/")) return `${API.replace("/api", "")}/api/storage${imageFilename}`;
+    return `/images/${imageFilename}`;
+  }
+
+  return (
+    <div className="mt-4 border-t border-border/25 pt-4">
+      <p className="text-[9px] tracking-[0.28em] uppercase font-medium text-foreground/30 mb-3">Items ({items.length})</p>
+      {items.length > 0 && (
+        <div className="space-y-2 mb-4">
+          {items.map((item, i) => (
+            <div key={item.id} className="flex items-start gap-3 group">
+              <span className="text-[9px] text-foreground/25 font-medium w-4 mt-1 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+              <div className="flex-shrink-0">
+                {getImageSrc(item.imageFilename) ? (
+                  <img src={getImageSrc(item.imageFilename)!} alt={item.name} className="w-10 h-10 object-cover rounded-sm" />
+                ) : (
+                  <div className="w-10 h-10 rounded-sm flex items-center justify-center" style={{ background: "rgba(15,36,25,0.06)" }}>
+                    <span className="text-[9px] text-foreground/20">IMG</span>
+                  </div>
+                )}
+              </div>
+              {editId === item.id ? (
+                <div className="flex-1 flex flex-col gap-2">
+                  <input value={editName} onChange={e => setEditName(e.target.value)}
+                    className="w-full h-8 border border-border/50 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
+                  <input value={editDesc} onChange={e => setEditDesc(e.target.value)} placeholder="Description (optional)"
+                    className="w-full h-8 border border-border/50 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent" />
+                  <div className="flex gap-2">
+                    <button onClick={() => handleSaveEdit(item.id)} className="text-[10px] tracking-widest uppercase px-3 h-7 bg-accent text-accent-foreground">Save</button>
+                    <button onClick={() => setEditId(null)} className="text-[10px] tracking-widest uppercase px-3 h-7 border border-border/40 text-foreground/40">Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex-1 flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-xs text-foreground leading-snug">{item.name}</p>
+                    {item.description && <p className="text-[11px] text-foreground/40">{item.description}</p>}
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <label className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-foreground/35 hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
+                      {uploadingId === item.id ? "…" : "Img"}
+                      <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleImageUpload(item.id, e.target.files[0])} />
+                    </label>
+                    <button onClick={() => { setEditId(item.id); setEditName(item.name); setEditDesc(item.description ?? ""); }}
+                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-border/40 text-foreground/35 hover:text-foreground hover:border-foreground/50 transition-all">
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(item.id)}
+                      className="text-[9px] tracking-widest uppercase px-2 h-6 border border-red-300/30 text-red-400/50 hover:text-red-400 hover:border-red-400/50 transition-all">
+                      ×
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Item name"
+          className="flex-1 h-8 border border-border/40 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent"
+          onKeyDown={e => e.key === "Enter" && handleAdd()} />
+        <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Description (optional)"
+          className="flex-1 h-8 border border-border/40 bg-background text-foreground text-xs px-2 focus:outline-none focus:border-accent"
+          onKeyDown={e => e.key === "Enter" && handleAdd()} />
+        <button onClick={handleAdd} disabled={adding || !newName.trim()}
+          className="text-[10px] tracking-[0.18em] uppercase font-medium px-4 h-8 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all disabled:opacity-30">
+          {adding ? "Adding…" : "+ Add"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ArchiveTab({ token }: { token: string }) {
+  const { data: launches, loading, refetch } = useAdminFetch<Launch[]>(`${API}/admin/launches`, token);
+  const [creating, setCreating] = useState(false);
+  const [form, setForm] = useState({ title: "", bakeDate: "", slug: "", notes: "" });
+  const [saving, setSaving] = useState(false);
+  const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
+
+  function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
+
+  async function handleCreate() {
+    setSaving(true);
+    await fetch(`${API}/admin/launches`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ ...form, slug: form.slug || slugify(form.title) }),
+    });
+    setSaving(false); setCreating(false);
+    setForm({ title: "", bakeDate: "", slug: "", notes: "" });
+    refetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this launch and all its items?")) return;
+    await fetch(`${API}/admin/launches/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    refetch();
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Archive — Launches</h2>
+          <p className="text-xs text-foreground/40 mt-1">Each launch is a bake day. Items inside show on the public archive page with ratings.</p>
+        </div>
+        <button onClick={() => setCreating(true)}
+          className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
+          + New Launch
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {creating && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="border border-border/50 p-6 mb-6 bg-muted/30">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">New Launch</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Title</label>
+                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Bake Day #1 — March"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Bake Date</label>
+                <input type="date" value={form.bakeDate} onChange={e => setForm(f => ({ ...f, bakeDate: e.target.value }))}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Slug (URL)</label>
+                <input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} placeholder={`auto: ${form.title ? slugify(form.title) : "bake-day-1"}`}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Notes</label>
+                <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note shown on archive"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={handleCreate} disabled={saving || !form.title || !form.bakeDate}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+                {saving ? "Saving…" : "Create"}
+              </button>
+              <button onClick={() => setCreating(false)}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {loading ? (
+        <p className="text-xs text-foreground/40">Loading…</p>
+      ) : !launches?.length ? (
+        <p className="text-xs text-foreground/40">No launches yet. Create one to start building the archive.</p>
+      ) : (
+        <div className="divide-y divide-border/30">
+          {launches.map((l) => (
+            <div key={l.id} className="py-5">
+              <div className="flex items-center gap-4">
+                <div className="flex-1 min-w-0">
+                  <p className="font-serif text-sm text-foreground">{l.title}</p>
+                  <p className="text-xs text-foreground/40 mt-0.5">
+                    {new Date(l.bakeDate + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
+                    &nbsp;·&nbsp;{l.items.length} {l.items.length === 1 ? "item" : "items"}
+                    {l.notes && <>&nbsp;·&nbsp;<span className="italic">{l.notes}</span></>}
+                  </p>
+                </div>
+                <button onClick={() => setOpenItems(s => ({ ...s, [l.id]: !s[l.id] }))}
+                  className={`text-[10px] tracking-widest uppercase px-3 h-8 border transition-all ${openItems[l.id] ? "border-accent text-accent" : "border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50"}`}>
+                  Items {openItems[l.id] ? "▲" : "▼"}
+                </button>
+                <button onClick={() => handleDelete(l.id)}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
+                  Del
+                </button>
+              </div>
+              <AnimatePresence>
+                {openItems[l.id] && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden">
+                    <LaunchItemsPanel launchId={l.id} items={l.items} token={token} onRefetch={refetch} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Recipes Tab ────────────────────────────────────────────────────────────────
+
+type AdminRecipe = {
+  id: number; title: string; subtitle: string | null; tags: string | null;
+  body: string; serves: string | null; time: string | null;
+  youtubeUrl: string | null; imageFilename: string | null; position: number;
+};
+
+function RecipesTab({ token }: { token: string }) {
+  const { data: recipes, loading, refetch } = useAdminFetch<AdminRecipe[]>(`${API}/admin/recipes`, token);
+  const [creating, setCreating] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [form, setForm] = useState({ title: "", subtitle: "", tags: "", body: "", serves: "", time: "", youtubeUrl: "", position: 0 });
+  const [saving, setSaving] = useState(false);
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
+
+  function resetForm() { setForm({ title: "", subtitle: "", tags: "", body: "", serves: "", time: "", youtubeUrl: "", position: 0 }); }
+
+  function loadIntoForm(r: AdminRecipe) {
+    setForm({ title: r.title, subtitle: r.subtitle ?? "", tags: r.tags ?? "", body: r.body, serves: r.serves ?? "", time: r.time ?? "", youtubeUrl: r.youtubeUrl ?? "", position: r.position });
+  }
+
+  async function handleCreate() {
+    setSaving(true);
+    await fetch(`${API}/admin/recipes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ ...form, subtitle: form.subtitle || null, tags: form.tags || null, serves: form.serves || null, time: form.time || null, youtubeUrl: form.youtubeUrl || null }),
+    });
+    setSaving(false); setCreating(false); resetForm(); refetch();
+  }
+
+  async function handleUpdate() {
+    if (!editId) return;
+    setSaving(true);
+    await fetch(`${API}/admin/recipes/${editId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-admin-token": token },
+      body: JSON.stringify({ ...form, subtitle: form.subtitle || null, tags: form.tags || null, serves: form.serves || null, time: form.time || null, youtubeUrl: form.youtubeUrl || null }),
+    });
+    setSaving(false); setEditId(null); resetForm(); refetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this recipe?")) return;
+    await fetch(`${API}/admin/recipes/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    refetch();
+  }
+
+  async function handleImageUpload(id: number, file: File) {
+    setUploadingId(id);
+    await uploadImage(file, `${API}/admin/recipes/${id}/image`, token);
+    setUploadingId(null); refetch();
+  }
+
+  const isEditing = creating || editId !== null;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Recipes</h2>
+          <p className="text-xs text-foreground/40 mt-1">Manage recipes shown on the public Recipes page. Tags are comma-separated.</p>
+        </div>
+        {!isEditing && (
+          <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
+            className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
+            + New Recipe
+          </button>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="border border-border/50 p-6 mb-6 bg-muted/30">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/40 mb-5">{editId ? "Edit Recipe" : "New Recipe"}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Title *</label>
+                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Recipe title"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Subtitle</label>
+                <input value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} placeholder="e.g. Inspired by Paragon Restaurant, Kozhikode"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Tags (comma-separated)</label>
+                <input value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder="e.g. Kerala, Seafood, Curry"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">YouTube URL</label>
+                <input value={form.youtubeUrl} onChange={e => setForm(f => ({ ...f, youtubeUrl: e.target.value }))} placeholder="https://youtu.be/..."
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Serves</label>
+                <input value={form.serves} onChange={e => setForm(f => ({ ...f, serves: e.target.value }))} placeholder="e.g. 4"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Time</label>
+                <input value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} placeholder="e.g. 45 min"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Position (sort order)</label>
+                <input type="number" value={form.position} onChange={e => setForm(f => ({ ...f, position: Number(e.target.value) }))}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="text-[10px] tracking-widest uppercase text-foreground/40 block mb-1">Recipe Body *</label>
+              <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={10}
+                placeholder="INGREDIENTS&#10;&#10;...&#10;&#10;METHOD&#10;&#10;01. ..."
+                className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y font-mono" />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={editId ? handleUpdate : handleCreate} disabled={saving || !form.title}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+                {saving ? "Saving…" : editId ? "Update" : "Create"}
+              </button>
+              <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-foreground/50 hover:text-foreground transition-all">
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {loading ? (
+        <p className="text-xs text-foreground/40">Loading…</p>
+      ) : !recipes?.length ? (
+        <p className="text-xs text-foreground/40">No recipes yet. Create one above.</p>
+      ) : (
+        <div className="divide-y divide-border/30">
+          {recipes.map((r) => (
+            <div key={r.id} className="py-4 flex items-start gap-4">
+              {r.imageFilename ? (
+                <img
+                  src={r.imageFilename.startsWith("/objects/") ? `/api/storage${r.imageFilename}` : `/images/${r.imageFilename}`}
+                  alt={r.title}
+                  className="w-12 h-12 object-cover rounded-sm flex-shrink-0"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-sm flex-shrink-0 flex items-center justify-center" style={{ background: "rgba(15,36,25,0.06)" }}>
+                  <span className="text-[9px] text-foreground/20">IMG</span>
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-serif text-sm text-foreground">{r.title}</p>
+                {r.subtitle && <p className="text-xs text-foreground/40">{r.subtitle}</p>}
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {r.tags && r.tags.split(",").map(t => t.trim()).filter(Boolean).map(tag => (
+                    <span key={tag} className="text-[9px] tracking-[0.15em] uppercase px-1.5 py-0.5" style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.4)" }}>{tag}</span>
+                  ))}
+                  {r.youtubeUrl && <span className="text-[9px] tracking-[0.15em] uppercase px-1.5 py-0.5" style={{ background: "rgba(255,0,0,0.06)", color: "rgba(200,0,0,0.5)" }}>YouTube</span>}
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <label className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all cursor-pointer flex items-center">
+                  {uploadingId === r.id ? "…" : "Image"}
+                  <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleImageUpload(r.id, e.target.files[0])} />
+                </label>
+                <button onClick={() => { setEditId(r.id); setCreating(false); loadIntoForm(r); }}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(r.id)}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
+                  Del
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Admin Page ────────────────────────────────────────────────────────────
 
 export default function Admin() {
@@ -469,7 +924,7 @@ export default function Admin() {
   const [input, setInput] = useState("");
   const [authError, setAuthError] = useState("");
   const [authed, setAuthed] = useState(false);
-  const [tab, setTab] = useState<"windows" | "orders" | "settings">("windows");
+  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes">("windows");
   const [checking, setChecking] = useState(false);
 
   useEffect(() => { if (token) verifyToken(token); }, []);
@@ -503,6 +958,8 @@ export default function Admin() {
   const TABS = [
     { id: "windows", label: "Bake Windows" },
     { id: "orders", label: "Orders" },
+    { id: "archive", label: "Archive" },
+    { id: "recipes", label: "Recipes" },
     { id: "settings", label: "Settings" },
   ] as const;
 
@@ -550,6 +1007,8 @@ export default function Admin() {
 
               {tab === "windows" && <BakeWindowsTab token={token} />}
               {tab === "orders" && <OrdersTab token={token} />}
+              {tab === "archive" && <ArchiveTab token={token} />}
+              {tab === "recipes" && <RecipesTab token={token} />}
               {tab === "settings" && <SettingsTab token={token} />}
             </motion.div>
           )}

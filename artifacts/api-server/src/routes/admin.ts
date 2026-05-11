@@ -2,6 +2,8 @@ import { Router, type Request, type Response, type NextFunction } from "express"
 import { db, bakeWindowsTable, bakeWindowItemsTable, ordersTable, siteSettingsTable } from "@workspace/db";
 import { eq, desc, asc } from "drizzle-orm";
 
+function pid(param: string | string[]): number { return parseInt(Array.isArray(param) ? param[0] : param); }
+
 const router = Router();
 
 function adminAuth(req: Request, res: Response, next: NextFunction) {
@@ -53,7 +55,7 @@ router.post("/admin/bake-windows", adminAuth, async (req, res) => {
 
 router.patch("/admin/bake-windows/:id", adminAuth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = pid(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
     const { label, bakeDate, status, boxPrice, originalPrice, maxBoxes, notes } = req.body as Partial<{
       label: string; bakeDate: string; status: string;
@@ -73,7 +75,7 @@ router.patch("/admin/bake-windows/:id", adminAuth, async (req, res) => {
 
 router.delete("/admin/bake-windows/:id", adminAuth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = pid(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
     await db.delete(bakeWindowsTable).where(eq(bakeWindowsTable.id, id));
     res.json({ ok: true });
@@ -87,7 +89,7 @@ router.delete("/admin/bake-windows/:id", adminAuth, async (req, res) => {
 
 router.get("/admin/bake-windows/:id/items", adminAuth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = pid(req.params.id);
     const items = await db.select().from(bakeWindowItemsTable)
       .where(eq(bakeWindowItemsTable.bakeWindowId, id))
       .orderBy(asc(bakeWindowItemsTable.position));
@@ -100,7 +102,7 @@ router.get("/admin/bake-windows/:id/items", adminAuth, async (req, res) => {
 
 router.post("/admin/bake-windows/:id/items", adminAuth, async (req, res) => {
   try {
-    const bakeWindowId = parseInt(req.params.id);
+    const bakeWindowId = pid(req.params.id);
     const { name, description, position } = req.body as { name: string; description?: string; position?: number };
     if (!name) { res.status(400).json({ error: "name is required" }); return; }
     const [row] = await db.insert(bakeWindowItemsTable)
@@ -115,7 +117,7 @@ router.post("/admin/bake-windows/:id/items", adminAuth, async (req, res) => {
 
 router.patch("/admin/bake-window-items/:itemId", adminAuth, async (req, res) => {
   try {
-    const itemId = parseInt(req.params.itemId);
+    const itemId = pid(req.params.itemId);
     const { name, description, position } = req.body as Partial<{ name: string; description: string; position: number }>;
     const [row] = await db.update(bakeWindowItemsTable)
       .set({ ...(name !== undefined && { name }), ...(description !== undefined && { description }), ...(position !== undefined && { position }) })
@@ -131,7 +133,7 @@ router.patch("/admin/bake-window-items/:itemId", adminAuth, async (req, res) => 
 
 router.delete("/admin/bake-window-items/:itemId", adminAuth, async (req, res) => {
   try {
-    const itemId = parseInt(req.params.itemId);
+    const itemId = pid(req.params.itemId);
     await db.delete(bakeWindowItemsTable).where(eq(bakeWindowItemsTable.id, itemId));
     res.json({ ok: true });
   } catch (err) {
@@ -154,7 +156,7 @@ router.get("/admin/orders", adminAuth, async (_req, res) => {
 
 router.patch("/admin/orders/:id", adminAuth, async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = pid(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
     const { status } = req.body as { status?: string };
     const [row] = await db.update(ordersTable)

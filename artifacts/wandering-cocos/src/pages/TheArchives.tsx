@@ -5,6 +5,43 @@ import { Footer } from "@/components/Footer";
 const VOTER_KEY = "wc_voter_id";
 const VOTED_KEY = "wc_voted_items";
 
+function getImageSrc(imageFilename: string | null): string | null {
+  if (!imageFilename) return null;
+  if (imageFilename.startsWith("/objects/")) return `/api/storage${imageFilename}`;
+  return `/images/${imageFilename}`;
+}
+
+function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) { if (e.key === "Escape") onClose(); }
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: "rgba(8,20,14,0.88)" }}
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        style={{ position: "absolute", top: 20, right: 24, fontSize: "2rem", lineHeight: 1, background: "none", border: "none", color: "rgba(255,255,255,0.75)", cursor: "pointer" }}
+      >
+        ×
+      </button>
+      <img
+        src={src}
+        alt={alt}
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "90vw", maxHeight: "85vh", objectFit: "contain", borderRadius: 2, boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}
+      />
+    </div>
+  );
+}
+
 function getVoterId(): string {
   let id = localStorage.getItem(VOTER_KEY);
   if (!id) {
@@ -159,26 +196,31 @@ function ItemCard({
   voted: number | null;
   onRate: (itemId: number, stars: number) => Promise<void>;
 }) {
-  const imageSrc = item.imageFilename
-    ? `/images/${item.imageFilename}`
-    : null;
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const imageSrc = getImageSrc(item.imageFilename);
 
   return (
+    <>
+      {lightboxOpen && imageSrc && (
+        <Lightbox src={imageSrc} alt={item.name} onClose={() => setLightboxOpen(false)} />
+      )}
     <div
       className="flex gap-6 py-7"
       style={{ borderBottom: "1px solid rgba(15,36,25,0.1)" }}
     >
       {imageSrc ? (
-        <div
-          className="flex-shrink-0 rounded-sm overflow-hidden"
-          style={{ width: 80, height: 80 }}
+        <button
+          onClick={() => setLightboxOpen(true)}
+          className="flex-shrink-0 rounded-sm overflow-hidden focus:outline-none"
+          style={{ width: 80, height: 80, padding: 0, background: "none", border: "none", cursor: "zoom-in" }}
+          aria-label={`View full image of ${item.name}`}
         >
           <img
             src={imageSrc}
             alt={item.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hover:opacity-80 transition-opacity"
           />
-        </div>
+        </button>
       ) : (
         <div
           className="flex-shrink-0 rounded-sm flex items-center justify-center"
@@ -233,6 +275,7 @@ function ItemCard({
         />
       </div>
     </div>
+    </>
   );
 }
 
@@ -326,6 +369,14 @@ export default function TheArchives() {
               style={{ fontSize: "1rem", color: "rgba(15,36,25,0.4)" }}
             >
               Could not load the archives. Try again later.
+            </p>
+          </div>
+        )}
+
+        {!loading && !error && launches.length === 0 && (
+          <div className="py-20 text-center">
+            <p className="font-serif italic" style={{ fontSize: "1rem", color: "rgba(15,36,25,0.4)" }}>
+              Nothing in the archives yet. Check back after the first bake day.
             </p>
           </div>
         )}
