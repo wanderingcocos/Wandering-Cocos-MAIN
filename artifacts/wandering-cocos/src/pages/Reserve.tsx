@@ -168,7 +168,11 @@ export default function Reserve() {
             <motion.p initial="hidden" animate="visible" custom={3} variants={fadeUp}
               className="mt-3 font-light"
               style={{ fontSize: "clamp(0.82rem, 1.1vw, 0.95rem)", color: "rgba(255,255,255,0.38)", maxWidth: "380px", lineHeight: "1.7" }}>
-              Baked fresh on delivery day. Comes with a branded bag. Prepaid only. Limited bakes per drop.
+              {siteMode === "popup"
+                ? "We're at a pop-up this week — online orders are paused. We'll be back very soon."
+                : siteMode === "maintenance"
+                ? "We're baking in the background. Online orders will open with our next drop."
+                : "Baked fresh on delivery day. Comes with a branded bag. Prepaid only. Limited bakes per drop."}
             </motion.p>
           </div>
         </section>
