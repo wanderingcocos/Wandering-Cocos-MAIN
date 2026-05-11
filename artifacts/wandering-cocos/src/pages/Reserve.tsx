@@ -150,6 +150,7 @@ export default function Reserve() {
               Reserve Your Box
             </motion.h1>
 
+            {siteMode === "bake_day" && (
             <motion.div initial="hidden" animate="visible" custom={2} variants={fadeUp}
               className="mt-6 flex items-baseline gap-4 flex-wrap">
               <span className="font-serif font-medium" style={{ fontSize: "clamp(2rem, 3vw, 2.8rem)", color: "#ffffff" }}>
@@ -164,6 +165,7 @@ export default function Reserve() {
                 per box
               </span>
             </motion.div>
+            )}
 
             <motion.p initial="hidden" animate="visible" custom={3} variants={fadeUp}
               className="mt-3 font-light"
@@ -177,8 +179,8 @@ export default function Reserve() {
           </div>
         </section>
 
-        {/* TOTE BAG HIGHLIGHT */}
-        <section style={{ background: "#0f2419" }} className="px-6 md:px-14 lg:px-20 py-10">
+        {/* TOTE BAG HIGHLIGHT — bake_day only */}
+        {siteMode === "bake_day" && <section style={{ background: "#0f2419" }} className="px-6 md:px-14 lg:px-20 py-10">
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-center gap-5 sm:gap-10">
@@ -204,7 +206,7 @@ export default function Reserve() {
               <p className="text-[9px] tracking-[0.3em] uppercase font-medium">Included Free</p>
             </div>
           </motion.div>
-        </section>
+        </section>}
 
         {/* MAIN TWO-COLUMN */}
         <section className="px-6 md:px-14 lg:px-20 py-16 max-w-7xl mx-auto">
