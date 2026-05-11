@@ -60,7 +60,7 @@ export function Footer() {
           {/* Social icons */}
           <div className="flex items-center gap-4">
             <a
-              href="https://instagram.com/wandering_cocos"
+              href="https://instagram.com/wandering.cocos"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"

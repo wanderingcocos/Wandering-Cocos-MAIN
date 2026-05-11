@@ -19,7 +19,7 @@ const channels = [
     body:
       "The easiest way to place an order, ask questions, or check on a delivery. We're right here.",
     cta: "Message us on WhatsApp",
-    href: "https://wa.me/919899225273",
+    href: "https://chat.whatsapp.com/HH1IixIyMcCCY8jHnrlHei",
     bg: "#25D366",
     color: "#ffffff",
     icon: (
@@ -34,7 +34,7 @@ const channels = [
     eyebrow: "Share your experience · Help others find us",
     body: "Tried our bakes? A Google review means the world to a small team. It takes 30 seconds and helps more people find us.",
     cta: "Review us on Google",
-    href: "https://g.page/r/CfrjGdYM0pA5EAI/review",
+    href: "https://g.page/r/CfrjGdYM0pA5EBM/review",
     bg: "#ffffff",
     color: "#4285F4",
     icon: (
@@ -53,7 +53,7 @@ const channels = [
     body:
       "Follow us on Instagram for our visual diary: the process, the textures, the failures, and the ones that made it into the box.",
     cta: "Follow on Instagram",
-    href: "https://instagram.com/wandering_cocos",
+    href: "https://instagram.com/wandering.cocos",
     bg: "linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
     color: "#ffffff",
     icon: (
