@@ -1,5 +1,5 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
-import { db, bakeWindowsTable, bakeWindowItemsTable, ordersTable, siteSettingsTable } from "@workspace/db";
+import { db, bakeWindowsTable, bakeWindowItemsTable, ordersTable, siteSettingsTable, launchesTable, launchItemsTable } from "@workspace/db";
 import { eq, desc, asc } from "drizzle-orm";
 
 function pid(param: string | string[]): number { return parseInt(Array.isArray(param) ? param[0] : param); }
@@ -214,6 +214,50 @@ router.post("/admin/settings", adminAuth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to save setting" });
+  }
+});
+
+// ── Push Bake Window to Archive ───────────────────────────────────────────────
+
+router.post("/admin/bake-windows/:id/archive", adminAuth, async (req, res) => {
+  try {
+    const id = pid(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+
+    const [window] = await db.select().from(bakeWindowsTable).where(eq(bakeWindowsTable.id, id));
+    if (!window) { res.status(404).json({ error: "Bake window not found" }); return; }
+
+    const windowItems = await db.select().from(bakeWindowItemsTable)
+      .where(eq(bakeWindowItemsTable.bakeWindowId, id))
+      .orderBy(asc(bakeWindowItemsTable.position));
+
+    const slug = window.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+    const [existing] = await db.select().from(launchesTable).where(eq(launchesTable.slug, slug));
+    if (existing) {
+      res.json({ created: false, launch: existing });
+      return;
+    }
+
+    const [launch] = await db.insert(launchesTable)
+      .values({ slug, title: window.label, bakeDate: window.bakeDate, notes: window.notes ?? null })
+      .returning();
+
+    if (windowItems.length > 0) {
+      await db.insert(launchItemsTable).values(
+        windowItems.map((item, i) => ({
+          launchId: launch.id,
+          name: item.name,
+          description: item.description ?? null,
+          position: i,
+        }))
+      );
+    }
+
+    res.json({ created: true, launch });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to archive bake window" });
   }
 });
 

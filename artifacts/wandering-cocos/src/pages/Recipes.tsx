@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const fadeUp = {
   hidden: { opacity: 0, y: 22 },
@@ -17,37 +20,20 @@ type Recipe = {
   title: string;
   subtitle: string | null;
   tags: string | null;
-  body: string;
   serves: string | null;
   time: string | null;
-  youtubeUrl: string | null;
-  imageFilename: string | null;
   position: number;
 };
-
-function getYouTubeEmbedId(url: string): string | null {
-  try {
-    const u = new URL(url);
-    if (u.hostname === "youtu.be") return u.pathname.slice(1).split("?")[0];
-    if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
-  } catch {}
-  return null;
-}
-
-function getImageSrc(imageFilename: string | null): string | null {
-  if (!imageFilename) return null;
-  if (imageFilename.startsWith("/objects/")) return `/api/storage${imageFilename}`;
-  return `/images/${imageFilename}`;
-}
 
 export default function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
-    fetch("/api/recipes")
-      .then((r) => r.json())
-      .then((data) => { setRecipes(data); setLoading(false); })
+    fetch(`${BASE}/api/recipes`)
+      .then(r => r.json())
+      .then(data => { setRecipes(data); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
@@ -56,7 +42,6 @@ export default function Recipes() {
       <Header />
 
       <main className="flex-grow">
-
         {/* HERO */}
         <section className="pt-36 pb-20 px-6 md:px-14 lg:px-24 max-w-7xl mx-auto">
           <motion.span
@@ -90,8 +75,8 @@ export default function Recipes() {
           <div style={{ borderTop: "1px solid rgba(15,36,25,0.1)" }} />
         </div>
 
-        {/* RECIPE GRID — renders when recipes exist, placeholder when empty */}
-        <section className="py-24 px-6 md:px-14 lg:px-24 max-w-7xl mx-auto">
+        {/* RECIPE LIST */}
+        <section className="py-16 px-6 md:px-14 lg:px-24 max-w-4xl mx-auto">
           {loading ? (
             <p className="font-light" style={{ fontSize: "0.95rem", color: "rgba(15,36,25,0.4)" }}>Loading…</p>
           ) : recipes.length === 0 ? (
@@ -99,11 +84,11 @@ export default function Recipes() {
               variants={fadeUp} initial="hidden" animate="visible" custom={3}
               className="flex flex-col items-start gap-6 max-w-md"
             >
-              <div
-                className="flex items-center justify-center"
-                style={{ width: 56, height: 56, border: "1px solid rgba(15,36,25,0.12)" }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" style={{ color: "rgba(15,36,25,0.3)" }}>
+              <div className="flex items-center justify-center"
+                style={{ width: 56, height: 56, border: "1px solid rgba(15,36,25,0.12)" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"
+                  style={{ color: "rgba(15,36,25,0.3)" }}>
                   <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z" />
                   <path d="M12 8v4l3 3" />
                 </svg>
@@ -121,88 +106,73 @@ export default function Recipes() {
               </div>
             </motion.div>
           ) : (
-            <div className="flex flex-col gap-20">
+            <div style={{ borderTop: "1px solid rgba(15,36,25,0.1)" }}>
               {recipes.map((recipe, i) => {
                 const tags = recipe.tags ? recipe.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
-                const imageSrc = getImageSrc(recipe.imageFilename);
-                const embedId = recipe.youtubeUrl ? getYouTubeEmbedId(recipe.youtubeUrl) : null;
                 return (
                   <motion.div
                     key={recipe.id}
-                    variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.05}
-                    className="flex flex-col gap-6"
+                    variants={fadeUp} initial="hidden" whileInView="visible"
+                    viewport={{ once: true }} custom={i * 0.05}
+                    style={{ borderBottom: "1px solid rgba(15,36,25,0.08)" }}
                   >
-                    {imageSrc && (
-                      <div className="aspect-[4/3] overflow-hidden max-w-lg" style={{ background: "rgba(15,36,25,0.05)" }}>
-                        <img src={imageSrc} alt={recipe.title} className="w-full h-full object-cover" />
-                      </div>
-                    )}
-                    <div>
-                      {tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {tags.map((tag) => (
-                            <span key={tag}
-                              className="text-[9px] tracking-[0.25em] uppercase font-medium px-2 py-1"
-                              style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.45)" }}>
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <h3 className="font-serif italic leading-snug mb-1"
-                        style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)", color: "#0f2419" }}>
-                        {recipe.title}
-                      </h3>
-                      {recipe.subtitle && (
-                        <p className="font-light mb-4"
-                          style={{ fontSize: "0.9rem", color: "rgba(15,36,25,0.5)" }}>
-                          {recipe.subtitle}
-                        </p>
-                      )}
-                      <div className="flex gap-6 mb-5">
-                        {recipe.serves && (
-                          <div>
-                            <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5"
-                              style={{ color: "rgba(15,36,25,0.35)" }}>Serves</span>
-                            <span className="font-light text-sm" style={{ color: "rgba(15,36,25,0.65)" }}>{recipe.serves}</span>
+                    <button
+                      onClick={() => navigate(`/recipes/${recipe.id}`)}
+                      className="w-full text-left py-8 group flex items-start justify-between gap-6"
+                      style={{ background: "none", border: "none", cursor: "pointer", padding: "2rem 0" }}
+                    >
+                      <div className="flex-1 min-w-0">
+                        {tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {tags.map(tag => (
+                              <span key={tag} className="text-[9px] tracking-[0.25em] uppercase font-medium px-2 py-0.5"
+                                style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.45)" }}>
+                                {tag}
+                              </span>
+                            ))}
                           </div>
                         )}
-                        {recipe.time && (
-                          <div>
-                            <span className="text-[9px] tracking-[0.25em] uppercase font-medium block mb-0.5"
-                              style={{ color: "rgba(15,36,25,0.35)" }}>Time</span>
-                            <span className="font-light text-sm" style={{ color: "rgba(15,36,25,0.65)" }}>{recipe.time}</span>
+                        <h3 className="font-serif italic leading-snug mb-1 transition-colors group-hover:text-accent"
+                          style={{ fontSize: "clamp(1.15rem, 1.7vw, 1.5rem)", color: "#0f2419" }}>
+                          {recipe.title}
+                        </h3>
+                        {recipe.subtitle && (
+                          <p className="font-light mb-3" style={{ fontSize: "0.88rem", color: "rgba(15,36,25,0.5)" }}>
+                            {recipe.subtitle}
+                          </p>
+                        )}
+                        {(recipe.serves || recipe.time) && (
+                          <div className="flex gap-6 mt-2">
+                            {recipe.serves && (
+                              <span className="text-[10px] tracking-[0.2em] uppercase font-medium"
+                                style={{ color: "rgba(15,36,25,0.35)" }}>
+                                Serves {recipe.serves}
+                              </span>
+                            )}
+                            {recipe.time && (
+                              <span className="text-[10px] tracking-[0.2em] uppercase font-medium"
+                                style={{ color: "rgba(15,36,25,0.35)" }}>
+                                {recipe.time}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
-                      <p className="font-light leading-relaxed max-w-2xl"
-                        style={{ fontSize: "0.92rem", color: "rgba(15,36,25,0.6)", whiteSpace: "pre-line" }}>
-                        {recipe.body}
-                      </p>
-                      {embedId && (
-                        <div className="mt-8 max-w-2xl" style={{ aspectRatio: "16/9" }}>
-                          <iframe
-                            src={`https://www.youtube.com/embed/${embedId}`}
-                            title={recipe.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                            style={{ border: "none" }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    {i < recipes.length - 1 && (
-                      <div style={{ borderBottom: "1px solid rgba(15,36,25,0.08)" }} />
-                    )}
+                      <span className="text-xl flex-shrink-0 mt-1 transition-colors"
+                        style={{ color: "rgba(15,36,25,0.2)" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "rgba(15,36,25,0.55)")}
+                        onMouseLeave={e => (e.currentTarget.style.color = "rgba(15,36,25,0.2)")}>
+                        →
+                      </span>
+                    </button>
                   </motion.div>
                 );
               })}
             </div>
           )}
         </section>
-
       </main>
+
       <Footer />
     </div>
   );

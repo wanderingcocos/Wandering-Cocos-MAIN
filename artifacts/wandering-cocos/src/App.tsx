@@ -15,8 +15,10 @@ import RefundPolicy from "@/pages/RefundPolicy";
 import NotFound from "@/pages/not-found";
 import VideoPromo from "@/pages/VideoPromo";
 import TheArchives from "@/pages/TheArchives";
+import ArchiveSlug from "@/pages/ArchiveSlug";
 import Gifting from "@/pages/Gifting";
 import Recipes from "@/pages/Recipes";
+import RecipeDetail from "@/pages/RecipeDetail";
 import Admin from "@/pages/Admin";
 
 function ScrollToTop() {
@@ -48,8 +50,10 @@ function Router() {
       <Route path="/reserve" component={Reserve} />
       <Route path="/join" component={JoinTheCircle} />
       <Route path="/refund-policy" component={RefundPolicy} />
+      <Route path="/archive/:slug" component={ArchiveSlug} />
       <Route path="/archive" component={TheArchives} />
       <Route path="/gifting" component={Gifting} />
+      <Route path="/recipes/:id" component={RecipeDetail} />
       <Route path="/recipes" component={Recipes} />
       <Route path="/admin" component={Admin} />
       <Route component={NotFound} />

@@ -45,6 +45,42 @@ router.get("/archive", async (_req, res) => {
   }
 });
 
+router.get("/archive/:slug", async (req, res) => {
+  try {
+    const [launch] = await db.select().from(launchesTable).where(eq(launchesTable.slug, req.params.slug));
+    if (!launch) { res.status(404).json({ error: "Not found" }); return; }
+
+    const items = await db
+      .select({
+        id: launchItemsTable.id,
+        launchId: launchItemsTable.launchId,
+        name: launchItemsTable.name,
+        description: launchItemsTable.description,
+        imageFilename: launchItemsTable.imageFilename,
+        position: launchItemsTable.position,
+        avgStars: sql<string>`COALESCE(AVG(${ratingsTable.stars}), 0)`,
+        voteCount: sql<string>`COUNT(${ratingsTable.id})`,
+      })
+      .from(launchItemsTable)
+      .leftJoin(ratingsTable, eq(ratingsTable.itemId, launchItemsTable.id))
+      .where(eq(launchItemsTable.launchId, launch.id))
+      .groupBy(launchItemsTable.id)
+      .orderBy(launchItemsTable.position);
+
+    res.json({
+      ...launch,
+      items: items.map(item => ({
+        ...item,
+        avgStars: parseFloat(item.avgStars) || 0,
+        voteCount: parseInt(item.voteCount) || 0,
+      })),
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch archive entry" });
+  }
+});
+
 router.post("/archive/items/:itemId/rate", async (req, res) => {
   const itemId = parseInt(req.params.itemId);
   const { stars, voterId } = req.body as { stars: number; voterId: string };

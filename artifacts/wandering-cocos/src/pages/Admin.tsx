@@ -193,6 +193,21 @@ function BakeWindowsTab({ token }: { token: string }) {
   const [editStatus, setEditStatus] = useState("");
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
   const [error, setError] = useState<string | null>(null);
+  const [archiveStatus, setArchiveStatus] = useState<Record<number, string>>({});
+
+  async function handleArchive(id: number) {
+    setArchiveStatus(s => ({ ...s, [id]: "loading" }));
+    const res = await apiCall(`${API}/admin/bake-windows/${id}/archive`, {
+      method: "POST",
+      headers: { "x-admin-token": token },
+    });
+    if (!res.ok) {
+      setArchiveStatus(s => ({ ...s, [id]: "error" }));
+    } else {
+      const data = res.data as { created: boolean };
+      setArchiveStatus(s => ({ ...s, [id]: data.created ? "done" : "exists" }));
+    }
+  }
 
   async function handleCreate() {
     setSaving(true);
@@ -344,6 +359,16 @@ function BakeWindowsTab({ token }: { token: string }) {
                       <button onClick={() => { setEditId(w.id); setEditStatus(w.status); }}
                         className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-foreground/40 hover:text-foreground hover:border-foreground/50 transition-all">
                         Status
+                      </button>
+                      <button
+                        onClick={() => handleArchive(w.id)}
+                        disabled={archiveStatus[w.id] === "loading" || archiveStatus[w.id] === "done" || archiveStatus[w.id] === "exists"}
+                        className="text-[10px] tracking-widest uppercase px-3 h-8 border transition-all disabled:opacity-60"
+                        style={{
+                          borderColor: archiveStatus[w.id] === "done" ? "rgba(45,90,61,0.45)" : archiveStatus[w.id] === "error" ? "rgba(239,68,68,0.35)" : "rgba(15,36,25,0.2)",
+                          color: archiveStatus[w.id] === "done" ? "hsl(150 40% 28%)" : archiveStatus[w.id] === "error" ? "rgba(239,68,68,0.75)" : "rgba(15,36,25,0.45)",
+                        }}>
+                        {archiveStatus[w.id] === "loading" ? "Archiving…" : archiveStatus[w.id] === "done" ? "Archived ✓" : archiveStatus[w.id] === "exists" ? "Already Archived" : archiveStatus[w.id] === "error" ? "Error" : "→ Archive"}
                       </button>
                       <button onClick={() => handleDelete(w.id)}
                         className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
@@ -752,6 +777,16 @@ function ArchiveTab({ token }: { token: string }) {
   const [editId, setEditId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ title: "", bakeDate: "", slug: "", notes: "" });
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (launches) {
+      setOpenItems(prev => {
+        const autoOpen: Record<number, boolean> = {};
+        launches.forEach(l => { if (l.items.length === 0) autoOpen[l.id] = true; });
+        return { ...autoOpen, ...prev };
+      });
+    }
+  }, [launches]);
 
   function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
