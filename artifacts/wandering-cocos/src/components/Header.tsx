@@ -148,11 +148,11 @@ export function Header() {
       <header
         className={`fixed top-[32px] left-0 right-0 z-50 transition-all duration-500 ease-out ${
           isScrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border py-1 shadow-sm"
-            : "bg-transparent py-4"
+            ? "bg-background/90 backdrop-blur-md border-b border-border shadow-sm h-16 md:h-20"
+            : "bg-transparent h-20 md:h-24"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-stretch justify-between h-full">
           {/* Logo */}
           <button
             onClick={() => {
@@ -162,12 +162,12 @@ export function Header() {
                 navigate("/");
               }
             }}
-            className="group flex items-center"
+            className="group self-stretch flex items-center py-1"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="Wandering Cocos"
-              className="h-14 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-full w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
