@@ -45,9 +45,9 @@ export function WelcomeGreeting() {
 
           {/* Logo */}
           <motion.img
-            src={`${import.meta.env.BASE_URL}images/wc-logo-wb.png`}
+            src={`${import.meta.env.BASE_URL}images/logo.png`}
             alt="Wandering Cocos"
-            className="w-16 h-16 object-contain mb-10"
+            className="w-64 md:w-80 h-auto object-contain mb-8"
             style={{ filter: "brightness(0) invert(1)", opacity: 0.9 }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 0.9, y: 0 }}

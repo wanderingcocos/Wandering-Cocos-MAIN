@@ -148,8 +148,8 @@ export function Header() {
       <header
         className={`fixed top-[32px] left-0 right-0 z-50 transition-all duration-500 ease-out ${
           isScrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border py-4 shadow-sm"
-            : "bg-transparent py-8"
+            ? "bg-background/90 backdrop-blur-md border-b border-border py-1 shadow-sm"
+            : "bg-transparent py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -167,7 +167,7 @@ export function Header() {
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="Wandering Cocos"
-              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-14 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
