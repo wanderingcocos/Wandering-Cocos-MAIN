@@ -162,13 +162,12 @@ export function Header() {
                 navigate("/");
               }
             }}
-            className="group flex items-center overflow-hidden"
+            className="group flex items-center"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="Wandering Cocos"
-              className="h-12 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
-              style={{ transform: "scale(1.35)", transformOrigin: "left center" }}
+              className="h-14 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
@@ -265,14 +264,11 @@ export function Header() {
             className="fixed inset-0 z-[100] bg-background flex flex-col pt-8 overflow-y-auto"
           >
             <div className="px-6 py-8 flex justify-between items-center border-b border-border/50 mt-[32px]">
-              <div className="overflow-hidden">
-                <img
-                  src={`${import.meta.env.BASE_URL}images/logo.png`}
-                  alt="Wandering Cocos"
-                  className="h-12 w-auto object-contain"
-                  style={{ transform: "scale(1.35)", transformOrigin: "left center" }}
-                />
-              </div>
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo.png`}
+                alt="Wandering Cocos"
+                className="h-14 w-auto object-contain"
+              />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-foreground/80 hover:text-accent transition-colors duration-300 p-2"
