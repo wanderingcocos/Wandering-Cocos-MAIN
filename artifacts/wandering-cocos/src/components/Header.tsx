@@ -167,7 +167,7 @@ export function Header() {
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="Wandering Cocos"
-              className="h-14 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
@@ -267,7 +267,7 @@ export function Header() {
               <img
                 src={`${import.meta.env.BASE_URL}images/logo.png`}
                 alt="Wandering Cocos"
-                className="h-14 w-auto object-contain"
+                className="h-16 w-auto object-contain"
               />
               <button
                 onClick={() => setMobileMenuOpen(false)}
