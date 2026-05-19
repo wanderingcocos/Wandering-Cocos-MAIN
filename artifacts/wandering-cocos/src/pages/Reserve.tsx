@@ -4,9 +4,10 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
 
+import { WA_NUMBER } from "@/lib/constants";
+
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const UPI_ID = "snhshbhm2-1@okhdfcbank";
-const WA_NUMBER = "919899225273";
 
 type BakeWindowItem = { id: number; name: string; description: string | null; position: number };
 type BakeWindow = {

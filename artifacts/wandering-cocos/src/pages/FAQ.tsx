@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { WA_NUMBER } from "@/lib/constants";
 
 const faqs = [
   {
@@ -152,7 +153,7 @@ export default function FAQ() {
             <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>
               Still wondering about something?{" "}
               <a
-                href="https://wa.me/919899225273"
+                href={`https://wa.me/${WA_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors duration-200"

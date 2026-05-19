@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-
-const WA_NUMBER = "919899225273";
+import { WA_NUMBER } from "@/lib/constants";
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const fadeUp = {

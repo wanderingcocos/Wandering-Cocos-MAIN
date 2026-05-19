@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { WA_NUMBER } from "@/lib/constants";
 
 export default function Contact() {
   return (
@@ -41,7 +42,7 @@ export default function Contact() {
                 WhatsApp
               </span>
               <a
-                href="https://wa.me/919899225273"
+                href={`https://wa.me/${WA_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-serif italic text-foreground hover:text-accent transition-colors"

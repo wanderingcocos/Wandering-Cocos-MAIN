@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { WelcomeGreeting } from "@/components/WelcomeGreeting";
+import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 import LandingPage from "@/pages/LandingPage";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ShippingPolicy from "@/pages/ShippingPolicy";
@@ -39,25 +40,31 @@ const queryClient = new QueryClient({
 });
 
 function Router() {
+  const [location] = useLocation();
+  const isAdmin = location === "/admin" || location.startsWith("/admin/");
+
   return (
-    <Switch>
-      <Route path="/" component={LandingPage} />
-      <Route path="/video" component={VideoPromo} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/shipping" component={ShippingPolicy} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/faq" component={FAQ} />
-      <Route path="/reserve" component={Reserve} />
-      <Route path="/join" component={JoinTheCircle} />
-      <Route path="/refund-policy" component={RefundPolicy} />
-      <Route path="/archive/:slug" component={ArchiveSlug} />
-      <Route path="/archive" component={TheArchives} />
-      <Route path="/gifting" component={Gifting} />
-      <Route path="/recipes/:id" component={RecipeDetail} />
-      <Route path="/recipes" component={Recipes} />
-      <Route path="/admin" component={Admin} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/" component={LandingPage} />
+        <Route path="/video" component={VideoPromo} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/shipping" component={ShippingPolicy} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/faq" component={FAQ} />
+        <Route path="/reserve" component={Reserve} />
+        <Route path="/join" component={JoinTheCircle} />
+        <Route path="/refund-policy" component={RefundPolicy} />
+        <Route path="/archive/:slug" component={ArchiveSlug} />
+        <Route path="/archive" component={TheArchives} />
+        <Route path="/gifting" component={Gifting} />
+        <Route path="/recipes/:id" component={RecipeDetail} />
+        <Route path="/recipes" component={Recipes} />
+        <Route path="/admin" component={Admin} />
+        <Route component={NotFound} />
+      </Switch>
+      {!isAdmin && <WhatsAppWidget />}
+    </>
   );
 }
 
