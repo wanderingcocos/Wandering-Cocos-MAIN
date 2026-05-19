@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WA_NUMBER } from "@/lib/constants";
 
-const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Welcome to Wandering Cocos! Ask us anything.")}`;
+const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello Wandering Cocos! I'd love to know more about this weekend's menu.")}`;
 
 export function WhatsAppWidget() {
   const [visible, setVisible] = useState(false);
