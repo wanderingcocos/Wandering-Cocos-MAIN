@@ -57,16 +57,47 @@ export default function Recipes() {
             className="font-serif italic leading-[1.1] mb-8"
             style={{ fontSize: "clamp(2.8rem, 7vw, 6.5rem)", color: "#0f2419", maxWidth: "780px" }}
           >
-            From our kitchen<br />to yours.
+            Clean Eating,<br />Simplified.
           </motion.h1>
 
           <motion.p
             variants={fadeUp} initial="hidden" animate="visible" custom={2}
-            className="font-light leading-relaxed max-w-lg"
+            className="font-light leading-relaxed max-w-xl mb-5"
             style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "#0F2419" }}
           >
-            The techniques, the ratios, the small obsessions behind each dish.
-            Recipes will be added here as we document them.
+            This is a collection of the meals we actually eat — simple, high-protein recipes built around recomp, balanced nutrition, and realistic eating habits.
+          </motion.p>
+
+          <motion.p
+            variants={fadeUp} initial="hidden" animate="visible" custom={3}
+            className="font-light leading-relaxed max-w-2xl mb-5"
+            style={{ fontSize: "clamp(0.92rem, 1.2vw, 1.05rem)", color: "#0F2419" }}
+          >
+            Most days, we aim for 150–180g of protein and try to stay consistent with our meals, but we don't believe in perfection. If we miss a day, we move on without stressing about it. The goal is building sustainable habits that are easy to follow long term.
+          </motion.p>
+
+          <motion.p
+            variants={fadeUp} initial="hidden" animate="visible" custom={4}
+            className="font-light leading-relaxed max-w-2xl mb-5"
+            style={{ fontSize: "clamp(0.92rem, 1.2vw, 1.05rem)", color: "#0F2419" }}
+          >
+            Alongside our disciplined high-protein meals, we also share the family favourites we genuinely enjoy — comforting mutton curries, fish curries, indulgent meals we enjoy a few times each month, and travel-inspired recipes influenced by places, flavours, and food experiences we love.
+          </motion.p>
+
+          <motion.p
+            variants={fadeUp} initial="hidden" animate="visible" custom={5}
+            className="font-light leading-relaxed max-w-2xl mb-8"
+            style={{ fontSize: "clamp(0.92rem, 1.2vw, 1.05rem)", color: "#0F2419" }}
+          >
+            Whether you're trying to hit your macros, make meal planning easier, or simply find healthier meals that still feel enjoyable, these recipes are here to make healthy eating feel practical, balanced, and sustainable.
+          </motion.p>
+
+          <motion.p
+            variants={fadeUp} initial="hidden" animate="visible" custom={6}
+            className="font-light leading-relaxed max-w-xl"
+            style={{ fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)", color: "#0F2419", opacity: 0.65 }}
+          >
+            We hope these recipes help make everyday eating easier, more enjoyable, and something you can truly stick to. Enjoy!
           </motion.p>
         </section>
 
