@@ -65,7 +65,7 @@ export default function Recipes() {
             className="font-light leading-relaxed max-w-xl mb-5"
             style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)", color: "#0F2419" }}
           >
-            This is a collection of the meals we actually eat — simple, high-protein recipes built around recomp, balanced nutrition, and realistic eating habits.
+            This is a collection of the meals we actually eat, simple high-protein recipes built around recomp, balanced nutrition, and realistic eating habits.
           </motion.p>
 
           <motion.p
@@ -81,7 +81,7 @@ export default function Recipes() {
             className="font-light leading-relaxed max-w-2xl mb-5"
             style={{ fontSize: "clamp(0.92rem, 1.2vw, 1.05rem)", color: "#0F2419" }}
           >
-            Alongside our disciplined high-protein meals, we also share the family favourites we genuinely enjoy — comforting mutton curries, fish curries, indulgent meals we enjoy a few times each month, and travel-inspired recipes influenced by places, flavours, and food experiences we love.
+            Alongside our disciplined high protein meals, we also share the family favourites we genuinely enjoy, comforting mutton curries, fish curries, indulgent meals we enjoy a few times each month, and travel inspired recipes influenced by places, flavours, and food experiences we love.
           </motion.p>
 
           <motion.p
