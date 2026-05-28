@@ -143,6 +143,8 @@ export default function Reserve() {
                 ? "Pop-Up This Week · Online Orders Paused"
                 : siteMode === "maintenance"
                 ? "Coming Back Soon · Baking In Progress"
+                : siteMode === "chef_on_break"
+                ? "Chef on Break · Back Soon"
                 : <>{bakeWindow ? bakeWindow.label : "The Weekend Edit"} · <BakeDateDisplay date={BAKE_DATE} dark /></>}
             </motion.span>
             <motion.h1 initial="hidden" animate="visible" custom={1} variants={fadeUp}
@@ -175,6 +177,8 @@ export default function Reserve() {
                 ? "We're at a pop-up this week. Online orders are paused. We'll be back very soon."
                 : siteMode === "maintenance"
                 ? "We're baking in the background. Online orders will open with our next drop."
+                : siteMode === "chef_on_break"
+                ? "Taking a short pause to recharge, live a little more presently, and come back inspired."
                 : "Baked fresh on delivery day. Comes with a branded bag. Prepaid only. Limited bakes per drop."}
             </motion.p>
           </div>
@@ -285,6 +289,19 @@ export default function Reserve() {
                     className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium border border-foreground/30 text-foreground hover:border-foreground/50 hover:text-foreground transition-all">
                     Follow on Instagram
                   </a>
+                </div>
+              ) : siteMode === "chef_on_break" ? (
+                <div className="border border-border/30 p-8" style={{ background: "hsl(38 25% 97%)" }}>
+                  <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-[#2D2926] mb-5">Chef on Break</p>
+                  <p className="font-serif text-lg text-foreground leading-snug mb-5">
+                    Not everything in life needs to move fast.
+                  </p>
+                  <p className="text-sm text-[#2D2926] leading-relaxed mb-5">
+                    Some things are better done slowly — with care, with intention, and for the simple joy of doing them well. Good food, meaningful work, quiet mornings, long conversations. We're taking a short pause to recharge and come back more inspired than ever.
+                  </p>
+                  <p className="font-serif italic text-sm text-foreground/70 leading-relaxed">
+                    Life is not a race. Cook slowly. Eat well. Enjoy the process.
+                  </p>
                 </div>
               ) : (
               <>

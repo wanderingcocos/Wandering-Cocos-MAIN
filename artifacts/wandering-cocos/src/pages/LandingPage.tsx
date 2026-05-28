@@ -315,7 +315,7 @@ function PhilosophyStackSection() {
                   </button>
                 ) : (
                   <span className="text-xs tracking-[0.22em] uppercase font-medium px-6 py-2" style={{ color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.18)" }}>
-                    {siteMode === "sold_out" ? "Sold Out · Next drop coming soon" : siteMode === "popup" ? "Pop-Up this week · Orders resume next week" : "Baking in progress · Check back soon"}
+                    {siteMode === "sold_out" ? "Sold Out · Next drop coming soon" : siteMode === "popup" ? "Pop-Up this week · Orders resume next week" : siteMode === "chef_on_break" ? "Chef on Break · Back soon" : "Baking in progress · Check back soon"}
                   </span>
                 )}
                 <p className="text-xs tracking-widest uppercase mt-4 font-light" style={{ color: "rgba(245,238,224,0.75)" }}>
@@ -422,7 +422,7 @@ export default function LandingPage() {
                 </button>
               ) : (
                 <span className="w-full sm:w-64 h-14 flex items-center justify-center text-xs tracking-[0.18em] uppercase font-medium whitespace-nowrap border border-white/20 text-white/40">
-                  {siteMode === "sold_out" ? "Sold Out" : siteMode === "popup" ? "Orders Paused" : "Coming Soon"}
+                  {siteMode === "sold_out" ? "Sold Out" : siteMode === "popup" ? "Orders Paused" : siteMode === "chef_on_break" ? "Chef on Break" : "Coming Soon"}
                 </span>
               )}
               <button

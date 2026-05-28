@@ -485,6 +485,11 @@ const SITE_MODES = [
     label: "Maintenance",
     description: "Shows a holding message: 'Baking in progress — check back soon.'",
   },
+  {
+    id: "chef_on_break",
+    label: "Chef on Break",
+    description: "Shows a warm, personal pause message: the chef is recharging and will return inspired. Orders are hidden.",
+  },
 ] as const;
 
 function SiteModeTab({ token }: { token: string }) {
