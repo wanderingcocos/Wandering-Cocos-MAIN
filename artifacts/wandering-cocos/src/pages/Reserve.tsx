@@ -297,10 +297,10 @@ export default function Reserve() {
                     Not everything in life needs to move fast.
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed mb-5">
-                    Some things are better done slowly — with care, with intention, and for the simple joy of doing them well. Good food, meaningful work, quiet mornings, long conversations. We're taking a short pause to recharge and come back more inspired than ever.
+                    Some things are better done slowly with care, intention, and love for the process. Good food, meaningful work, and the things you truly love were never meant to feel rushed. We’re taking a short pause to recharge and come back inspired.
                   </p>
                   <p className="font-serif italic text-sm text-foreground/70 leading-relaxed">
-                    Life is not a race. Cook slowly. Eat well. Enjoy the process.
+                    Life is not a race. Move at your own pace. Enjoy the process.
                   </p>
                 </div>
               ) : (
