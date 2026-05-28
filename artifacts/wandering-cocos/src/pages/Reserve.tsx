@@ -172,7 +172,7 @@ export default function Reserve() {
               className="mt-3 font-light"
               style={{ fontSize: "clamp(0.82rem, 1.1vw, 0.95rem)", color: "rgba(245,238,224,0.85)", maxWidth: "380px", lineHeight: "1.7" }}>
               {siteMode === "popup"
-                ? "We're at a pop-up this week — online orders are paused. We'll be back very soon."
+                ? "We're at a pop-up this week. Online orders are paused. We'll be back very soon."
                 : siteMode === "maintenance"
                 ? "We're baking in the background. Online orders will open with our next drop."
                 : "Baked fresh on delivery day. Comes with a branded bag. Prepaid only. Limited bakes per drop."}
@@ -263,7 +263,7 @@ export default function Reserve() {
                 <div className="border border-border/30 p-8 text-center" style={{ background: "hsl(38 25% 97%)" }}>
                   <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-[#2D2926] mb-5">Orders Paused</p>
                   <p className="font-serif text-lg text-foreground leading-snug mb-4">We're at a pop-up this week.</p>
-                  <p className="text-sm text-[#2D2926] leading-relaxed mb-6">We are at a private residential pop-up this week! Online orders are closed, but we'll be back next week.</p>
+                  <p className="text-sm text-[#2D2926] leading-relaxed mb-6">We are at a pop-up this week! Online orders are closed, but we'll be back next week.</p>
                   <a href="https://chat.whatsapp.com/HH1IixIyMcCCY8jHnrlHei" target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium text-white transition-all hover:opacity-90"
                     style={{ background: "#25D366" }}>
