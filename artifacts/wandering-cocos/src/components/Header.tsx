@@ -152,7 +152,16 @@ function DropdownItem({ link, location, navigate, onClose }: {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Child links — render above the parent label, appear on hover */}
+      {/* Parent label — always visible */}
+      <button
+        onClick={() => { navigate(link.href!); onClose?.(); }}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+      >
+        {link.name}
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+      </button>
+
+      {/* Child links — appear below parent on hover */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -160,7 +169,7 @@ function DropdownItem({ link, location, navigate, onClose }: {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.18 }}
-            className="flex flex-col items-start overflow-hidden mb-1.5"
+            className="flex flex-col items-start overflow-hidden mt-1"
           >
             {link.children!.map(child => {
               const childActive = location.startsWith(child.href);
@@ -177,15 +186,6 @@ function DropdownItem({ link, location, navigate, onClose }: {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Parent label */}
-      <button
-        onClick={() => { navigate(link.href!); onClose?.(); }}
-        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
-      >
-        {link.name}
-        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
-      </button>
     </div>
   );
 }
@@ -236,7 +236,7 @@ export function Header() {
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-end gap-7 lg:gap-9 pb-4">
+          <nav className="hidden md:flex items-start gap-7 lg:gap-9 pt-5">
             {navLinks.map(link => (
               <DropdownItem
                 key={link.name}
