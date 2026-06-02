@@ -5,8 +5,12 @@ import { Footer } from "@/components/Footer";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
 import { WA_NUMBER } from "@/lib/constants";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { readCache, revalidate } from "@/lib/apiCache";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const BAKE_URL = `${BASE}/api/bake-window/current`;
+const SETTINGS_URL = `${BASE}/api/settings`;
+const DATA_TTL = 30_000;
 
 type BakeWindowItem = { id: number; name: string; description: string | null; position: number };
 type BakeWindow = {
@@ -167,20 +171,23 @@ function ProductCard({ product, qty, onChange }: { product: Product; qty: number
 
 export default function Reserve() {
   const { mode: siteMode, loaded: siteModeLoaded } = useSiteStatus();
-  const [bakeWindow, setBakeWindow] = useState<BakeWindow | null>(null);
-  const [windowLoaded, setWindowLoaded] = useState(false);
-  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
+  const [bakeWindow, setBakeWindow] = useState<BakeWindow | null>(
+    () => readCache<BakeWindow | null>(BAKE_URL, DATA_TTL) ?? null
+  );
+  const [windowLoaded, setWindowLoaded] = useState(
+    () => readCache(BAKE_URL, DATA_TTL) !== null && readCache(SETTINGS_URL, DATA_TTL) !== null
+  );
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>(
+    () => readCache<Record<string, string>>(SETTINGS_URL, DATA_TTL) ?? {}
+  );
   const orderSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${BASE}/api/bake-window/current`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`${BASE}/api/settings`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
-    ]).then(([windowData, settingsData]) => {
-      setBakeWindow(windowData);
-      if (settingsData && typeof settingsData === "object") setSiteSettings(settingsData as Record<string, string>);
-      setWindowLoaded(true);
-    });
+    let bwDone = readCache(BAKE_URL, DATA_TTL) !== null;
+    let sDone = readCache(SETTINGS_URL, DATA_TTL) !== null;
+    function checkDone() { if (bwDone && sDone) setWindowLoaded(true); }
+    revalidate<BakeWindow | null>(BAKE_URL, d => { setBakeWindow(d); bwDone = true; checkDone(); }, null);
+    revalidate<Record<string, string>>(SETTINGS_URL, d => { if (d && typeof d === "object") setSiteSettings(d); sDone = true; checkDone(); }, {});
   }, []);
 
   const BAKE_DATE = bakeWindow ? formatBakeDate(bakeWindow.bakeDate) : "Coming Soon";

@@ -1,18 +1,24 @@
 import { useState, useEffect } from "react";
+import { readCache, revalidate } from "@/lib/apiCache";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const URL = `${BASE}/api/site-status`;
+const TTL = 45_000;
 
 export type SiteMode = "bake_day" | "popup" | "maintenance" | "sold_out" | "chef_on_break";
 
 export function useSiteStatus() {
-  const [mode, setMode] = useState<SiteMode>("bake_day");
-  const [loaded, setLoaded] = useState(false);
+  const [mode, setMode] = useState<SiteMode>(
+    () => readCache<{ mode: SiteMode }>(URL, TTL)?.mode ?? "bake_day"
+  );
+  const [loaded, setLoaded] = useState(() => readCache<{ mode: SiteMode }>(URL, TTL) !== null);
 
   useEffect(() => {
-    fetch(`${BASE}/api/site-status`)
-      .then(r => r.ok ? r.json() : { mode: "bake_day" })
-      .then((d: { mode: SiteMode }) => { setMode(d.mode); setLoaded(true); })
-      .catch(() => setLoaded(true));
+    revalidate<{ mode: SiteMode }>(
+      URL,
+      d => { setMode(d.mode); setLoaded(true); },
+      { mode: "bake_day" },
+    );
   }, []);
 
   return { mode, loaded };

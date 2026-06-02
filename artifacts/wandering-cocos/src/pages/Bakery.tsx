@@ -6,8 +6,11 @@ import { Footer } from "@/components/Footer";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
 import { WA_NUMBER } from "@/lib/constants";
+import { readCache, revalidate } from "@/lib/apiCache";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const ADDONS_URL = `${BASE}/api/bakery-addons`;
+const ADDONS_TTL = 60_000;
 
 const wanderSteps = [
   {
@@ -324,14 +327,15 @@ function AddonCard({ addon }: { addon: BakeryAddon }) {
 }
 
 function AddOnProductsSection() {
-  const [addons, setAddons] = useState<BakeryAddon[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [addons, setAddons] = useState<BakeryAddon[]>(
+    () => readCache<BakeryAddon[]>(ADDONS_URL, ADDONS_TTL) ?? []
+  );
+  const [loading, setLoading] = useState(
+    () => readCache(ADDONS_URL, ADDONS_TTL) === null
+  );
 
   useEffect(() => {
-    fetch(`${BASE}/api/bakery-addons`)
-      .then(r => r.ok ? r.json() : [])
-      .then(d => { setAddons(Array.isArray(d) ? d : []); setLoading(false); })
-      .catch(() => setLoading(false));
+    revalidate<BakeryAddon[]>(ADDONS_URL, d => { setAddons(Array.isArray(d) ? d : []); setLoading(false); }, []);
   }, []);
 
   if (!loading && addons.length === 0) return null;
