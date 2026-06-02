@@ -1,0 +1,48 @@
+Please refactor the existing React + Vite single-page application at www.wanderingcocos.in from a singular bakery storefront into a comprehensive lifestyle brand website. The site must retain its premium, minimalist, "silent professional" aesthetic but expand into five distinct pillars: Bakery, Recipes, Specialty Coffee, Merchandise Shop, Cafe, and Journal.
+
+### 1. Dependency Updates
+- Ensure `react-router-dom` is installed and set up for handling client-side paths.
+
+### 2. Core Routing Architecture (App.jsx)
+Configure client-side routing. Migrate the logic of the current homepage (the bakery pre-order drop engine) into its own dedicated page component. Setup routes:
+- `/` -> Home (The new unified brand overview landing page)
+- `/bakery` -> Bakery (The existing preorder drop engine & product grids)
+- `/recipes` -> Recipes (Keep existing recipe component layout exactly as it is right now)
+- `/coffee` -> Specialty Coffee (Premium "Coming Soon" placeholder)
+- `/shop` -> Merchandise Shop (Premium "Coming Soon" placeholder)
+- `/cafe` -> Cafe (Premium "Coming Soon" placeholder)
+- `/journal` -> Journal (Events, pop-up stories, and media feed)
+- `/admin` -> Admin Panel (Secure dashboard for content management)
+
+### 3. Navigation & Footer Enhancements
+- Update the global Navbar to link to: [Home, Bakery, Recipes, Coffee, Shop, Cafe, Journal]. Use a clean, editorial, low-friction layout.
+- Maintain a global announcement banner at the top of the viewport for active/upcoming bakery drops.
+- Update the Footer to cleanly preserve existing digital footprints, legal links, and minimalist typography.
+
+### 4. Homepage Refactor (pages/Home.jsx)
+Build an asymmetric, high-end editorial landing page grid with high breathing room.
+- **Hero Section:** Clean typographic overlay stating: "Fit hard. Indulge freely. Travel deep."
+- **The Core Pillars Grid:** A clean grid layout with minimalist hover cards linking seamlessly to the respective sub-pages.
+- **Review Marquee:** Position our existing horizontal scrolling review marquee at the bottom of the landing page.
+
+### 5. Custom Page Requirements & Premium Placeholders
+
+- **pages/Recipes.jsx:** Do not rewrite or change the layout of our existing recipes section. Keep it running exactly as it currently functions.
+
+- **pages/Coffee.jsx (Specialty Coffee):** Build a premium "Coming Soon" page layout. It should feature high-end graphic/image styling showcasing upcoming specialty coffees and minimal branded ceramic mugs.
+
+- **pages/Shop.jsx (Merchandise Shop):** Build a premium "Coming Soon" page layout. Focus the aesthetic on silent, clean clothing, heavyweight pump covers, and daily fitness gear that we actually use in our training routines.
+
+- **pages/Cafe.jsx (The Cafe Concept):** Build an elegant "Coming Soon" showcase page. The copy and design must convey an atmospheric, beautiful Airbnb house featuring ample garden space, an outdoor grazing table layout, and a romantic, clean white picnic setup.
+
+- **pages/Journal.jsx (Events & Pop-up Stories):** 
+  * Create a clean grid component to display past or upcoming community events and pop-up stories.
+  * Each event card must support a dynamic layout holding 3-4 images/short video clips, alongside an embedded responsive block or direct link button for Instagram Reels or YouTube videos.
+
+### 6. Admin Panel Extension (pages/Admin.jsx)
+- Build out/extend the existing Admin Panel interface.
+- Add an intuitive form section for the "Journal" where I can input text for new pop-up events, upload 3-4 image/media files or asset URLs, and paste an Instagram Reel or YouTube link directly to update the active frontend array dynamically.
+
+### 7. Code Integrity Guardrails
+- Maintain our strict minimalist, high-contrast typography, muted tones, and silent branding style variables.
+- Do not remove or break backend database integrations or state triggers for the bakery drop switches or testimonial forms; safely capsule them into the new `/bakery` and admin processing flows.
