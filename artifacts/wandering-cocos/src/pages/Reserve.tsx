@@ -188,8 +188,10 @@ export default function Reserve() {
   const BOX_PRICE = bakeWindow?.boxPrice ?? 1299;
   const BOX_ORIGINAL_PRICE = bakeWindow?.originalPrice ?? 1999;
   const MAX_BOXES = bakeWindow?.maxBoxes ?? 15;
-  const MAX_SMALL = parseInt(siteSettings.max_small_boxes ?? "99") || 99;
-  const MAX_BOULE = parseInt(siteSettings.max_sourdough_boules ?? "99") || 99;
+  const _parsedSmall = parseInt(siteSettings.max_small_boxes ?? "");
+  const MAX_SMALL = Number.isNaN(_parsedSmall) ? 99 : _parsedSmall;
+  const _parsedBoule = parseInt(siteSettings.max_sourdough_boules ?? "");
+  const MAX_BOULE = Number.isNaN(_parsedBoule) ? 99 : _parsedBoule;
 
   const menuItems = bakeWindow?.items?.length
     ? bakeWindow.items.map((item, i) => ({
@@ -232,6 +234,17 @@ export default function Reserve() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [step, setStep] = useState<"form" | "sent">("form");
+
+  useEffect(() => {
+    if (!windowLoaded) return;
+    setCart(prev => {
+      const clamped = { ...prev };
+      if (MAX_BOXES === 0) clamped.big_box = 0;
+      if (MAX_SMALL === 0) clamped.small_box = 0;
+      if (MAX_BOULE === 0) clamped.sourdough = 0;
+      return clamped;
+    });
+  }, [windowLoaded, MAX_BOXES, MAX_SMALL, MAX_BOULE]);
 
   function setProductQty(id: string, qty: number) {
     setCart(c => ({ ...c, [id]: qty }));
