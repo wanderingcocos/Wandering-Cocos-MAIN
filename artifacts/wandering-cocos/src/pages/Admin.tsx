@@ -523,7 +523,7 @@ function SiteModeTab({ token }: { token: string }) {
   return (
     <div>
       <h2 className="font-serif text-xl text-foreground mb-2">Site Status</h2>
-      <p className="text-xs text-[#2D2926] mb-6 leading-relaxed">Controls what visitors see on the homepage and Reserve page. Changes take effect immediately after saving.</p>
+      <p className="text-xs text-[#2D2926] mb-6 leading-relaxed">Controls what visitors see on the homepage and Pre-order page. Changes take effect immediately after saving.</p>
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       {loading ? (
         <p className="text-xs text-[#2D2926]">Loading…</p>
@@ -565,6 +565,8 @@ const DEFAULT_SETTINGS: { key: string; label: string; placeholder: string }[] = 
   { key: "delivery_zone", label: "Delivery Zone", placeholder: "Free delivery within 7km of HSR Layout, Bengaluru" },
   { key: "gift_price", label: "Gifting Box Price (₹)", placeholder: "1299" },
   { key: "gift_original_price", label: "Gifting Box Original Price / Strikethrough (₹)", placeholder: "1999" },
+  { key: "max_small_boxes", label: "Max Small Wandering Boxes per drop (0 = sold out)", placeholder: "99" },
+  { key: "max_sourdough_boules", label: "Max Sourdough Boules per drop (0 = sold out)", placeholder: "99" },
 ];
 
 function SettingsTab({ token }: { token: string }) {

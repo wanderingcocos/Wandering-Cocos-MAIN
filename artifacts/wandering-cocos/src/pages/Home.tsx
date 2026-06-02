@@ -12,7 +12,7 @@ const pillars = [
     label: "01",
     title: "Bakery",
     body: "Artisanal sourdough, bakes, and everything we make with obsessive attention to ingredient quality.",
-    tag: "Reserve Your Box",
+    tag: "Pre-order Your Box",
   },
   {
     id: "recipes",

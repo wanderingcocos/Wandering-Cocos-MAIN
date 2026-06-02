@@ -3,7 +3,7 @@ import { Instagram } from "lucide-react";
 
 const footerLinks = [
   { name: "Bakery", href: "/bakery" },
-  { name: "Reserve", href: "/reserve" },
+  { name: "Pre-order", href: "/reserve" },
   { name: "FAQ", href: "/faq" },
   { name: "Refund Policy", href: "/refund-policy" },
   { name: "Privacy Policy", href: "/privacy-policy" },
