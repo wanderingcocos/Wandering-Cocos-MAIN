@@ -5,7 +5,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { WelcomeGreeting } from "@/components/WelcomeGreeting";
 import { WhatsAppWidget } from "@/components/WhatsAppWidget";
-import LandingPage from "@/pages/LandingPage";
+import Home from "@/pages/Home";
+import Bakery from "@/pages/Bakery";
+import Coffee from "@/pages/Coffee";
+import Shop from "@/pages/Shop";
+import Cafe from "@/pages/Cafe";
+import Journal from "@/pages/Journal";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ShippingPolicy from "@/pages/ShippingPolicy";
 import Contact from "@/pages/Contact";
@@ -46,7 +51,12 @@ function Router() {
   return (
     <>
       <Switch>
-        <Route path="/" component={LandingPage} />
+        <Route path="/" component={Home} />
+        <Route path="/bakery" component={Bakery} />
+        <Route path="/coffee" component={Coffee} />
+        <Route path="/shop" component={Shop} />
+        <Route path="/cafe" component={Cafe} />
+        <Route path="/journal" component={Journal} />
         <Route path="/video" component={VideoPromo} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/shipping" component={ShippingPolicy} />

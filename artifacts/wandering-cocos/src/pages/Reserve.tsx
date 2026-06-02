@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
 
 import { WA_NUMBER } from "@/lib/constants";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const UPI_ID = "snhshbhm2-1@okhdfcbank";
@@ -62,6 +63,27 @@ const fadeUp = {
     transition: { duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
   }),
 };
+
+const RESERVE_ADDONS = [
+  {
+    name: "Artisanal Sourdough Boule",
+    price: "₹260",
+    badge: "New · Every Bake Day",
+    description:
+      "72-hour cold-fermented. Open crumb, crisp crust, zero additives. A permanent addition to every bake day — available alongside or without the Wandering Box.",
+    waText:
+      "Hi Wandering Cocos! I'd like to order the Artisanal Sourdough Boule (₹260) for the next bake day. Could you help me place the order?",
+  },
+  {
+    name: "Small Wandering Box",
+    price: "₹599",
+    badge: "Permanent Addition · Every Bake Day",
+    description:
+      "A cookie, a mini loaf, and one seasonal treat — curated for one. Packaged for gifting or a quiet indulgence. Now part of every bake day.",
+    waText:
+      "Hi Wandering Cocos! I'd like to order the Small Wandering Box (₹599) for the next bake day. Could you help me place the order?",
+  },
+];
 
 export default function Reserve() {
   const { mode: siteMode, loaded: siteModeLoaded } = useSiteStatus();
@@ -530,6 +552,97 @@ export default function Reserve() {
             </motion.div>
           </div>
         </section>
+        {/* ── ALSO AVAILABLE THIS DROP ─────────────────────────── */}
+        <section
+          className="px-6 md:px-14 lg:px-20 py-20 border-t border-border/25"
+          style={{ background: "hsl(38 26% 93%)" }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-12"
+            >
+              <span className="text-[9px] tracking-[0.38em] font-medium uppercase block mb-4"
+                style={{ color: "rgba(55,35,18,0.45)" }}>
+                Also Available This Drop
+              </span>
+              <h2 className="font-serif italic leading-tight mb-3"
+                style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)", color: "#2a4820" }}>
+                Two permanent additions.
+              </h2>
+              <p className="font-light"
+                style={{ fontSize: "clamp(0.82rem, 1.1vw, 0.94rem)", color: "rgba(55,35,18,0.58)", maxWidth: "460px", lineHeight: "1.78" }}>
+                Standalone bakes, available on every bake day. Order via WhatsApp — alongside your box, or on their own.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+              {RESERVE_ADDONS.map((addon, i) => (
+                <motion.div
+                  key={addon.name}
+                  initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.65, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col p-7 gap-4"
+                  style={{
+                    borderRadius: "1.5rem",
+                    border: "2px solid rgba(139,90,43,0.11)",
+                    background: "rgba(255,252,246,0.96)",
+                    boxShadow: "0 8px 32px rgba(93,56,24,0.08), 0 2px 8px rgba(93,56,24,0.04)",
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <span
+                        className="text-[8px] tracking-[0.28em] uppercase font-semibold px-2.5 py-1 mb-3 inline-block"
+                        style={{
+                          background: "rgba(42,72,32,0.08)",
+                          color: "#2a4820",
+                          border: "1px solid rgba(42,72,32,0.15)",
+                          borderRadius: "999px",
+                        }}
+                      >
+                        {addon.badge}
+                      </span>
+                      <h3 className="font-serif leading-snug"
+                        style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.25rem)", color: "#1e3218" }}>
+                        {addon.name}
+                      </h3>
+                    </div>
+                    <span className="font-serif font-medium flex-shrink-0"
+                      style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.25rem)", color: "#2a4820" }}>
+                      {addon.price}
+                    </span>
+                  </div>
+
+                  <p className="font-light leading-relaxed flex-1"
+                    style={{ fontSize: "clamp(0.82rem,1vw,0.9rem)", color: "rgba(55,35,18,0.65)", lineHeight: "1.78" }}>
+                    {addon.description}
+                  </p>
+
+                  <a
+                    href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(addon.waText)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center h-11 px-6 text-[10px] tracking-[0.25em] uppercase font-medium transition-all hover:opacity-90 text-white"
+                    style={{ background: "#2a5628", borderRadius: "0.75rem" }}
+                  >
+                    Order on WhatsApp
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+
+            <p className="text-[10px] text-center leading-relaxed"
+              style={{ color: "rgba(55,35,18,0.38)" }}>
+              The original 6-item Wandering Box remains unchanged. These are standalone additions.
+            </p>
+          </div>
+        </section>
+
+        {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
+        <TestimonialsSection />
+
       </main>
       <Footer />
     </div>

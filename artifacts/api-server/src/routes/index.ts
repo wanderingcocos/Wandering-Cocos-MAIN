@@ -7,6 +7,8 @@ import adminLaunchesRouter from "./admin-launches";
 import recipesRouter from "./recipes";
 import storageRouter from "./storage";
 import testimonialsRouter from "./testimonials";
+import bakeryAddonsRouter from "./bakery-addons";
+import journalRouter from "./journal";
 
 const router: IRouter = Router();
 
@@ -18,5 +20,7 @@ router.use(adminLaunchesRouter);
 router.use(recipesRouter);
 router.use(storageRouter);
 router.use(testimonialsRouter);
+router.use(bakeryAddonsRouter);
+router.use(journalRouter);
 
 export default router;

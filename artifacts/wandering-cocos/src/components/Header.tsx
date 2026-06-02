@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 
@@ -67,37 +67,24 @@ function scrollToSection(id: string) {
   window.scrollTo({ top, behavior: "smooth" });
 }
 
-type SubItem = { name: string; section?: string; href?: string };
-
 type NavLink = {
   name: string;
-  section?: string;
   href?: string;
-  page?: string;
-  dropdown?: SubItem[];
 };
 
 const navLinks: NavLink[] = [
-  {
-    name: "THE STORY",
-    dropdown: [
-      { name: "The Philosophy", section: "philosophy" },
-      { name: "Way of the Coco", section: "way-of-the-coco" },
-    ],
-  },
-  { name: "MENU", href: "/reserve" },
-  { name: "GIFTING", href: "/gifting" },
-  { name: "ARCHIVES", href: "/archive" },
+  { name: "HOME", href: "/" },
+  { name: "BAKERY", href: "/bakery" },
   { name: "RECIPES", href: "/recipes" },
-  { name: "JOIN THE CIRCLE", href: "/join" },
+  { name: "COFFEE", href: "/coffee" },
+  { name: "SHOP", href: "/shop" },
+  { name: "CAFÉ", href: "/cafe" },
+  { name: "JOURNAL", href: "/journal" },
 ];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [storyOpen, setStoryOpen] = useState(false);
-  const [mobileStoryOpen, setMobileStoryOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [location, navigate] = useLocation();
 
   useEffect(() => {
@@ -106,40 +93,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setStoryOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  function navigateToSection(section: string) {
-    if (location === "/") {
-      scrollToSection(section);
-    } else {
-      navigate("/");
-      setTimeout(() => scrollToSection(section), 450);
-    }
-  }
-
   function handleNavClick(link: NavLink) {
     setMobileMenuOpen(false);
-    setStoryOpen(false);
     if (link.href) { navigate(link.href); return; }
-    if (link.page && link.section) {
-      if (location === link.page) {
-        scrollToSection(link.section);
-      } else {
-        navigate(link.page);
-        setTimeout(() => scrollToSection(link.section!), 450);
-      }
-      return;
-    }
-    if (link.section) navigateToSection(link.section);
   }
+
+  const textColor = "text-foreground/80";
+  const hoverColor = "hover:text-accent";
+  const bgScrolled = "bg-background/95 backdrop-blur-md border-b border-border shadow-sm";
+  const bgUnscrolled = "bg-background/90 backdrop-blur-sm border-b border-border/50";
 
   return (
     <>
@@ -148,8 +110,8 @@ export function Header() {
       <header
         className={`fixed top-[32px] left-0 right-0 z-50 transition-all duration-500 ease-out ${
           isScrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border shadow-sm h-16 md:h-20"
-            : "bg-transparent h-20 md:h-24"
+            ? `${bgScrolled} h-16 md:h-20`
+            : `${bgUnscrolled} h-20 md:h-24`
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-stretch justify-between h-full">
@@ -172,69 +134,19 @@ export function Header() {
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10">
+          <nav className="hidden md:flex items-center gap-7 lg:gap-9">
             {navLinks.map((link) => {
-              if (link.dropdown) {
-                return (
-                  <div
-                    key={link.name}
-                    ref={dropdownRef}
-                    className="relative"
-                    onMouseEnter={() => setStoryOpen(true)}
-                    onMouseLeave={() => setStoryOpen(false)}
-                  >
-                    <button
-                      className="text-xs tracking-[0.15em] font-medium text-foreground/80 hover:text-accent flex items-center gap-1 py-1 uppercase cursor-pointer group"
-                      onClick={() => setStoryOpen((v) => !v)}
-                    >
-                      {link.name}
-                      <ChevronDown
-                        className={`w-3 h-3 transition-transform duration-200 ${storyOpen ? "rotate-180" : ""}`}
-                        strokeWidth={1.8}
-                      />
-                      <span className="absolute bottom-0 left-0 w-full h-[1px] bg-accent transform -translate-x-[101%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                    </button>
-
-                    <AnimatePresence>
-                      {storyOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 6 }}
-                          transition={{ duration: 0.18 }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-52 bg-background border border-border/60 shadow-xl"
-                          style={{ borderRadius: 0 }}
-                        >
-                          {link.dropdown.map((sub, i) => (
-                            <button
-                              key={sub.name}
-                              onClick={() => {
-                                setStoryOpen(false);
-                                if (sub.href) navigate(sub.href);
-                                else if (sub.section) navigateToSection(sub.section);
-                              }}
-                              className={`w-full text-left px-5 py-3.5 text-[11px] tracking-[0.12em] uppercase font-medium text-foreground/70 hover:text-accent hover:bg-accent/5 transition-colors duration-200 cursor-pointer ${
-                                i < link.dropdown!.length - 1 ? "border-b border-border/40" : ""
-                              }`}
-                            >
-                              {sub.name}
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              }
-
+              const isActive = link.href === "/"
+                ? location === "/"
+                : location.startsWith(link.href!);
               return (
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link)}
-                  className="text-xs tracking-[0.15em] font-medium text-foreground/80 hover:text-accent relative overflow-hidden group py-1 uppercase cursor-pointer"
+                  className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 ${textColor} ${hoverColor} ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
                 >
                   {link.name}
-                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-accent transform -translate-x-[101%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                  <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
                 </button>
               );
             })}
@@ -244,7 +156,7 @@ export function Header() {
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="text-foreground/80 hover:text-accent transition-colors duration-300"
+              className={`${textColor} transition-colors duration-300`}
               aria-label="Open menu"
             >
               <Menu className="w-6 h-6 stroke-[1.5]" />
@@ -278,70 +190,24 @@ export function Header() {
               </button>
             </div>
 
-            <nav className="flex-1 flex flex-col justify-center items-center gap-6 px-6 py-8">
-              {navLinks.map((link, i) => {
-                if (link.dropdown) {
-                  return (
-                    <div key={link.name} className="flex flex-col items-center gap-4 w-full">
-                      <button
-                        onClick={() => setMobileStoryOpen((v) => !v)}
-                        className="font-serif text-2xl text-foreground hover:text-accent transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer flex items-center gap-2"
-                      >
-                        {link.name}
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-200 ${mobileStoryOpen ? "rotate-180" : ""}`}
-                          strokeWidth={1.5}
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {mobileStoryOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="flex flex-col items-center gap-3 overflow-hidden"
-                          >
-                            {link.dropdown.map((sub) => (
-                              <button
-                                key={sub.name}
-                                onClick={() => {
-                                  setMobileMenuOpen(false);
-                                  setMobileStoryOpen(false);
-                                  if (sub.href) navigate(sub.href);
-                                  else if (sub.section) navigateToSection(sub.section);
-                                }}
-                                className="text-sm tracking-[0.14em] uppercase font-medium text-[#2D2926] hover:text-accent transition-colors duration-200 cursor-pointer"
-                              >
-                                {sub.name}
-                              </button>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                      <div className="w-8 h-px bg-border/40" />
-                    </div>
-                  );
-                }
-
-                return (
-                  <motion.button
-                    key={link.name}
-                    onClick={() => handleNavClick(link)}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 + 0.1, duration: 0.4 }}
-                    className="font-serif text-2xl text-foreground hover:text-accent transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer"
-                  >
-                    {link.name}
-                  </motion.button>
-                );
-              })}
+            <nav className="flex-1 flex flex-col justify-center items-center gap-7 px-6 py-8">
+              {navLinks.map((link, i) => (
+                <motion.button
+                  key={link.name}
+                  onClick={() => handleNavClick(link)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 + 0.1, duration: 0.4 }}
+                  className="font-serif text-2xl text-foreground hover:text-accent transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer"
+                >
+                  {link.name}
+                </motion.button>
+              ))}
             </nav>
 
             <div className="p-8 text-center border-t border-border/50">
               <p className="font-serif italic text-muted-foreground">
-                Dark Roast & Open Road
+                Dark Roast &amp; Open Road
               </p>
             </div>
           </motion.div>

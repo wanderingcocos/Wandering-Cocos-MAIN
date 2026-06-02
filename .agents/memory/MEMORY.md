@@ -1,0 +1,1 @@
+- [Design system tokens](design-system-tokens.md) — CSS vars, Playfair Display serif, card-cabinet warm wooden shelf card utility

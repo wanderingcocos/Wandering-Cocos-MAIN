@@ -1320,6 +1320,349 @@ function ReviewsTab({ token }: { token: string }) {
   );
 }
 
+// ── Bakery Add-Ons Tab ─────────────────────────────────────────────────────────
+
+type AdminAddon = {
+  id: number; title: string; description: string | null; pricePaise: number;
+  imageUrl: string | null; available: boolean; preorderCloseDate: string | null; createdAt: string;
+};
+
+function formatPaise(p: number) { return `₹${(p / 100).toLocaleString("en-IN")}`; }
+
+function BakeryAddOnsTab({ token }: { token: string }) {
+  const { data: addons, loading, refetch } = useAdminFetch<AdminAddon[]>(`${API}/admin/bakery-addons`, token);
+  const [creating, setCreating] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [form, setForm] = useState({ title: "", description: "", pricePaise: 0, imageUrl: "", available: true, preorderCloseDate: "" });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function resetForm() { setForm({ title: "", description: "", pricePaise: 0, imageUrl: "", available: true, preorderCloseDate: "" }); }
+  function loadIntoForm(a: AdminAddon) {
+    setForm({ title: a.title, description: a.description ?? "", pricePaise: a.pricePaise, imageUrl: a.imageUrl ?? "", available: a.available, preorderCloseDate: a.preorderCloseDate ?? "" });
+  }
+
+  function buildBody() {
+    return {
+      title: form.title, description: form.description || null,
+      pricePaise: form.pricePaise, imageUrl: form.imageUrl || null,
+      available: form.available, preorderCloseDate: form.preorderCloseDate || null,
+    };
+  }
+
+  async function handleCreate() {
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/bakery-addons`, { method: "POST", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify(buildBody()) });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false); resetForm(); refetch();
+  }
+
+  async function handleUpdate() {
+    if (!editId) return;
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/bakery-addons/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify(buildBody()) });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setEditId(null); resetForm(); refetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this add-on?")) return;
+    const res = await apiCall(`${API}/admin/bakery-addons/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  async function handleToggle(a: AdminAddon) {
+    const res = await apiCall(`${API}/admin/bakery-addons/${a.id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify({ available: !a.available }) });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  const isEditing = creating || editId !== null;
+
+  return (
+    <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Bakery Add-Ons</h2>
+          <p className="text-xs text-[#2D2926] mt-1">Standalone products available alongside the bake window. Displayed on the Bakery page.</p>
+        </div>
+        {!isEditing && (
+          <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
+            className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
+            + New Add-On
+          </button>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="border border-border/50 p-6 mb-6 bg-muted/30">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">{editId ? "Edit Add-On" : "New Add-On"}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Title *</label>
+                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Artisanal Sourdough Boule"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Description</label>
+                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2}
+                  placeholder="Short product description"
+                  className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Price (in paise) *</label>
+                <input type="number" value={form.pricePaise} onChange={e => setForm(f => ({ ...f, pricePaise: Number(e.target.value) }))}
+                  placeholder="e.g. 26000 = ₹260"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+                {form.pricePaise > 0 && <p className="text-[10px] text-[#2D2926] mt-1">= {formatPaise(form.pricePaise)}</p>}
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Pre-order Close Date</label>
+                <input type="date" value={form.preorderCloseDate} onChange={e => setForm(f => ({ ...f, preorderCloseDate: e.target.value }))}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Image URL (or /images/filename.jpg)</label>
+                <input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} placeholder="/images/addon-sourdough-boule.png"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="flex items-center gap-3">
+                <input type="checkbox" id="addon-available" checked={form.available} onChange={e => setForm(f => ({ ...f, available: e.target.checked }))}
+                  className="w-4 h-4 accent-accent" />
+                <label htmlFor="addon-available" className="text-[10px] tracking-widest uppercase text-[#2D2926] cursor-pointer">Available for order</label>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={editId ? handleUpdate : handleCreate} disabled={saving || !form.title || !form.pricePaise}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+                {saving ? "Saving…" : editId ? "Update" : "Create"}
+              </button>
+              <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {loading ? (
+        <p className="text-xs text-[#2D2926]">Loading…</p>
+      ) : !addons?.length ? (
+        <p className="text-xs text-[#2D2926]">No add-ons yet. Create one above.</p>
+      ) : (
+        <div className="divide-y divide-border/30">
+          {addons.map(a => (
+            <div key={a.id} className="py-4 flex items-start gap-4">
+              {a.imageUrl ? (
+                <img src={a.imageUrl.startsWith("/images/") ? a.imageUrl : a.imageUrl} alt={a.title} className="w-12 h-12 object-cover rounded-sm flex-shrink-0" />
+              ) : (
+                <div className="w-12 h-12 rounded-sm flex-shrink-0 flex items-center justify-center" style={{ background: "rgba(15,36,25,0.06)" }}>
+                  <span className="text-[9px] text-[#2D2926]">IMG</span>
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-serif text-sm text-foreground">{a.title}</p>
+                <p className="text-xs text-[#2D2926]">{formatPaise(a.pricePaise)}</p>
+                {a.description && <p className="text-[10px] text-[#2D2926] mt-0.5 truncate">{a.description}</p>}
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button onClick={() => handleToggle(a)}
+                  className={`text-[9px] tracking-widest uppercase px-3 h-8 border transition-all ${a.available ? "border-green-400/40 text-green-600/70 hover:border-green-400/70" : "border-border/30 text-[#2D2926] hover:border-foreground/40"}`}>
+                  {a.available ? "Available" : "Hidden"}
+                </button>
+                <button onClick={() => { setEditId(a.id); setCreating(false); loadIntoForm(a); }}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(a.id)}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
+                  Del
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Journal Tab ────────────────────────────────────────────────────────────────
+
+type AdminJournalEvent = {
+  id: number; title: string; body: string | null; mediaUrls: string[] | null;
+  embedUrl: string | null; eventDate: string | null; published: boolean; createdAt: string;
+};
+
+function JournalTab({ token }: { token: string }) {
+  const { data: events, loading, refetch } = useAdminFetch<AdminJournalEvent[]>(`${API}/admin/journal`, token);
+  const [creating, setCreating] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [form, setForm] = useState({ title: "", body: "", mediaUrlsRaw: "", embedUrl: "", eventDate: "", published: false });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function resetForm() { setForm({ title: "", body: "", mediaUrlsRaw: "", embedUrl: "", eventDate: "", published: false }); }
+  function loadIntoForm(e: AdminJournalEvent) {
+    setForm({ title: e.title, body: e.body ?? "", mediaUrlsRaw: (e.mediaUrls ?? []).join("\n"), embedUrl: e.embedUrl ?? "", eventDate: e.eventDate ?? "", published: e.published });
+  }
+
+  function buildBody() {
+    const urls = form.mediaUrlsRaw.split("\n").map(s => s.trim()).filter(Boolean);
+    return {
+      title: form.title, body: form.body || null,
+      mediaUrls: urls.length ? urls : null, embedUrl: form.embedUrl || null,
+      eventDate: form.eventDate || null, published: form.published,
+    };
+  }
+
+  async function handleCreate() {
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/journal`, { method: "POST", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify(buildBody()) });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setCreating(false); resetForm(); refetch();
+  }
+
+  async function handleUpdate() {
+    if (!editId) return;
+    setSaving(true);
+    const res = await apiCall(`${API}/admin/journal/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify(buildBody()) });
+    setSaving(false);
+    if (!res.ok) { setError(res.message); return; }
+    setEditId(null); resetForm(); refetch();
+  }
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this journal entry?")) return;
+    const res = await apiCall(`${API}/admin/journal/${id}`, { method: "DELETE", headers: { "x-admin-token": token } });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  async function handleTogglePublish(e: AdminJournalEvent) {
+    const res = await apiCall(`${API}/admin/journal/${e.id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "x-admin-token": token }, body: JSON.stringify({ published: !e.published }) });
+    if (!res.ok) { setError(res.message); return; }
+    refetch();
+  }
+
+  const isEditing = creating || editId !== null;
+
+  return (
+    <div>
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Journal</h2>
+          <p className="text-xs text-[#2D2926] mt-1">Pop-ups, events, and field notes shown on the public Journal page.</p>
+        </div>
+        {!isEditing && (
+          <button onClick={() => { setCreating(true); setEditId(null); resetForm(); }}
+            className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-9 border border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all">
+            + New Entry
+          </button>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="border border-border/50 p-6 mb-6 bg-muted/30">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#2D2926] mb-5">{editId ? "Edit Entry" : "New Journal Entry"}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Title *</label>
+                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Pop-Up at Koramangala Farmers Market"
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Event Date</label>
+                <input type="date" value={form.eventDate} onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Embed URL (YouTube / Instagram)</label>
+                <input value={form.embedUrl} onChange={e => setForm(f => ({ ...f, embedUrl: e.target.value }))} placeholder="https://youtu.be/... or instagram.com/reel/..."
+                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Image URLs (one per line, max 4)</label>
+                <textarea value={form.mediaUrlsRaw} onChange={e => setForm(f => ({ ...f, mediaUrlsRaw: e.target.value }))} rows={3}
+                  placeholder={"https://...image1.jpg\nhttps://...image2.jpg"}
+                  className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y font-mono" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Body text</label>
+                <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={5}
+                  placeholder="Describe the event, the vibe, what was made…"
+                  className="w-full border border-border/50 bg-background text-foreground text-xs px-3 py-2 focus:outline-none focus:border-accent resize-y" />
+              </div>
+              <div className="flex items-center gap-3">
+                <input type="checkbox" id="journal-published" checked={form.published} onChange={e => setForm(f => ({ ...f, published: e.target.checked }))}
+                  className="w-4 h-4 accent-accent" />
+                <label htmlFor="journal-published" className="text-[10px] tracking-widest uppercase text-[#2D2926] cursor-pointer">Published (visible on site)</label>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={editId ? handleUpdate : handleCreate} disabled={saving || !form.title}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
+                {saving ? "Saving…" : editId ? "Update" : "Create"}
+              </button>
+              <button onClick={() => { setCreating(false); setEditId(null); resetForm(); }}
+                className="text-xs tracking-[0.18em] uppercase font-medium px-6 h-9 border border-border/50 text-[#2D2926] hover:text-foreground transition-all">
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {loading ? (
+        <p className="text-xs text-[#2D2926]">Loading…</p>
+      ) : !events?.length ? (
+        <p className="text-xs text-[#2D2926]">No journal entries yet. Create one above.</p>
+      ) : (
+        <div className="divide-y divide-border/30">
+          {events.map(e => (
+            <div key={e.id} className="py-4 flex items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <p className="font-serif text-sm text-foreground">{e.title}</p>
+                {e.eventDate && <p className="text-[10px] text-[#2D2926]">{e.eventDate}</p>}
+                {e.body && <p className="text-[10px] text-[#2D2926] mt-0.5 truncate">{e.body}</p>}
+                <div className="flex gap-2 mt-1">
+                  {e.mediaUrls && e.mediaUrls.length > 0 && <span className="text-[9px] tracking-[0.15em] uppercase px-1.5 py-0.5" style={{ background: "rgba(15,36,25,0.06)", color: "rgba(15,36,25,0.4)" }}>{e.mediaUrls.length} image{e.mediaUrls.length > 1 ? "s" : ""}</span>}
+                  {e.embedUrl && <span className="text-[9px] tracking-[0.15em] uppercase px-1.5 py-0.5" style={{ background: "rgba(255,0,0,0.06)", color: "rgba(200,0,0,0.5)" }}>Embed</span>}
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button onClick={() => handleTogglePublish(e)}
+                  className={`text-[9px] tracking-widest uppercase px-3 h-8 border transition-all ${e.published ? "border-green-400/40 text-green-600/70 hover:border-green-400/70" : "border-border/30 text-[#2D2926] hover:border-foreground/40"}`}>
+                  {e.published ? "Live" : "Draft"}
+                </button>
+                <button onClick={() => { setEditId(e.id); setCreating(false); loadIntoForm(e); }}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-border/40 text-[#2D2926] hover:text-foreground hover:border-foreground/50 transition-all">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(e.id)}
+                  className="text-[10px] tracking-widest uppercase px-3 h-8 border border-red-300/30 text-red-400/60 hover:text-red-400 hover:border-red-400/50 transition-all">
+                  Del
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Admin Page ────────────────────────────────────────────────────────────
 
 export default function Admin() {
@@ -1327,7 +1670,7 @@ export default function Admin() {
   const [input, setInput] = useState("");
   const [authError, setAuthError] = useState("");
   const [authed, setAuthed] = useState(false);
-  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes" | "site_mode" | "reviews">("windows");
+  const [tab, setTab] = useState<"windows" | "orders" | "settings" | "archive" | "recipes" | "site_mode" | "reviews" | "bakery_addons" | "journal">("windows");
   const [checking, setChecking] = useState(false);
 
   useEffect(() => { if (token) verifyToken(token); }, []);
@@ -1365,6 +1708,8 @@ export default function Admin() {
     { id: "archive", label: "Archive" },
     { id: "recipes", label: "Recipes" },
     { id: "reviews", label: "Reviews" },
+    { id: "bakery_addons", label: "Add-Ons" },
+    { id: "journal", label: "Journal" },
     { id: "settings", label: "Settings" },
   ] as const;
 
@@ -1416,6 +1761,8 @@ export default function Admin() {
               {tab === "archive" && <ArchiveTab token={token} />}
               {tab === "recipes" && <RecipesTab token={token} />}
               {tab === "reviews" && <ReviewsTab token={token} />}
+              {tab === "bakery_addons" && <BakeryAddOnsTab token={token} />}
+              {tab === "journal" && <JournalTab token={token} />}
               {tab === "settings" && <SettingsTab token={token} />}
             </motion.div>
           )}

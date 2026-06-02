@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Instagram } from "lucide-react";
 
 const footerLinks = [
+  { name: "Bakery", href: "/bakery" },
   { name: "Reserve", href: "/reserve" },
   { name: "FAQ", href: "/faq" },
   { name: "Refund Policy", href: "/refund-policy" },
