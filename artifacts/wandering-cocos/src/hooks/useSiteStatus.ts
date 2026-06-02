@@ -11,7 +11,7 @@ export function useSiteStatus() {
   const [mode, setMode] = useState<SiteMode>(
     () => readCache<{ mode: SiteMode }>(URL, TTL)?.mode ?? "bake_day"
   );
-  const [loaded, setLoaded] = useState(() => readCache<{ mode: SiteMode }>(URL, TTL) !== null);
+  const [loaded, setLoaded] = useState(() => readCache<{ mode: SiteMode }>(URL, TTL) !== undefined);
 
   useEffect(() => {
     revalidate<{ mode: SiteMode }>(

@@ -171,11 +171,12 @@ function ProductCard({ product, qty, onChange }: { product: Product; qty: number
 
 export default function Reserve() {
   const { mode: siteMode, loaded: siteModeLoaded } = useSiteStatus();
-  const [bakeWindow, setBakeWindow] = useState<BakeWindow | null>(
-    () => readCache<BakeWindow | null>(BAKE_URL, DATA_TTL) ?? null
-  );
+  const [bakeWindow, setBakeWindow] = useState<BakeWindow | null>(() => {
+    const c = readCache<BakeWindow | null>(BAKE_URL, DATA_TTL);
+    return c !== undefined ? c : null;
+  });
   const [windowLoaded, setWindowLoaded] = useState(
-    () => readCache(BAKE_URL, DATA_TTL) !== null && readCache(SETTINGS_URL, DATA_TTL) !== null
+    () => readCache(BAKE_URL, DATA_TTL) !== undefined && readCache(SETTINGS_URL, DATA_TTL) !== undefined
   );
   const [siteSettings, setSiteSettings] = useState<Record<string, string>>(
     () => readCache<Record<string, string>>(SETTINGS_URL, DATA_TTL) ?? {}
@@ -183,8 +184,8 @@ export default function Reserve() {
   const orderSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let bwDone = readCache(BAKE_URL, DATA_TTL) !== null;
-    let sDone = readCache(SETTINGS_URL, DATA_TTL) !== null;
+    let bwDone = readCache(BAKE_URL, DATA_TTL) !== undefined;
+    let sDone = readCache(SETTINGS_URL, DATA_TTL) !== undefined;
     function checkDone() { if (bwDone && sDone) setWindowLoaded(true); }
     revalidate<BakeWindow | null>(BAKE_URL, d => { setBakeWindow(d); bwDone = true; checkDone(); }, () => { bwDone = true; checkDone(); });
     revalidate<Record<string, string>>(SETTINGS_URL, d => { if (d && typeof d === "object") setSiteSettings(d); sDone = true; checkDone(); }, () => { sDone = true; checkDone(); });

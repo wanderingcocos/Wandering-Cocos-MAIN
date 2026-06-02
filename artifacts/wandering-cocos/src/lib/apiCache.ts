@@ -2,9 +2,9 @@ const PREFIX = "wc:";
 
 type CacheEntry = { data: unknown; ts: number };
 const mem = new Map<string, CacheEntry>();
-const inflight = new Map<string, Promise<unknown>>();
+const inflight = new Map<string, Promise<{ ok: true; data: unknown } | { ok: false }>>();
 
-export function readCache<T>(url: string, ttlMs: number): T | null {
+export function readCache<T>(url: string, ttlMs: number): T | undefined {
   const m = mem.get(url);
   if (m && Date.now() - m.ts < ttlMs) return m.data as T;
   try {
@@ -17,7 +17,7 @@ export function readCache<T>(url: string, ttlMs: number): T | null {
       }
     }
   } catch {}
-  return null;
+  return undefined;
 }
 
 function writeCache(url: string, data: unknown) {
@@ -32,24 +32,26 @@ export function revalidate<T>(
   onError: () => void,
 ): void {
   if (inflight.has(url)) {
-    (inflight.get(url) as Promise<T | null>)
-      .then(d => { if (d !== null) onData(d); else onError(); })
-      .catch(() => onError());
+    inflight.get(url)!.then(r => { if (r.ok) onData(r.data as T); else onError(); }).catch(() => onError());
     return;
   }
 
-  const p: Promise<T | null> = fetch(url)
+  const p = fetch(url)
     .then(r => {
-      if (!r.ok) return null;
-      return r.json() as Promise<T>;
+      if (!r.ok) return { ok: false } as const;
+      return r.json().then((data: T) => ({ ok: true, data } as const));
     })
-    .then((d: T | null) => {
-      if (d !== null) { writeCache(url, d); onData(d); }
+    .then(r => {
+      if (r.ok) { writeCache(url, r.data); onData(r.data as T); }
       else onError();
       inflight.delete(url);
-      return d;
+      return r;
     })
-    .catch(() => { onError(); inflight.delete(url); return null; });
+    .catch(() => {
+      onError();
+      inflight.delete(url);
+      return { ok: false } as const;
+    });
 
   inflight.set(url, p);
 }

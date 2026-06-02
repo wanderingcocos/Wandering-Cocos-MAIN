@@ -331,7 +331,7 @@ function AddOnProductsSection() {
     () => readCache<BakeryAddon[]>(ADDONS_URL, ADDONS_TTL) ?? []
   );
   const [loading, setLoading] = useState(
-    () => readCache(ADDONS_URL, ADDONS_TTL) === null
+    () => readCache(ADDONS_URL, ADDONS_TTL) === undefined
   );
 
   useEffect(() => {
