@@ -85,7 +85,7 @@ const navLinks: NavLink[] = [
     name: "JOURNAL",
     href: "/journal",
     children: [
-      { name: "Archives", href: "/archives" },
+      { name: "Archives", href: "/archive" },
     ],
   },
   { name: "JOIN THE CIRCLE", href: "/join", cta: true },
