@@ -29,15 +29,26 @@ function writeCache(url: string, data: unknown) {
 export function revalidate<T>(
   url: string,
   onData: (d: T) => void,
-  fallback: T,
+  _fallback: T,
 ): void {
   if (inflight.has(url)) {
-    (inflight.get(url) as Promise<T>).then(onData).catch(() => {});
+    (inflight.get(url) as Promise<T | null>)
+      .then(d => { if (d !== null) onData(d); })
+      .catch(() => {});
     return;
   }
-  const p = fetch(url)
-    .then(r => r.ok ? r.json() as T : fallback)
-    .then((d: T) => { writeCache(url, d); onData(d); inflight.delete(url); return d; })
-    .catch(() => { inflight.delete(url); onData(fallback); return fallback; });
+
+  const p: Promise<T | null> = fetch(url)
+    .then(r => {
+      if (!r.ok) return null;
+      return r.json() as Promise<T>;
+    })
+    .then((d: T | null) => {
+      if (d !== null) { writeCache(url, d); onData(d); }
+      inflight.delete(url);
+      return d;
+    })
+    .catch(() => { inflight.delete(url); return null; });
+
   inflight.set(url, p);
 }
