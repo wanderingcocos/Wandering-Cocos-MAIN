@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 
@@ -60,31 +60,138 @@ function InfoStrip() {
   );
 }
 
-function scrollToSection(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-  window.scrollTo({ top, behavior: "smooth" });
-}
-
+type NavChild = { name: string; href: string };
 type NavLink = {
   name: string;
   href?: string;
+  children?: NavChild[];
+  cta?: boolean;
 };
 
 const navLinks: NavLink[] = [
   { name: "HOME", href: "/" },
-  { name: "BAKERY", href: "/bakery" },
+  {
+    name: "BAKERY",
+    href: "/bakery",
+    children: [
+      { name: "Pre-order", href: "/reserve" },
+    ],
+  },
   { name: "RECIPES", href: "/recipes" },
   { name: "COFFEE", href: "/coffee" },
   { name: "SHOP", href: "/shop" },
   { name: "CAFÉ", href: "/cafe" },
-  { name: "JOURNAL", href: "/journal" },
+  {
+    name: "JOURNAL",
+    href: "/journal",
+    children: [
+      { name: "Archives", href: "/archives" },
+    ],
+  },
+  { name: "JOIN THE CIRCLE", href: "/join", cta: true },
 ];
+
+function DropdownItem({ link, location, navigate, onClose }: {
+  link: NavLink;
+  location: string;
+  navigate: (href: string) => void;
+  onClose?: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isActive = link.href === "/"
+    ? location === "/"
+    : location.startsWith(link.href ?? "__none__") ||
+      (link.children?.some(c => location.startsWith(c.href)) ?? false);
+
+  function handleMouseEnter() {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setOpen(true);
+  }
+  function handleMouseLeave() {
+    timerRef.current = setTimeout(() => setOpen(false), 120);
+  }
+
+  if (link.cta) {
+    return (
+      <button
+        onClick={() => { navigate(link.href!); onClose?.(); }}
+        className="text-[10px] tracking-[0.16em] font-medium uppercase cursor-pointer transition-all duration-200 px-4 py-1.5 border"
+        style={{
+          color: "var(--foreground)",
+          borderColor: "rgba(45,41,38,0.35)",
+          opacity: 0.85,
+        }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,41,38,0.7)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.85"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,41,38,0.35)"; }}
+      >
+        {link.name}
+      </button>
+    );
+  }
+
+  if (!link.children?.length) {
+    return (
+      <button
+        onClick={() => { navigate(link.href!); onClose?.(); }}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+      >
+        {link.name}
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+      </button>
+    );
+  }
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button
+        onClick={() => { navigate(link.href!); onClose?.(); }}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent flex items-center gap-1 ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+      >
+        {link.name}
+        <ChevronDown className={`w-2.5 h-2.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`} strokeWidth={2} />
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 mt-1 min-w-[140px] bg-background border border-border/50 shadow-md z-50 py-1"
+          >
+            {link.children!.map(child => {
+              const childActive = location.startsWith(child.href);
+              return (
+                <button
+                  key={child.name}
+                  onClick={() => { navigate(child.href); setOpen(false); onClose?.(); }}
+                  className={`w-full text-left px-4 py-2.5 text-[10px] tracking-[0.2em] uppercase font-medium transition-colors duration-150 ${childActive ? "text-accent bg-accent/5" : "text-foreground/70 hover:text-accent hover:bg-muted/50"}`}
+                >
+                  {child.name}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [location, navigate] = useLocation();
 
   useEffect(() => {
@@ -93,13 +200,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  function handleNavClick(link: NavLink) {
-    setMobileMenuOpen(false);
-    if (link.href) { navigate(link.href); return; }
-  }
-
-  const textColor = "text-foreground/80";
-  const hoverColor = "hover:text-accent";
   const bgScrolled = "bg-background/95 backdrop-blur-md border-b border-border shadow-sm";
   const bgUnscrolled = "bg-background/90 backdrop-blur-sm border-b border-border/50";
 
@@ -135,28 +235,21 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-7 lg:gap-9">
-            {navLinks.map((link) => {
-              const isActive = link.href === "/"
-                ? location === "/"
-                : location.startsWith(link.href!);
-              return (
-                <button
-                  key={link.name}
-                  onClick={() => handleNavClick(link)}
-                  className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 ${textColor} ${hoverColor} ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
-                >
-                  {link.name}
-                  <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
-                </button>
-              );
-            })}
+            {navLinks.map(link => (
+              <DropdownItem
+                key={link.name}
+                link={link}
+                location={location}
+                navigate={navigate}
+              />
+            ))}
           </nav>
 
           {/* Mobile Toggle */}
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className={`${textColor} transition-colors duration-300`}
+              className="text-foreground/80 transition-colors duration-300"
               aria-label="Open menu"
             >
               <Menu className="w-6 h-6 stroke-[1.5]" />
@@ -182,7 +275,7 @@ export function Header() {
                 className="h-16 w-auto object-contain"
               />
               <button
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => { setMobileMenuOpen(false); setMobileExpanded(null); }}
                 className="text-foreground/80 hover:text-accent transition-colors duration-300 p-2"
                 aria-label="Close menu"
               >
@@ -190,19 +283,60 @@ export function Header() {
               </button>
             </div>
 
-            <nav className="flex-1 flex flex-col justify-center items-center gap-7 px-6 py-8">
-              {navLinks.map((link, i) => (
-                <motion.button
-                  key={link.name}
-                  onClick={() => handleNavClick(link)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07 + 0.1, duration: 0.4 }}
-                  className="font-serif text-2xl text-foreground hover:text-accent transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer"
-                >
-                  {link.name}
-                </motion.button>
-              ))}
+            <nav className="flex-1 flex flex-col justify-center items-center gap-2 px-6 py-8">
+              {navLinks.map((link, i) => {
+                const hasChildren = (link.children?.length ?? 0) > 0;
+                const isExpanded = mobileExpanded === link.name;
+                return (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 + 0.1, duration: 0.4 }}
+                    className="w-full flex flex-col items-center"
+                  >
+                    <button
+                      onClick={() => {
+                        if (hasChildren) {
+                          setMobileExpanded(isExpanded ? null : link.name);
+                        } else {
+                          navigate(link.href!);
+                          setMobileMenuOpen(false);
+                          setMobileExpanded(null);
+                        }
+                      }}
+                      className={`font-serif text-2xl transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer flex items-center gap-2 py-3 ${link.cta ? "text-accent border border-accent/50 px-8 font-sans text-sm" : "text-foreground hover:text-accent"}`}
+                    >
+                      {link.name}
+                      {hasChildren && (
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} strokeWidth={1.5} />
+                      )}
+                    </button>
+
+                    <AnimatePresence>
+                      {hasChildren && isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex flex-col items-center gap-1 overflow-hidden"
+                        >
+                          {link.children!.map(child => (
+                            <button
+                              key={child.name}
+                              onClick={() => { navigate(child.href); setMobileMenuOpen(false); setMobileExpanded(null); }}
+                              className="text-sm tracking-[0.18em] uppercase text-foreground/60 hover:text-accent transition-colors duration-200 py-2"
+                            >
+                              {child.name}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
             </nav>
 
             <div className="p-8 text-center border-t border-border/50">
