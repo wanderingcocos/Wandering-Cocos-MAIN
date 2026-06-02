@@ -7,7 +7,6 @@ import { WA_NUMBER } from "@/lib/constants";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const UPI_ID = "snhshbhm2-1@okhdfcbank";
 
 type BakeWindowItem = { id: number; name: string; description: string | null; position: number };
 type BakeWindow = {
@@ -275,7 +274,8 @@ export default function Reserve() {
     ].join("\n")
   );
   const waLink = `https://wa.me/${WA_NUMBER}?text=${waMessage}`;
-  const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=Wandering%20Cocos&am=${cartTotal}&tn=Pre-order%20${encodeURIComponent(BAKE_DATE)}&cu=INR`;
+  const upiId = siteSettings.upi_id ?? "";
+  const upiUrl = upiId ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Wandering%20Cocos&am=${cartTotal}&tn=Pre-order%20${encodeURIComponent(BAKE_DATE)}&cu=INR` : "";
 
   function scrollToOrder() {
     if (!orderSectionRef.current) return;
@@ -618,21 +618,20 @@ export default function Reserve() {
                             <p className="text-xs text-[#2D2926]">Amount due</p>
                             <span className="text-2xl font-serif font-medium text-foreground">₹{cartTotal.toLocaleString("en-IN")}</span>
                           </div>
-                          <div className="flex flex-col sm:flex-row gap-5 items-start">
-                            <div className="border border-border/40 p-3 bg-white flex-shrink-0">
-                              <img src={`${import.meta.env.BASE_URL}images/upi-qr.png`} alt="UPI QR Code for Wandering Cocos" className="w-28 h-28 object-contain" />
-                            </div>
+                          {upiId && (
                             <div className="flex flex-col gap-3">
                               <div>
                                 <p className="text-[9px] tracking-[0.22em] uppercase text-[#2D2926] mb-1">UPI ID</p>
-                                <p className="text-sm font-mono text-foreground font-medium select-all">{UPI_ID}</p>
+                                <p className="text-sm font-mono text-foreground font-medium select-all">{upiId}</p>
                               </div>
-                              <p className="text-xs text-[#2D2926] leading-relaxed">Scan with GPay, PhonePe, Paytm, or any UPI app.</p>
-                              <a href={upiUrl} className="inline-flex items-center text-[10px] tracking-[0.18em] uppercase font-medium text-accent hover:underline underline-offset-4 transition-colors">
-                                Open UPI app on this device
-                              </a>
+                              <p className="text-xs text-[#2D2926] leading-relaxed">Pay with GPay, PhonePe, Paytm, or any UPI app.</p>
+                              {upiUrl && (
+                                <a href={upiUrl} className="inline-flex items-center text-[10px] tracking-[0.18em] uppercase font-medium text-accent hover:underline underline-offset-4 transition-colors">
+                                  Open UPI app on this device
+                                </a>
+                              )}
                             </div>
-                          </div>
+                          )}
                         </div>
                         <p className="text-[10px] text-[#2D2926] leading-relaxed">
                           Once we confirm receipt of payment, we'll send you a WhatsApp confirmation. Delivery on bake day.

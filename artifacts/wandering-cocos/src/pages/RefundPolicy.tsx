@@ -20,7 +20,7 @@ const sections = [
   {
     number: "3",
     title: "How to Raise a Refund Request",
-    body: "Message us on WhatsApp at +91 98992 25273 within 2 hours of your scheduled delivery time. Include your name, order details, and a photograph if relevant. We will review and respond within 24 hours.",
+    body: "Message us on WhatsApp within 2 hours of your scheduled delivery time. Include your name, order details, and a photograph if relevant. We will review and respond within 24 hours.",
   },
   {
     number: "4",
