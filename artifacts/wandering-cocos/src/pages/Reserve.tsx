@@ -186,8 +186,8 @@ export default function Reserve() {
     let bwDone = readCache(BAKE_URL, DATA_TTL) !== null;
     let sDone = readCache(SETTINGS_URL, DATA_TTL) !== null;
     function checkDone() { if (bwDone && sDone) setWindowLoaded(true); }
-    revalidate<BakeWindow | null>(BAKE_URL, d => { setBakeWindow(d); bwDone = true; checkDone(); }, null);
-    revalidate<Record<string, string>>(SETTINGS_URL, d => { if (d && typeof d === "object") setSiteSettings(d); sDone = true; checkDone(); }, {});
+    revalidate<BakeWindow | null>(BAKE_URL, d => { setBakeWindow(d); bwDone = true; checkDone(); }, () => { bwDone = true; checkDone(); });
+    revalidate<Record<string, string>>(SETTINGS_URL, d => { if (d && typeof d === "object") setSiteSettings(d); sDone = true; checkDone(); }, () => { sDone = true; checkDone(); });
   }, []);
 
   const BAKE_DATE = bakeWindow ? formatBakeDate(bakeWindow.bakeDate) : "Coming Soon";

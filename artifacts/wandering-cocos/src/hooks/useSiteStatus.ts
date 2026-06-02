@@ -17,7 +17,7 @@ export function useSiteStatus() {
     revalidate<{ mode: SiteMode }>(
       URL,
       d => { setMode(d.mode); setLoaded(true); },
-      { mode: "bake_day" },
+      () => setLoaded(true),
     );
   }, []);
 

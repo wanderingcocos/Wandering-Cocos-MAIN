@@ -335,7 +335,7 @@ function AddOnProductsSection() {
   );
 
   useEffect(() => {
-    revalidate<BakeryAddon[]>(ADDONS_URL, d => { setAddons(Array.isArray(d) ? d : []); setLoading(false); }, []);
+    revalidate<BakeryAddon[]>(ADDONS_URL, d => { setAddons(Array.isArray(d) ? d : []); setLoading(false); }, () => setLoading(false));
   }, []);
 
   if (!loading && addons.length === 0) return null;

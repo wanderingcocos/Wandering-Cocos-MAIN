@@ -29,12 +29,12 @@ function writeCache(url: string, data: unknown) {
 export function revalidate<T>(
   url: string,
   onData: (d: T) => void,
-  _fallback: T,
+  onError: () => void,
 ): void {
   if (inflight.has(url)) {
     (inflight.get(url) as Promise<T | null>)
-      .then(d => { if (d !== null) onData(d); })
-      .catch(() => {});
+      .then(d => { if (d !== null) onData(d); else onError(); })
+      .catch(() => onError());
     return;
   }
 
@@ -45,10 +45,11 @@ export function revalidate<T>(
     })
     .then((d: T | null) => {
       if (d !== null) { writeCache(url, d); onData(d); }
+      else onError();
       inflight.delete(url);
       return d;
     })
-    .catch(() => { inflight.delete(url); return null; });
+    .catch(() => { onError(); inflight.delete(url); return null; });
 
   inflight.set(url, p);
 }
