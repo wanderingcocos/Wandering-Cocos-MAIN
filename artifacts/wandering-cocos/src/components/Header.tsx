@@ -75,6 +75,7 @@ const navLinks: NavLink[] = [
     href: "/bakery",
     children: [
       { name: "Pre-order", href: "/reserve" },
+      { name: "Gifting", href: "/gifting" },
     ],
   },
   { name: "RECIPES", href: "/recipes" },
@@ -147,27 +148,19 @@ function DropdownItem({ link, location, navigate, onClose }: {
   return (
     <div
       ref={ref}
-      className="relative"
+      className="flex flex-col items-start"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button
-        onClick={() => { navigate(link.href!); onClose?.(); }}
-        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent flex items-center gap-1 ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
-      >
-        {link.name}
-        <ChevronDown className={`w-2.5 h-2.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`} strokeWidth={2} />
-        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
-      </button>
-
+      {/* Child links — render above the parent label, appear on hover */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-1 min-w-[140px] bg-background border border-border/50 shadow-md z-50 py-1"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.18 }}
+            className="flex flex-col items-start overflow-hidden mb-1.5"
           >
             {link.children!.map(child => {
               const childActive = location.startsWith(child.href);
@@ -175,7 +168,7 @@ function DropdownItem({ link, location, navigate, onClose }: {
                 <button
                   key={child.name}
                   onClick={() => { navigate(child.href); setOpen(false); onClose?.(); }}
-                  className={`w-full text-left px-4 py-2.5 text-[10px] tracking-[0.2em] uppercase font-medium transition-colors duration-150 ${childActive ? "text-accent bg-accent/5" : "text-foreground/70 hover:text-accent hover:bg-muted/50"}`}
+                  className={`text-[9px] tracking-[0.18em] uppercase font-medium transition-colors duration-150 leading-none py-0.5 cursor-pointer ${childActive ? "text-accent" : "text-foreground/50 hover:text-accent"}`}
                 >
                   {child.name}
                 </button>
@@ -184,6 +177,15 @@ function DropdownItem({ link, location, navigate, onClose }: {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Parent label */}
+      <button
+        onClick={() => { navigate(link.href!); onClose?.(); }}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+      >
+        {link.name}
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+      </button>
     </div>
   );
 }
@@ -234,7 +236,7 @@ export function Header() {
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-7 lg:gap-9">
+          <nav className="hidden md:flex items-end gap-7 lg:gap-9 pb-4">
             {navLinks.map(link => (
               <DropdownItem
                 key={link.name}
