@@ -103,6 +103,7 @@ function QtyControl({ qty, max, onChange }: { qty: number; max: number; onChange
 
 function ProductCard({ product, qty, onChange }: { product: Product; qty: number; onChange: (q: number) => void }) {
   const soldOut = product.max === 0;
+  const isLimited = !soldOut && product.max < 99;
   const selected = qty > 0;
 
   return (
@@ -131,6 +132,18 @@ function ProductCard({ product, qty, onChange }: { product: Product; qty: number
             >
               {soldOut ? "Sold Out" : product.badge}
             </span>
+            {isLimited && (
+              <span
+                className="text-[8px] tracking-[0.2em] uppercase font-medium px-2 py-0.5"
+                style={{
+                  background: "rgba(180,100,30,0.07)",
+                  color: "rgba(140,70,20,0.75)",
+                  border: "1px solid rgba(180,100,30,0.2)",
+                }}
+              >
+                Limited to {product.max} per drop
+              </span>
+            )}
           </div>
           <h3 className="font-serif text-sm text-foreground leading-snug mb-0.5">{product.name}</h3>
           <p className="text-xs text-[#2D2926] leading-relaxed">{product.description}</p>
@@ -214,7 +227,7 @@ export default function Reserve() {
     },
   ];
 
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cart, setCart] = useState<Record<string, number>>({ big_box: 1 });
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");

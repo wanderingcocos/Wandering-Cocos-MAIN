@@ -7,7 +7,7 @@ import { WA_NUMBER } from "@/lib/constants";
 const faqs = [
   {
     q: "How do I order?",
-    a: "Fill out the reserve form, pay via UPI, and confirm on WhatsApp. We only bake what's pre-ordered. No walk-ins, no surprises.",
+    a: "Fill out the pre-order form, pay via UPI, and confirm on WhatsApp. We only bake what's pre-ordered. No walk-ins, no surprises.",
   },
   {
     q: "When is the next bake?",

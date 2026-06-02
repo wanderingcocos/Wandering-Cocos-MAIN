@@ -210,7 +210,7 @@ function PhilosophyStackSection() {
                     onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
                   >
-                    RESERVE YOUR BOX
+                    PRE-ORDER YOUR BOX
                   </button>
                 ) : (
                   <span className="text-xs tracking-[0.22em] uppercase font-medium px-6 py-2" style={{ color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.18)" }}>
@@ -467,7 +467,7 @@ export default function Bakery() {
                   onClick={() => navigate("/reserve")}
                   className="w-full sm:w-64 h-14 text-xs tracking-[0.2em] font-medium uppercase whitespace-nowrap border border-accent bg-accent text-accent-foreground hover:bg-accent/90 hover:border-accent/90 transition-all"
                 >
-                  RESERVE YOUR BOX
+                  PRE-ORDER YOUR BOX
                 </button>
               ) : (
                 <span className="w-full sm:w-64 h-14 flex items-center justify-center text-xs tracking-[0.18em] uppercase font-medium whitespace-nowrap border border-white/20 text-white/40">
