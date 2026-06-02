@@ -204,28 +204,28 @@ export default function Reserve() {
   const PRODUCTS: Product[] = [
     {
       id: "big_box",
-      name: "Wandering Box",
+      name: "The Wandering Box",
       price: BOX_PRICE,
       originalPrice: BOX_ORIGINAL_PRICE,
       max: MAX_BOXES,
       badge: "The Full Experience",
-      description: `All ${menuItems.length} items from this drop, packaged and baked fresh on delivery day.`,
+      description: `The ultimate Wandering Cocos experience. All ${menuItems.length} items from this drop, thoughtfully curated to take you through sweet, savoury, spiced and deeply comforting flavours.`,
     },
     {
       id: "small_box",
       name: "Small Wandering Box",
       price: 599,
       max: MAX_SMALL,
-      badge: "Permanent Addition",
-      description: "A cookie, a mini loaf, and one seasonal treat — curated for one. Packaged for gifting or a quiet indulgence.",
+      badge: "New Addition",
+      description: "A smaller wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
     },
     {
       id: "sourdough",
       name: "Artisanal Sourdough Boule",
       price: 260,
       max: MAX_BOULE,
-      badge: "Every Bake Day",
-      description: "72-hour cold-fermented. Open crumb, crisp crust, zero additives. Available alongside or without the Wandering Box.",
+      badge: "à la carte",
+      description: "12-24 hours cold-fermented. Open crumb, Soft crust, zero additives. Available alongside or without the Wandering Box.",
     },
   ];
 
