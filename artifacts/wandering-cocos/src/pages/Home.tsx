@@ -1,60 +1,74 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { HeroManifesto } from "@/components/HeroManifesto";
 import { lifestyleMedia } from "@/data/lifestyleMedia";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// ── Pillar data ────────────────────────────────────────────────────────────────
 
 const pillars = [
   {
     id: "bakery",
     href: "/bakery",
-    label: "01",
-    title: "Bakery",
-    body: "Artisanal sourdough, bakes, and everything we make with obsessive attention to ingredient quality.",
-    tag: "Pre-order Your Box",
+    tag: "Bakery",
+    cta: "Pre-order your box",
+    settingKey: "pillar_1_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-center",
   },
   {
     id: "recipes",
     href: "/recipes",
-    label: "02",
-    title: "Recipes",
-    body: "High-protein meals, family curries, and travel-inspired dishes — the food we actually eat.",
-    tag: "Browse Recipes",
+    tag: "Recipes",
+    cta: "Browse the kitchen",
+    settingKey: "pillar_2_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-top",
   },
   {
     id: "coffee",
     href: "/coffee",
-    label: "03",
-    title: "Specialty Coffee",
-    body: "Single-origin, slow pour, no shortcuts. A coffee programme built the same way we build everything.",
-    tag: "Coming Soon",
+    tag: "Coffee",
+    cta: "Coming Soon",
+    settingKey: "pillar_3_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-center",
   },
   {
     id: "shop",
     href: "/shop",
-    label: "04",
-    title: "Shop",
-    body: "Heavyweight basics. Tote bags, training wear, and kitchen goods that earn their place.",
-    tag: "Coming Soon",
+    tag: "Shop",
+    cta: "Coming Soon",
+    settingKey: "pillar_4_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-center",
   },
   {
     id: "cafe",
     href: "/cafe",
-    label: "05",
-    title: "Café",
-    body: "A garden table, white linen, and a long breakfast that stretches into afternoon. Bengaluru. Soon.",
-    tag: "Coming Soon",
+    tag: "Café",
+    cta: "Coming Soon",
+    settingKey: "pillar_5_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-bottom",
   },
   {
     id: "journal",
     href: "/journal",
-    label: "06",
-    title: "Journal",
-    body: "Events, pop-ups, and field notes. Where we show up, what we made, and who we met on the road.",
-    tag: "Read the Journal",
+    tag: "Journal",
+    cta: "Read the field notes",
+    settingKey: "pillar_6_url",
+    defaultImg: `${BASE}/images/woc-bg.png`,
+    position: "object-center",
   },
 ];
+
+// ── Lifestyle grid (unchanged from original) ──────────────────────────────────
 
 function LifestyleGrid() {
   const videos = lifestyleMedia.filter((m: { type: string }) => m.type === "video");
@@ -113,7 +127,7 @@ function LifestyleGrid() {
             className="font-serif italic"
             style={{ fontSize: "clamp(1.2rem, 2.5vw, 2rem)", color: "rgba(245,238,224,0.72)", maxWidth: "680px", lineHeight: 1.55 }}
           >
-            "Built on a rhythm of strict discipline,<br className="hidden md:block" /> open roads, and absolute freedom."
+            "Built on a rhythm of strict discipline, open roads, and absolute freedom."
           </motion.p>
         </div>
 
@@ -178,174 +192,231 @@ function LifestyleGrid() {
   );
 }
 
-function PillarCard({ pillar, index }: { pillar: typeof pillars[0]; index: number }) {
+// ── Asymmetric pillar pair ─────────────────────────────────────────────────────
+
+type PillarDef = typeof pillars[0];
+
+function PillarPair({
+  left, right, leftImg, rightImg, flip = false,
+}: {
+  left: PillarDef; right: PillarDef;
+  leftImg: string; rightImg: string;
+  flip?: boolean;
+}) {
   const [, navigate] = useLocation();
-  const isComingSoon = pillar.tag === "Coming Soon";
+  const big = flip ? right : left;
+  const bigImg = flip ? rightImg : leftImg;
+  const small = flip ? left : right;
+  const smallImg = flip ? leftImg : rightImg;
 
   return (
-    <motion.button
-      onClick={() => navigate(pillar.href)}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.65, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
-      className="card-cabinet group text-left w-full flex flex-col p-7 focus:outline-none"
-      style={{ cursor: "pointer" }}
+    <div
+      className="grid w-full"
+      style={{
+        gridTemplateColumns: flip ? "2fr 3fr" : "3fr 2fr",
+        gridTemplateRows: "70vh",
+      }}
     >
-      <div className="flex items-start justify-between mb-5">
-        <span className="text-[10px] tracking-[0.3em] font-medium uppercase" style={{ color: "rgba(42,72,32,0.4)" }}>
-          {pillar.label}
-        </span>
-        {isComingSoon && (
-          <span className="text-[8px] tracking-[0.25em] uppercase font-medium px-2 py-0.5 rounded-full"
-            style={{ background: "rgba(42,72,32,0.07)", color: "rgba(42,72,32,0.45)", border: "1px solid rgba(42,72,32,0.12)" }}>
-            Soon
+      {/* Big panel */}
+      <motion.div
+        className="relative overflow-hidden cursor-pointer group"
+        style={{ gridColumn: flip ? 2 : 1, gridRow: 1 }}
+        onClick={() => navigate(big.href)}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <img
+          src={bigImg} alt={big.tag}
+          className={`w-full h-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105 ${big.position}`}
+          style={{ filter: "brightness(0.78) saturate(0.88)" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        <div className="absolute bottom-8 left-8 flex flex-col gap-3">
+          <span className="text-[9px] tracking-[0.38em] uppercase font-medium" style={{ color: "rgba(255,255,255,0.55)" }}>
+            {big.tag}
           </span>
-        )}
-      </div>
-      <h3
-        className="font-serif italic leading-snug mb-3 transition-colors group-hover:text-accent"
-        style={{ fontSize: "clamp(1.3rem, 1.8vw, 1.6rem)", color: "#2a4820" }}
+          {big.cta !== "Coming Soon" ? (
+            <span className="text-[11px] tracking-[0.22em] uppercase font-medium" style={{ color: "#ffffff" }}>
+              {big.cta} →
+            </span>
+          ) : (
+            <span className="text-[10px] tracking-[0.28em] uppercase font-medium px-3 py-1 inline-block"
+              style={{ color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.18)" }}>
+              Coming Soon
+            </span>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Small panel */}
+      <motion.div
+        className="relative overflow-hidden cursor-pointer group"
+        style={{ gridColumn: flip ? 1 : 2, gridRow: 1 }}
+        onClick={() => navigate(small.href)}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
       >
-        {pillar.title}
-      </h3>
-      <p
-        className="font-light leading-relaxed mb-6 flex-1"
-        style={{ fontSize: "clamp(0.82rem, 1vw, 0.9rem)", color: "rgba(42,72,32,0.58)" }}
-      >
-        {pillar.body}
-      </p>
-      <span
-        className="text-[9px] tracking-[0.22em] uppercase font-medium transition-colors"
-        style={{ color: isComingSoon ? "rgba(42,72,32,0.3)" : "#2a4820" }}
-      >
-        {pillar.tag} →
-      </span>
-    </motion.button>
+        <img
+          src={smallImg} alt={small.tag}
+          className={`w-full h-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105 ${small.position}`}
+          style={{ filter: "brightness(0.74) saturate(0.85)" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+        <div className="absolute bottom-6 left-6 flex flex-col gap-2">
+          <span className="text-[9px] tracking-[0.38em] uppercase font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>
+            {small.tag}
+          </span>
+          {small.cta !== "Coming Soon" ? (
+            <span className="text-[10px] tracking-[0.22em] uppercase font-medium" style={{ color: "rgba(255,255,255,0.9)" }}>
+              {small.cta} →
+            </span>
+          ) : (
+            <span className="text-[9px] tracking-[0.28em] uppercase font-medium px-2.5 py-0.5 inline-block"
+              style={{ color: "rgba(255,255,255,0.35)", border: "1px solid rgba(255,255,255,0.15)" }}>
+              Soon
+            </span>
+          )}
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
-export default function Home() {
+// ── Manifesto ticker ──────────────────────────────────────────────────────────
+
+function ManifestoTicker() {
+  const text = "Dark Roast & Open Road · Bengaluru · Mood First · Always · Fit Hard · Indulge Freely · Travel Deep";
   return (
-    <div className="min-h-screen bg-background flex flex-col selection:bg-accent/20">
+    <section
+      className="overflow-hidden py-[10px] border-y"
+      style={{ borderColor: "rgba(15,36,25,0.08)", background: "#faf8f4" }}
+    >
+      <motion.div
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 32, ease: "linear", repeat: Infinity }}
+        className="flex whitespace-nowrap"
+        style={{ width: "max-content" }}
+      >
+        {Array(8).fill(text).map((t, i) => (
+          <span key={i} className="text-[9px] tracking-[0.38em] uppercase font-medium px-10"
+            style={{ color: "rgba(15,36,25,0.35)", fontFamily: "sans-serif" }}>
+            {t}
+          </span>
+        ))}
+      </motion.div>
+    </section>
+  );
+}
+
+// ── Mobile pillar stack ───────────────────────────────────────────────────────
+
+function MobilePillars({ pillarsWithImgs }: { pillarsWithImgs: Array<{ pillar: PillarDef; img: string }> }) {
+  const [, navigate] = useLocation();
+  return (
+    <div className="flex flex-col gap-px">
+      {pillarsWithImgs.map(({ pillar, img }, i) => (
+        <motion.div
+          key={pillar.id}
+          className="relative overflow-hidden cursor-pointer group"
+          style={{ height: "55vw", minHeight: 220 }}
+          onClick={() => navigate(pillar.href)}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ duration: 0.7, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <img src={img} alt={pillar.tag}
+            className={`w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105 ${pillar.position}`}
+            style={{ filter: "brightness(0.75) saturate(0.88)" }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+          <div className="absolute bottom-5 left-5 flex flex-col gap-1.5">
+            <span className="text-[9px] tracking-[0.35em] uppercase font-medium" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "sans-serif" }}>
+              {pillar.tag}
+            </span>
+            {pillar.cta !== "Coming Soon" ? (
+              <span className="text-[11px] tracking-[0.2em] uppercase font-medium" style={{ color: "#ffffff", fontFamily: "sans-serif" }}>
+                {pillar.cta} →
+              </span>
+            ) : (
+              <span className="text-[9px] tracking-[0.25em] uppercase font-medium" style={{ color: "rgba(255,255,255,0.35)", fontFamily: "sans-serif" }}>
+                Coming Soon
+              </span>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+export default function Home() {
+  const [settings, setSettings] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch(`${BASE}/api/settings`)
+      .then(r => r.ok ? r.json() : {})
+      .then((s: Record<string, string>) => setSettings(s))
+      .catch(() => {});
+  }, []);
+
+  const pillarImgs = pillars.map(p =>
+    settings[p.settingKey] || p.defaultImg
+  );
+  const pillarsWithImgs = pillars.map((p, i) => ({ pillar: p, img: pillarImgs[i] }));
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: "#0a0e09" }}>
       <Header />
 
       <main className="flex-grow">
-        {/* ── HERO — Skylight illumination ─────────────────────────── */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-background">
-          {/* Primary skylight — warm luminous center from above */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 65% at 50% -8%, rgba(255, 250, 228, 0.92) 0%, rgba(244, 235, 208, 0.55) 38%, transparent 68%)",
-            }}
-          />
-          {/* Secondary warm fill from below */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 130% 45% at 50% 112%, rgba(240, 228, 196, 0.32) 0%, transparent 65%)",
-            }}
-          />
-          {/* Faint ambient grain */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.022]"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
-              backgroundRepeat: "repeat",
-              backgroundSize: "128px 128px",
-            }}
-          />
+        {/* ── HERO — manifesto with changeable background ───────── */}
+        <HeroManifesto settings={settings} />
 
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="block text-[10px] tracking-[0.45em] uppercase font-medium mb-10"
-              style={{ color: "rgba(42, 72, 32, 0.45)" }}
-            >
-              Wandering Cocos
-            </motion.span>
+        {/* ── MANIFESTO TICKER ─────────────────────────────────── */}
+        <ManifestoTicker />
 
-            <motion.h1
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.05, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif italic leading-tight"
-              style={{ fontSize: "clamp(2.8rem, 6vw, 5.5rem)", color: "#1e3a18" }}
-            >
-              Fit hard.<br />
-              Indulge freely.<br />
-              Travel deep.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="mt-8 font-light leading-relaxed"
-              style={{
-                fontSize: "clamp(0.95rem, 1.4vw, 1.1rem)",
-                color: "rgba(42, 72, 32, 0.52)",
-                maxWidth: "420px",
-                margin: "2rem auto 0",
-              }}
-            >
-              A lifestyle built on discipline, good food, and open roads.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.0, ease: "easeOut" }}
-              className="mt-12 flex items-center justify-center gap-3"
-            >
-              <span className="w-6 h-px" style={{ background: "rgba(42,72,32,0.25)" }} />
-              <span className="text-[9px] tracking-[0.32em] uppercase font-medium" style={{ color: "rgba(42,72,32,0.32)" }}>
-                Scroll to explore
-              </span>
-              <span className="w-6 h-px" style={{ background: "rgba(42,72,32,0.25)" }} />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ── LIFESTYLE MEDIA GRID ─────────────────────────────────── */}
+        {/* ── LIFESTYLE MEDIA GRID ─────────────────────────────── */}
         <LifestyleGrid />
 
-        {/* ── SIX PILLARS ──────────────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-14 lg:px-20 max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-14"
-          >
-            <span className="text-[10px] tracking-[0.38em] uppercase font-medium block mb-4"
-              style={{ color: "rgba(42,72,32,0.42)" }}>
-              What we do
-            </span>
-            <h2
-              className="font-serif italic leading-tight"
-              style={{ fontSize: "clamp(1.8rem, 3.5vw, 3rem)", color: "#1e3a18", maxWidth: "520px" }}
-            >
-              Six pillars.<br />One discipline.
-            </h2>
-          </motion.div>
+        {/* ── PILLAR GRID — desktop ────────────────────────────── */}
+        <div className="hidden md:block">
+          {/* Row 1: Bakery (big) + Recipes (small) */}
+          <PillarPair
+            left={pillars[0]} right={pillars[1]}
+            leftImg={pillarImgs[0]} rightImg={pillarImgs[1]}
+            flip={false}
+          />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {pillars.map((pillar, i) => (
-              <PillarCard key={pillar.id} pillar={pillar} index={i} />
-            ))}
-          </div>
-        </section>
+          {/* Row 2: Coffee (small) + Shop (big) */}
+          <PillarPair
+            left={pillars[2]} right={pillars[3]}
+            leftImg={pillarImgs[2]} rightImg={pillarImgs[3]}
+            flip={true}
+          />
 
-        {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
-        <TestimonialsSection />
+          {/* Row 3: Café (big) + Journal (small) */}
+          <PillarPair
+            left={pillars[4]} right={pillars[5]}
+            leftImg={pillarImgs[4]} rightImg={pillarImgs[5]}
+            flip={false}
+          />
+        </div>
+
+        {/* ── PILLAR STACK — mobile ────────────────────────────── */}
+        <div className="md:hidden">
+          <MobilePillars pillarsWithImgs={pillarsWithImgs} />
+        </div>
+
+        {/* ── TESTIMONIALS ─────────────────────────────────────── */}
+        <div style={{ background: "#faf8f4" }}>
+          <TestimonialsSection />
+        </div>
       </main>
 
       <Footer />
