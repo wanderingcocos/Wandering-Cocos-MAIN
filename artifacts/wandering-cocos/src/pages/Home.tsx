@@ -214,7 +214,10 @@ function PillarPair({
       className="grid w-full"
       style={{
         gridTemplateColumns: flip ? "2fr 3fr" : "3fr 2fr",
-        gridTemplateRows: "70vh",
+  gridTemplateRows: "70vh",
+  gap: "12px",
+  padding: "12px",
+  background: "#faf8f4",
       }}
     >
       {/* Big panel */}
@@ -356,7 +359,7 @@ export default function Home() {
         <LifestyleGrid />
 
         {/* ── PILLAR GRID — desktop ────────────────────────────── */}
-        <div className="hidden md:block">
+        <div className="hidden md:block" style={{ background: "#faf8f4", padding: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
           {/* Row 1: Bakery (big) + Recipes (small) */}
           <PillarPair
             left={pillars[0]} right={pillars[1]}
