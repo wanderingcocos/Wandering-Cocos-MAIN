@@ -25,7 +25,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 // Default Cape mountain road image — replace with your own in admin
 const DEFAULT_BG = `${BASE}/images/hero-road.jpg`;
 
-const DEFAULT_MANIFESTO = `There's something almost radical about it — the insistence that the inner weather comes before the outer schedule. Most people invert that. They wait for permission from a cleared calendar, a completed task list, an earned reward. You don't.\n\nHard effort is part of it, not opposed to it. When the mood is right, effort isn't grinding — it's the natural shape of being alive in that moment. Same with pleasure. Same with the unfamiliar road.`;
+const DEFAULT_MANIFESTO = ``;
 
 const TAGLINE = "Mood first. Always.";
 
