@@ -541,13 +541,14 @@ useEffect(() => {
                       ) : (
                         <div className="space-y-3 mb-8">
                           {PRODUCTS.map(product => (
-                            <ProductCard
-                              key={product.id}
-                              product={product}
-                              qty={cart[product.id] ?? 0}
-                              onChange={qty => setProductQty(product.id, qty)}
-                            />
-                          ))}
+  <ProductCard
+    key={product.id}
+    product={product}
+    qty={cart[product.id] ?? 0}
+    onChange={qty => setProductQty(product.id, qty)}
+    highlighted={highlightedId === product.id}
+  />
+))}
                         </div>
                       )}
 
