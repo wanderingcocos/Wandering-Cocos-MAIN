@@ -82,7 +82,7 @@ const categories: Category[] = [
           { name: "The Wandering Box", href: "/reserve" },
           { name: "Artisan Sourdough Boule", href: "/reserve" },
           { name: "Small Box", href: "/reserve" },
-          { name: "How it works", href: "/reserve" },
+          { name: "How it works", href: "/bakery#way-of-coco" },
           { name: "Delivery info", href: "/faq" },
         ],
       },
