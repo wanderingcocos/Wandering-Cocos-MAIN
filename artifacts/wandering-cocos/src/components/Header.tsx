@@ -27,9 +27,10 @@ function InfoStrip() {
       if (settings.strip_enabled === "false") { setEnabled(false); return; }
       if (settings.strip_message) { setMessage(settings.strip_message); return; }
       const mode = status?.mode ?? "maintenance";
-      if (mode === "bake_day" && bakeWindow?.bakeDate) {
+      if ((mode === "bake_day" || mode === "small_only") && bakeWindow?.bakeDate) {
         const dateStr = formatBakeDateShort(bakeWindow.bakeDate);
-        setMessage(`${bakeWindow.label ?? "Next Drop"}\u2002\u00b7\u2002${dateStr}\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002Free delivery within 7km of HSR Layout, Bengaluru`);
+        const zone = settings.delivery_zone ?? "Free delivery within 7km of HSR Layout, Bengaluru";
+        setMessage(`${bakeWindow.label ?? "Next Drop"}\u2002\u00b7\u2002${dateStr}\u2002\u00b7\u2002Pre-orders open now. Limited bakes.\u2002\u00b7\u2002${zone}`);
       } else {
         setMessage(`Will be back soon\u2002\u00b7\u2002Wandering Cocos\u2002\u00b7\u2002Bengaluru`);
       }
