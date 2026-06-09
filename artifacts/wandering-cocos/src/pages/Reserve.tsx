@@ -111,7 +111,8 @@ function ProductCard({ product, qty, onChange, highlighted }: { product: Product
 
   return (
     <div
-      className="p-5 border transition-all duration-200"
+  id={`product-${product.id}`}
+  className="p-5 border transition-all duration-500"
       style={{
         border: highlighted
   ? "2px solid #2d5a3d"
