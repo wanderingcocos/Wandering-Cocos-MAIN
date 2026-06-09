@@ -113,13 +113,23 @@ function ProductCard({ product, qty, onChange, highlighted }: { product: Product
     <div
       className="p-5 border transition-all duration-200"
       style={{
-        border: selected
-          ? "1.5px solid #2d5a3d"
-          : soldOut
-          ? "1px solid rgba(45,41,38,0.15)"
-          : "1px solid rgba(45,41,38,0.2)",
-        background: selected ? "hsl(150 20% 97%)" : soldOut ? "hsl(38 10% 97%)" : "hsl(38 25% 98%)",
-        opacity: soldOut ? 0.6 : 1,
+        border: highlighted
+  ? "2px solid #2d5a3d"
+  : selected
+  ? "1.5px solid #2d5a3d"
+  : soldOut
+  ? "1px solid rgba(45,41,38,0.15)"
+  : "1px solid rgba(45,41,38,0.2)",
+background: highlighted
+  ? "hsl(150 30% 95%)"
+  : selected
+  ? "hsl(150 20% 97%)"
+  : soldOut
+  ? "hsl(38 10% 97%)"
+  : "hsl(38 25% 98%)",
+opacity: soldOut ? 0.6 : 1,
+boxShadow: highlighted ? "0 0 0 3px rgba(45,90,61,0.15)" : "none",
+transform: highlighted ? "scale(1.005)" : "scale(1)",
       }}
     >
       <div className="flex items-start justify-between gap-4">
