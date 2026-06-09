@@ -236,22 +236,26 @@ export default function Reserve() {
     },
   ];
 
-  const [cart, setCart] = useState<Record<string, number>>({ big_box: 1 });
+  const [cart, setCart] = useState<Record<string, number>>({ big_box: 1, small_box: 0, sourdough: 0 });
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [step, setStep] = useState<"form" | "sent">("form");
 
+  const visibleProducts = siteMode === "small_only"
+    ? PRODUCTS.filter(p => p.id !== "big_box")
+    : PRODUCTS;
+
   useEffect(() => {
     if (!windowLoaded) return;
     setCart(prev => {
       const clamped = { ...prev };
-      if (MAX_BOXES === 0) clamped.big_box = 0;
+      if (MAX_BOXES === 0 || siteMode === "small_only") clamped.big_box = 0;
       if (MAX_SMALL === 0) clamped.small_box = 0;
       if (MAX_BOULE === 0) clamped.sourdough = 0;
       return clamped;
     });
-  }, [windowLoaded, MAX_BOXES, MAX_SMALL, MAX_BOULE]);
+  }, [windowLoaded, MAX_BOXES, MAX_SMALL, MAX_BOULE, siteMode]);
 
   function setProductQty(id: string, qty: number) {
     setCart(c => ({ ...c, [id]: qty }));
@@ -512,7 +516,7 @@ export default function Reserve() {
                         </div>
                       ) : (
                         <div className="space-y-3 mb-8">
-                          {PRODUCTS.map(product => (
+                          {visibleProducts.map(product => (
                             <ProductCard
                               key={product.id}
                               product={product}

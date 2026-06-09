@@ -5,7 +5,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const URL = `${BASE}/api/site-status`;
 const TTL = 45_000;
 
-export type SiteMode = "bake_day" | "popup" | "maintenance" | "sold_out" | "chef_on_break";
+export type SiteMode = "bake_day" | "popup" | "maintenance" | "sold_out" | "chef_on_break" | "small_only";
 
 export function useSiteStatus() {
   const [mode, setMode] = useState<SiteMode>(

@@ -490,6 +490,11 @@ const SITE_MODES = [
     label: "Chef on Break",
     description: "Shows a warm, personal pause message: the chef is recharging and will return inspired. Orders are hidden.",
   },
+  {
+    id: "small_only",
+    label: "Small Menu",
+    description: "Orders stay open but the Big Box is hidden. Only Small Wandering Box and Artisanal Sourdough Boule are available to order.",
+  },
 ] as const;
 
 function SiteModeTab({ token }: { token: string }) {

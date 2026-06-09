@@ -1,2 +1,4 @@
 backup.zip filter=lfs diff=lfs merge=lfs -text
 wandering-cocos-hostinger.zip filter=lfs diff=lfs merge=lfs -text
+dist-public[[:space:]](copy).zip filter=lfs diff=lfs merge=lfs -text
+dist-public.zip filter=lfs diff=lfs merge=lfs -text
