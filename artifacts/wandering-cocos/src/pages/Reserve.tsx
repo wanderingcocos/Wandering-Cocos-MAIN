@@ -248,6 +248,23 @@ export default function Reserve() {
   ];
 
   const [cart, setCart] = useState<Record<string, number>>({ big_box: 1 });
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+useEffect(() => {
+  const hash = window.location.hash;
+  const hashMap: Record<string, string> = {
+    "#wandering-box": "big_box",
+    "#small-box": "small_box",
+    "#sourdough": "sourdough",
+  };
+  const productId = hashMap[hash];
+  if (!productId) return;
+  setTimeout(() => {
+    document.getElementById(`product-${productId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setHighlightedId(productId);
+    setTimeout(() => setHighlightedId(null), 2500);
+  }, 600);
+}, []);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
