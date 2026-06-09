@@ -377,7 +377,7 @@ export default function Reserve() {
         </section>
 
         {/* TOTE BAG HIGHLIGHT — bake_day only */}
-        {siteMode === "bake_day" && (
+        {(siteMode === "bake_day" || siteMode === "small_only") && (
           <section style={{ background: "#0f2419" }} className="px-6 md:px-14 lg:px-20 py-10">
             <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -409,10 +409,10 @@ export default function Reserve() {
 
         {/* MAIN TWO-COLUMN */}
         <section ref={orderSectionRef} id="preorder-section" className="px-6 md:px-14 lg:px-20 py-16 max-w-7xl mx-auto">
-          <div className={`grid grid-cols-1 gap-14 lg:gap-24 ${siteMode === "bake_day" ? "lg:grid-cols-2" : ""}`}>
+          <div className={`grid grid-cols-1 gap-14 lg:gap-24 ${(siteMode === "bake_day" || siteMode === "small_only") ? "lg:grid-cols-2" : ""}`}>
 
-            {/* LEFT — What's inside (bake_day only) */}
-            {siteMode === "bake_day" && (
+            {/* LEFT — What's inside (bake_day + small_only) */}
+            {(siteMode === "bake_day" || siteMode === "small_only") && (
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
                 <span className="text-[9px] tracking-[0.32em] font-medium uppercase text-[#2D2926] block mb-6">
                   What's in the box
@@ -446,7 +446,8 @@ export default function Reserve() {
                   </div>
                 )}
                 <p className="mt-5 text-[10px] text-[#2D2926] leading-relaxed">
-                  Every box contains all {menuItems.length} items. Baked on <BakeDateDisplay date={BAKE_DATE} />.
+                  {siteMode === "bake_day" && <>Every box contains all {menuItems.length} items. </>}
+                  Baked on <BakeDateDisplay date={BAKE_DATE} />.
                 </p>
               </motion.div>
             )}
