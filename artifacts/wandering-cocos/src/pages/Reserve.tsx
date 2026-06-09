@@ -222,6 +222,7 @@ export default function Reserve() {
       id: "small_box",
       name: "Small Wandering Box",
       price: 599,
+      originalPrice: 699,
       max: MAX_SMALL,
       badge: "New Addition",
       description: "A smaller wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
