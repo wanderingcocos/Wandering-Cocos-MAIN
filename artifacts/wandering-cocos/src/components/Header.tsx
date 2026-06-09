@@ -79,9 +79,9 @@ const categories: Category[] = [
     sections: [
       {
         label: "Pre-order", key: "order", links: [
-          { name: "The Wandering Box", href: "/reserve" },
-          { name: "Artisan Sourdough Boule", href: "/reserve" },
-          { name: "Small Box", href: "/reserve" },
+          { name: "The Wandering Box", href: "/reserve#wandering-box" },
+          { name: "Artisan Sourdough Boule", href: "/reserve#sourdough" },
+          { name: "Small Box", href: "/reserve#small-box" },
           { name: "How it works", href: "/bakery#way-of-coco" },
           { name: "Delivery info", href: "/faq" },
         ],
