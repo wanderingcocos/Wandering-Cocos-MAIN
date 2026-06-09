@@ -104,7 +104,7 @@ function QtyControl({ qty, max, onChange }: { qty: number; max: number; onChange
   );
 }
 
-function ProductCard({ product, qty, onChange }: { product: Product; qty: number; onChange: (q: number) => void }) {
+function ProductCard({ product, qty, onChange, highlighted }: { product: Product; qty: number; onChange: (q: number) => void highlighted?: boolean; }) {
   const soldOut = product.max === 0;
   const isLimited = !soldOut && product.max < 99;
   const selected = qty > 0;
