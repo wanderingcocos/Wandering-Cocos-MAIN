@@ -532,10 +532,11 @@ function AddOnsSection() {
   useEffect(() => {
     const cached = readCache<BakeryAddon[]>(ADDONS_URL);
     if (cached) setAddons(cached.filter(a => a.available));
-    revalidate<BakeryAddon[]>(ADDONS_URL, ADDONS_TTL).then(data => {
-      if (data) setAddons(data.filter(a => a.available));
-    });
-  }, []);
+    revalidate<BakeryAddon[]>(
+  ADDONS_URL,
+  (data) => setAddons(data.filter(a => a.available)),
+  () => {},
+);
 
   if (!addons.length) return null;
 
