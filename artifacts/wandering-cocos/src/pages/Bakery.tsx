@@ -5,12 +5,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { useSiteStatus } from "@/hooks/useSiteStatus";
-import { WA_NUMBER } from "@/lib/constants";
-import { readCache, revalidate } from "@/lib/apiCache";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const ADDONS_URL = `${BASE}/api/bakery-addons`;
-const ADDONS_TTL = 60_000;
 
 const wanderSteps = [
   {
@@ -233,157 +229,6 @@ function PhilosophyStackSection() {
   );
 }
 
-// ── Add-On Products ────────────────────────────────────────────────────────────
-
-type BakeryAddon = {
-  id: number;
-  title: string;
-  description: string | null;
-  pricePaise: number;
-  imageUrl: string | null;
-  available: boolean;
-  preorderCloseDate: string | null;
-};
-
-function formatPrice(paise: number) {
-  return `₹${(paise / 100).toLocaleString("en-IN")}`;
-}
-
-function formatCloseDate(dateStr: string | null) {
-  if (!dateStr) return null;
-  try {
-    return new Date(dateStr + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long" });
-  } catch { return dateStr; }
-}
-
-function AddonCard({ addon }: { addon: BakeryAddon }) {
-  const waText = encodeURIComponent(
-    `Hi Wandering Cocos! I'd like to order: ${addon.title} (${formatPrice(addon.pricePaise)}). Could you help me with my order?`
-  );
-  const waLink = `https://wa.me/${WA_NUMBER}?text=${waText}`;
-  const closeDate = formatCloseDate(addon.preorderCloseDate);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col"
-      style={{ border: "1px solid rgba(15,36,25,0.1)" }}
-    >
-      {/* Product image */}
-      <div className="relative overflow-hidden" style={{ aspectRatio: "4/3", background: "rgba(15,36,25,0.04)" }}>
-        {addon.imageUrl ? (
-          <img
-            src={addon.imageUrl}
-            alt={addon.title}
-            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-[10px] tracking-[0.2em] uppercase font-medium" style={{ color: "rgba(15,36,25,0.25)" }}>No image</span>
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-6">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <h3 className="font-serif italic leading-snug flex-1" style={{ fontSize: "clamp(1.05rem, 1.5vw, 1.25rem)", color: "#0f2419" }}>
-            {addon.title}
-          </h3>
-          <span className="font-serif font-medium flex-shrink-0" style={{ fontSize: "clamp(1rem, 1.4vw, 1.15rem)", color: "#0f2419" }}>
-            {formatPrice(addon.pricePaise)}
-          </span>
-        </div>
-
-        {addon.description && (
-          <p className="font-light leading-relaxed mb-4 flex-1" style={{ fontSize: "clamp(0.82rem, 1vw, 0.9rem)", color: "rgba(15,36,25,0.6)" }}>
-            {addon.description}
-          </p>
-        )}
-
-        {closeDate && (
-          <p className="text-[10px] tracking-[0.18em] uppercase font-medium mb-4" style={{ color: "rgba(15,36,25,0.4)" }}>
-            Pre-order closes {closeDate}
-          </p>
-        )}
-
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center h-11 text-xs tracking-[0.22em] font-medium uppercase transition-all duration-200 mt-auto"
-          style={{ background: "#0f2419", color: "#f5eee0" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#1a3a2a"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#0f2419"; }}
-        >
-          Order via WhatsApp
-        </a>
-      </div>
-    </motion.div>
-  );
-}
-
-function AddOnProductsSection() {
-  const [addons, setAddons] = useState<BakeryAddon[]>(
-    () => readCache<BakeryAddon[]>(ADDONS_URL, ADDONS_TTL) ?? []
-  );
-  const [loading, setLoading] = useState(
-    () => readCache(ADDONS_URL, ADDONS_TTL) === undefined
-  );
-
-  useEffect(() => {
-    revalidate<BakeryAddon[]>(ADDONS_URL, d => { setAddons(Array.isArray(d) ? d : []); setLoading(false); }, () => setLoading(false));
-  }, []);
-
-  if (!loading && addons.length === 0) return null;
-
-  return (
-    <section className="py-20 px-6 md:px-14 lg:px-20 border-t border-border/25">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-12"
-        >
-          <span className="text-[10px] tracking-[0.38em] uppercase font-medium block mb-4" style={{ color: "rgba(15,36,25,0.4)" }}>
-            Also Available This Drop
-          </span>
-          <h2 className="font-serif italic leading-tight" style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", color: "#0f2419", maxWidth: "480px" }}>
-            Standalone add-ons,<br />ordered by WhatsApp.
-          </h2>
-        </motion.div>
-
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2].map(i => (
-              <div key={i} className="animate-pulse border border-border/15">
-                <div className="aspect-[4/3] bg-foreground/6" />
-                <div className="p-6 space-y-3">
-                  <div className="h-4 bg-foreground/8 rounded w-3/4" />
-                  <div className="h-3 bg-foreground/6 rounded w-full" />
-                  <div className="h-3 bg-foreground/6 rounded w-2/3" />
-                  <div className="h-10 bg-foreground/8 rounded mt-4" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {addons.map(addon => (
-              <AddonCard key={addon.id} addon={addon} />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
 // ── Main Bakery Page ───────────────────────────────────────────────────────────
 
 export default function Bakery() {
@@ -493,9 +338,6 @@ export default function Bakery() {
 
         {/* HOW WE WANDER SECTION */}
         <WayOfTheCocoSection fadeInUp={fadeInUp} />
-
-        {/* ADD-ON PRODUCTS */}
-        <AddOnProductsSection />
 
         {/* TESTIMONIALS */}
         <TestimonialsSection />
