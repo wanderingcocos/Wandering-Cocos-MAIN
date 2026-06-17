@@ -192,6 +192,7 @@ export default function Reserve() {
   }, []);
 
   const BAKE_DATE = bakeWindow ? formatBakeDate(bakeWindow.bakeDate) : "Coming Soon";
+  const isBakeFuture = bakeWindow ? new Date(bakeWindow.bakeDate) > new Date() : true;
   const BOX_PRICE = bakeWindow?.boxPrice ?? 1299;
   const BOX_ORIGINAL_PRICE = bakeWindow?.originalPrice ?? 1999;
   const MAX_BOXES = bakeWindow?.maxBoxes ?? 15;
@@ -442,7 +443,7 @@ export default function Reserve() {
                   </div>
                 )}
                 <p className="mt-5 text-[10px] text-[#2D2926] leading-relaxed">
-                  Every box contains all {menuItems.length} items. Baked on <BakeDateDisplay date={BAKE_DATE} />.
+                  Every box contains all {menuItems.length} items. {isBakeFuture ? "Baking on" : "Baked on"} <BakeDateDisplay date={BAKE_DATE} />.
                 </p>
               </motion.div>
             )}
