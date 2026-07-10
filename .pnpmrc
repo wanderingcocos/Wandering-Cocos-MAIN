@@ -1,0 +1,6 @@
+auto-install-peers=true
+ignore-scripts=false
+node-linker=hoisted
+build-workspace-packages=true
+onlyBuiltDependencies[]=esbuild
+onlyBuiltDependencies[]=sharp

@@ -214,7 +214,10 @@ function PillarPair({
       className="grid w-full"
       style={{
         gridTemplateColumns: flip ? "2fr 3fr" : "3fr 2fr",
-        gridTemplateRows: "70vh",
+  gridTemplateRows: "70vh",
+  gap: "12px",
+  padding: "12px",
+  background: "#faf8f4",
       }}
     >
       {/* Big panel */}
@@ -286,32 +289,6 @@ function PillarPair({
   );
 }
 
-// ── Manifesto ticker ──────────────────────────────────────────────────────────
-
-function ManifestoTicker() {
-  const text = "Dark Roast & Open Road · Bengaluru · Mood First · Always · Fit Hard · Indulge Freely · Travel Deep";
-  return (
-    <section
-      className="overflow-hidden py-[10px] border-y"
-      style={{ borderColor: "rgba(15,36,25,0.08)", background: "#faf8f4" }}
-    >
-      <motion.div
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 32, ease: "linear", repeat: Infinity }}
-        className="flex whitespace-nowrap"
-        style={{ width: "max-content" }}
-      >
-        {Array(8).fill(text).map((t, i) => (
-          <span key={i} className="text-[9px] tracking-[0.38em] uppercase font-medium px-10"
-            style={{ color: "rgba(15,36,25,0.35)", fontFamily: "sans-serif" }}>
-            {t}
-          </span>
-        ))}
-      </motion.div>
-    </section>
-  );
-}
-
 // ── Mobile pillar stack ───────────────────────────────────────────────────────
 
 function MobilePillars({ pillarsWithImgs }: { pillarsWithImgs: Array<{ pillar: PillarDef; img: string }> }) {
@@ -378,14 +355,11 @@ export default function Home() {
         {/* ── HERO — manifesto with changeable background ───────── */}
         <HeroManifesto settings={settings} />
 
-        {/* ── MANIFESTO TICKER ─────────────────────────────────── */}
-        <ManifestoTicker />
-
         {/* ── LIFESTYLE MEDIA GRID ─────────────────────────────── */}
         <LifestyleGrid />
 
         {/* ── PILLAR GRID — desktop ────────────────────────────── */}
-        <div className="hidden md:block">
+        <div className="hidden md:block" style={{ background: "#faf8f4", padding: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
           {/* Row 1: Bakery (big) + Recipes (small) */}
           <PillarPair
             left={pillars[0]} right={pillars[1]}
