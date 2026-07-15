@@ -6,7 +6,7 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { lifestyleMedia } from "@/data/lifestyleMedia";
 
 const heroRoad = `${import.meta.env.BASE_URL}images/hero-road.jpg`;
-const mountainPhoto = `${import.meta.env.BASE_URL}images/mountain-kyrgyz.png`;
+const editorialPhoto = `${import.meta.env.BASE_URL}images/editorial-kyrgyz.jpeg`;
 
 const pillars = [
   {
@@ -235,7 +235,7 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* ── HERO — Road photograph ───────────────────────────────── */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a1a0f]">
+        <section className="relative min-h-screen overflow-hidden bg-[#0a1a0f]">
           <img
             src={heroRoad}
             alt=""
@@ -245,26 +245,30 @@ export default function Home() {
           />
           <div
             className="absolute inset-0 z-0 pointer-events-none"
-            style={{ background: "linear-gradient(to bottom, rgba(8,18,10,0.3) 0%, rgba(8,18,10,0.08) 45%, rgba(8,18,10,0.55) 100%)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(8,18,10,0.18) 0%, rgba(8,18,10,0.04) 40%, rgba(8,18,10,0.62) 100%)" }}
           />
-          <div className="relative z-10 text-center px-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.15, delay: 0.15, ease: "easeOut" }}
+          {/* Headline — lower-left, ~68% down */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-0 z-10 px-8 md:px-14 lg:px-20"
+            style={{ top: "66vh" }}
+          >
+            <h1
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontStyle: "italic",
                 fontWeight: 400,
-                fontSize: "clamp(3.4rem, 8.5vw, 7.5rem)",
-                lineHeight: 1.04,
+                fontSize: "clamp(4.2rem, 10.5vw, 9.5rem)",
+                lineHeight: 1.14,
                 color: "#ffffff",
                 letterSpacing: "-0.01em",
               }}
             >
               Mood first.<br />Always.
-            </motion.h1>
-          </div>
+            </h1>
+          </motion.div>
           <div
             className="absolute bottom-4 right-5 z-10 pointer-events-none select-none"
             style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.88)", fontWeight: 500 }}
@@ -274,15 +278,17 @@ export default function Home() {
         </section>
 
         {/* ── EDITORIAL — Two-column ────────────────────────────────── */}
-        <section className="py-24 md:py-36 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
+        <section className="py-28 md:py-40 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-16 md:gap-12 lg:gap-20 items-center">
+            <div className="flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-24 items-stretch">
+
+              {/* Text — 38-40%, vertically centred relative to photo */}
               <motion.div
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full md:w-[40%] order-1"
+                className="w-full md:w-[38%] order-1 flex flex-col justify-center"
               >
                 <h2
                   style={{
@@ -298,43 +304,51 @@ export default function Home() {
                   Somewhere<br />between the road<br />and home.
                 </h2>
                 <p
-                  className="mt-8 font-light leading-relaxed"
-                  style={{ fontSize: "clamp(0.9rem, 1.1vw, 1rem)", color: "rgba(45,41,38,0.58)", letterSpacing: "0.02em" }}
+                  className="font-light leading-relaxed"
+                  style={{
+                    marginTop: "clamp(2.5rem, 5vw, 4rem)",
+                    fontSize: "clamp(0.9rem, 1.1vw, 1rem)",
+                    color: "rgba(45,41,38,0.58)",
+                    letterSpacing: "0.02em",
+                  }}
                 >
                   This, over everything else.
                 </p>
               </motion.div>
 
+              {/* Photo — 60-62%, fixed height ~720px, object-fit: contain, no crop */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
-                className="w-full md:w-[60%] order-2 relative overflow-hidden"
-                style={{ aspectRatio: "4/3" }}
+                className="w-full md:w-[62%] order-2 relative flex items-center justify-center"
+                style={{ minHeight: "480px", height: "clamp(480px, 60vw, 740px)" }}
               >
                 <img
-                  src={mountainPhoto}
+                  src={editorialPhoto}
                   alt=""
                   aria-hidden="true"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: "center 22%" }}
+                  className="w-full h-full"
+                  style={{ objectFit: "contain", objectPosition: "center center", display: "block" }}
                 />
                 <div
-                  className="absolute bottom-4 right-5 z-10 pointer-events-none select-none"
-                  style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.88)", fontWeight: 500 }}
+                  className="absolute bottom-2 right-3 z-10 pointer-events-none select-none"
+                  style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(60,50,40,0.5)", fontWeight: 500 }}
                 >
                   Wandering Cocos &nbsp;&middot;&nbsp; Ala Archa National Park &nbsp;&middot;&nbsp; Kyrgyzstan
                 </div>
               </motion.div>
+
             </div>
           </div>
         </section>
 
-        {/* ── LIFESTYLE MEDIA GRID ─────────────────────────────────── */}
-        <LifestyleGrid />
+        {/* ── LIFESTYLE MEDIA GRID — hidden, preserved for later ───── */}
+        {false && <LifestyleGrid />}
 
-        {/* ── SIX PILLARS ──────────────────────────────────────────── */}
+        {/* ── SIX PILLARS — hidden, preserved for later ────────────── */}
+        {false && (
         <section className="py-24 px-6 md:px-14 lg:px-20 max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -361,6 +375,7 @@ export default function Home() {
             ))}
           </div>
         </section>
+        )}
 
         {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
         <TestimonialsSection />
