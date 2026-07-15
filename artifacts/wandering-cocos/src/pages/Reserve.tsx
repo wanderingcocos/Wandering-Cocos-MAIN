@@ -723,11 +723,6 @@ export default function Reserve() {
                     ))}
                   </div>
                 )}
-                <p className="mt-5 text-[10px] text-[#2D2926] leading-relaxed">
-                  OG box contains all {menuItems.length} items.{" "}
-                  {isBakeFuture ? "Baking on" : "Baked on"}{" "}
-                  <BakeDateDisplay date={BAKE_DATE} />.
-                </p>
               </motion.div>
             )}
 
