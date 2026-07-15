@@ -89,6 +89,9 @@ export default function FAQ() {
           <h1
             className="font-serif italic leading-tight mb-14"
             style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 400,
+              letterSpacing: "-0.01em",
               fontSize: "clamp(2rem, 4.5vw, 3rem)",
               color: "rgba(255,255,255,1)",
               textShadow: "0 2px 18px rgba(0,0,0,0.75)",

@@ -326,7 +326,7 @@ export default function Reserve() {
 
             <motion.h1 initial="hidden" animate="visible" custom={1} variants={fadeUp}
               className="font-serif italic leading-tight"
-              style={{ fontSize: "clamp(2.2rem, 4.5vw, 4rem)", color: "#ffffff" }}>
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(2.2rem, 4.5vw, 4rem)", color: "#ffffff" }}>
               Pre-order Your Box
             </motion.h1>
 

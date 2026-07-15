@@ -113,7 +113,7 @@ export default function JoinTheCircle() {
           <motion.h1
             initial="hidden" animate="visible" custom={1} variants={fadeUp}
             className="font-serif italic leading-tight mb-6"
-            style={{ fontSize: "clamp(2.6rem, 6vw, 4.5rem)", color: "#ffffff" }}
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(2.6rem, 6vw, 4.5rem)", color: "#ffffff" }}
           >
             Join the Circle
           </motion.h1>

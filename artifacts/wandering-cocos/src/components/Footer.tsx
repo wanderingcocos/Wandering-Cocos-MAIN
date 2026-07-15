@@ -31,7 +31,7 @@ export function Footer() {
         {/* Tagline */}
         <p
           className="font-serif italic mt-4"
-          style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)", color: "rgba(245,238,224,0.88)" }}
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1rem, 1.6vw, 1.25rem)", color: "rgba(245,238,224,0.88)" }}
         >
           Dark Roast &amp; Open Road
         </p>

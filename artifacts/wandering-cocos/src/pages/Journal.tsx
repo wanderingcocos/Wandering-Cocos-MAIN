@@ -80,7 +80,7 @@ function JournalCard({ event, index }: { event: JournalEvent; index: number }) {
           )}
           <h2
             className="font-serif italic leading-snug mb-5"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)", color: "#0f2419" }}
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)", color: "#0f2419" }}
           >
             {event.title}
           </h2>
@@ -150,7 +150,7 @@ export default function Journal() {
           <motion.h1
             variants={fadeUp} initial="hidden" animate="visible" custom={1}
             className="font-serif italic leading-[1.1] mb-6"
-            style={{ fontSize: "clamp(2.8rem, 7vw, 6.5rem)", color: "#0f2419", maxWidth: "780px" }}
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(2.8rem, 7vw, 6.5rem)", color: "#0f2419", maxWidth: "780px" }}
           >
             Events &amp;<br />Pop-Ups.
           </motion.h1>
@@ -198,7 +198,7 @@ export default function Journal() {
               </div>
               <div>
                 <h2 className="font-serif italic leading-snug mb-3"
-                  style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#0f2419" }}>
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#0f2419" }}>
                   Nothing here yet.
                 </h2>
                 <p className="font-light leading-relaxed"

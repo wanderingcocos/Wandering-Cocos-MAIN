@@ -104,7 +104,7 @@ export default function RecipeDetail() {
             <motion.h1
               variants={fadeUp} initial="hidden" animate="visible" custom={1}
               className="font-serif italic leading-[1.1] mb-3"
-              style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)", color: "#0f2419" }}
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(2.2rem, 5vw, 4rem)", color: "#0f2419" }}
             >
               {recipe.title}
             </motion.h1>

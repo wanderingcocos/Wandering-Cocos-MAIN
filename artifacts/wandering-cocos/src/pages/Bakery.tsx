@@ -62,7 +62,7 @@ function WayOfTheCocoSection({ fadeInUp }: { fadeInUp: Record<string, unknown> }
               className="flex flex-col p-5 md:p-6"
               style={{ border: "1px solid rgba(255,255,255,0.18)", borderRadius: "12px", background: "rgba(255,255,255,0.06)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
             >
-              <h3 className="font-serif italic leading-snug mb-4" style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.5rem)", color: "#ffffff" }}>
+              <h3 className="font-serif italic leading-snug mb-4" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.2rem, 1.8vw, 1.5rem)", color: "#ffffff" }}>
                 {step.title}
               </h3>
               <p className="font-light leading-relaxed" style={{ fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)", color: "rgba(255,255,255,0.65)", letterSpacing: "0.01em" }}>
@@ -109,7 +109,7 @@ function PhilosophyStackSection() {
                 <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   Wandering Cocos
                 </span>
-                <h3 className="font-serif italic leading-snug mb-2 md:mb-3" style={{ fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
+                <h3 className="font-serif italic leading-snug mb-2 md:mb-3" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
                   Built for the<br />Conscious Eater
                 </h3>
                 <p className="font-light leading-relaxed" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "rgba(26,26,26,0.6)", maxWidth: "560px" }}>
@@ -129,7 +129,7 @@ function PhilosophyStackSection() {
                 <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   The Philosophy
                 </span>
-                <h3 className="font-serif italic leading-snug mb-3 md:mb-5" style={{ fontSize: "clamp(1.5rem, 3vw, 2.6rem)", color: "#1a1a1a" }}>
+                <h3 className="font-serif italic leading-snug mb-3 md:mb-5" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.5rem, 3vw, 2.6rem)", color: "#1a1a1a" }}>
                   "Calories can be burnt.<br />Hidden ingredients cannot."
                 </h3>
                 <p className="font-light leading-relaxed" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "#2D2926", maxWidth: "520px" }}>
@@ -166,7 +166,7 @@ function PhilosophyStackSection() {
                 <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-4 md:mb-8" style={{ color: "#2D2926" }}>
                   The Earthy Way
                 </span>
-                <h3 className="font-serif italic leading-snug mb-3 md:mb-6" style={{ fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
+                <h3 className="font-serif italic leading-snug mb-3 md:mb-6" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(1.7rem, 3.5vw, 3rem)", color: "#1a1a1a" }}>
                   True luxury is found<br />in the soil.
                 </h3>
                 <p className="font-light leading-relaxed mb-5 md:mb-10" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "#2D2926", maxWidth: "560px" }}>
@@ -194,7 +194,7 @@ function PhilosophyStackSection() {
               <span className="text-[10px] tracking-[0.3em] font-medium uppercase block mb-5 md:mb-10" style={{ color: "rgba(245,238,224,0.85)" }}>
                 The Experience
               </span>
-              <p className="font-serif italic leading-tight mb-5 md:mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3.8rem)", color: "#ffffff" }}>
+              <p className="font-serif italic leading-tight mb-5 md:mb-8" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, letterSpacing: "-0.01em", fontSize: "clamp(2rem, 4vw, 3.8rem)", color: "#ffffff" }}>
                 No noise.<br />No guilt.<br />No compromise.
               </p>
               <p className="font-light leading-relaxed mb-7 md:mb-12" style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.05rem)", color: "rgba(255,255,255,0.5)", maxWidth: "380px" }}>
