@@ -288,7 +288,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
               <div>
-                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Max Boxes</label>
+                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Available Today</label>
                 <input type="number" value={form.maxBoxes} onChange={e => setForm(f => ({ ...f, maxBoxes: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
@@ -333,7 +333,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                   </div>
                   <p className="text-xs text-[#2D2926]">
                     {new Date(w.bakeDate + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}&nbsp;·&nbsp;
-                    ₹{w.boxPrice.toLocaleString("en-IN")}&nbsp;·&nbsp;Max {w.maxBoxes} boxes
+                    ₹{w.boxPrice.toLocaleString("en-IN")}&nbsp;·&nbsp;Available: {w.maxBoxes}
                   </p>
                   {w.notes && <p className="text-xs text-[#2D2926] mt-0.5 italic">{w.notes}</p>}
                 </div>
@@ -569,8 +569,8 @@ const DEFAULT_SETTINGS: { key: string; label: string; placeholder: string }[] = 
 ];
 
 const PRODUCT_LIMIT_SETTINGS: { key: string; label: string; placeholder: string }[] = [
-  { key: "max_small_boxes", label: "Small Wandering Box — max per drop (0 = sold out)", placeholder: "99" },
-  { key: "max_sourdough_boules", label: "Artisanal Sourdough Boule — max per drop (0 = sold out)", placeholder: "99" },
+  { key: "max_small_boxes", label: "Small Wandering Box — available today (0 = sold out)", placeholder: "99" },
+  { key: "max_sourdough_boules", label: "Artisanal Sourdough Boule — available today (0 = sold out)", placeholder: "99" },
 ];
 
 function SettingsTab({ token }: { token: string }) {
@@ -635,7 +635,7 @@ function SettingsTab({ token }: { token: string }) {
       <div className="mb-10">
         <p className="text-[10px] tracking-[0.28em] uppercase font-medium text-[#2D2926] mb-1">Pre-order Product Limits</p>
         <p className="text-xs text-[#2D2926] mb-5 leading-relaxed">
-          Control how many of each product can be ordered per drop. Set to 0 to show as sold out on the Pre-order page.
+          Set the quantity available to customers right now. Set to 0 to show as sold out on the Pre-order page.
         </p>
         {loading ? (
           <p className="text-xs text-[#2D2926]">Loading…</p>
@@ -644,7 +644,7 @@ function SettingsTab({ token }: { token: string }) {
             {/* Big Box — wired to active bake window */}
             <div>
               <label className="text-[10px] tracking-[0.22em] uppercase font-medium text-[#2D2926] block mb-1.5">
-                Wandering Box — max per drop
+                Wandering Box — available today
                 {activeWindow && (
                   <span className="ml-2 text-[9px] font-normal normal-case tracking-normal"
                     style={{ color: "rgba(45,41,38,0.45)" }}>

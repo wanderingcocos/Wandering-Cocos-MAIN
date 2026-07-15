@@ -1,0 +1,119 @@
+Fix Bake Day Logic + Improve Product Availability Labels
+
+There appears to be a regression in the Bake Day system. Please restore the original behaviour before making any structural changes.
+
+Current issue
+
+The following is already configured:
+
+Site Status is set to Bake Day
+An active Bake Window exists
+Products have been added to the active Bake Window
+Product quantities have been configured in Settings (values greater than 0)
+
+However, the Pre-Order page still shows the global Sold Out message instead of displaying the products from the active Bake Window.
+
+Expected behaviour
+
+When Site Status = Bake Day:
+
+Load the currently active Bake Window.
+Display every product assigned to that Bake Window.
+Products with available quantity should appear normally on the Pre-Order page.
+Only display the global Sold Out page if:
+there is no active Bake Window, or
+every product in that Bake Window has genuinely sold out.
+Investigate the regression
+
+Please verify the Bake Day flow end-to-end.
+
+Specifically check:
+
+Is the active Bake Window being loaded correctly?
+Are products assigned to the Bake Window being queried correctly?
+Are quantities from Settings being applied correctly?
+Is an old global soldOut flag or legacy maxBoxes logic overriding the Bake Day view?
+Did a recent homepage/admin refactor accidentally break the conditional rendering for Bake Day?
+
+Restore the original intended behaviour without redesigning the system.
+
+Small Admin UI improvement
+
+The current wording "Max per Drop" is misleading.
+
+These values are no longer intended to represent a maximum possible quantity—they represent the quantity currently available for customers to claim during the active bake.
+
+Please update the wording throughout the admin panel.
+
+Instead of:
+
+Wandering Box
+Max per Drop
+
+use:
+
+Wandering Box
+Available Today
+
+or, if it fits the layout better:
+
+Wandering Box
+Remaining
+
+Example:
+
+Wandering Box
+
+Available Today
+
+2
+
+Apply the same wording consistently to every pre-order product.
+
+Behaviour
+
+The number entered should represent the live quantity available for this bake, not a historical maximum.
+
+For example:
+
+Country Sourdough → Available Today = 2
+Wandering Box → Available Today = 5
+Small Wandering Box → Available Today = 8
+
+This value is what customers should see reflected on the Pre-Order page.
+
+For example:
+
+2 Remaining to Claim
+
+or
+
+Only 2 Remaining
+
+The wording should update dynamically as inventory decreases.
+
+Important
+
+Do not redesign the inventory system.
+
+Do not build a Shopify-style inventory manager.
+
+Do not change the existing admin workflow.
+
+Simply:
+
+Restore the Bake Day functionality so products appear correctly.
+Rename the admin fields from "Max per Drop" to "Available Today" (or "Remaining").
+Use those values as the live available quantity shown to customers.
+QA before completing
+
+Verify all of the following:
+
+✅ Bake Day displays products from the active Bake Window.
+✅ Quantities entered in Settings are respected.
+✅ The Pre-Order page no longer incorrectly shows Sold Out.
+✅ Pop-Up Mode still works.
+✅ Maintenance Mode still works.
+✅ Chef on Break still works.
+✅ Sold Out only appears when there is genuinely nothing available.
+✅ Customer-facing product cards correctly display messages such as "2 Remaining to Claim" based on the configured available quantity.

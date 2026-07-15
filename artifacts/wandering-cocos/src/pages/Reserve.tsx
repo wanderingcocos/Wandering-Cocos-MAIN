@@ -144,7 +144,7 @@ function ProductCard({ product, qty, onChange }: { product: Product; qty: number
                   border: "1px solid rgba(180,100,30,0.2)",
                 }}
               >
-                Limited to {product.max} per drop
+                Only {product.max} Remaining
               </span>
             )}
           </div>

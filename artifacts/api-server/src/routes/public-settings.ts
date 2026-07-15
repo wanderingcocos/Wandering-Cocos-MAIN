@@ -35,24 +35,46 @@ router.get("/site-status", async (_req, res) => {
         .orderBy(asc(bakeWindowsTable.bakeDate))
         .limit(1);
 
-      if (window) {
-        const [{ total }] = await db
-          .select({ total: count() })
-          .from(ordersTable)
-          .where(
-            and(
-              eq(ordersTable.bakeWindowId, window.id),
-              or(
-                eq(ordersTable.status, "pending"),
-                eq(ordersTable.status, "confirmed"),
-              ),
-            ),
-          );
+      if (!window) {
+        res.json({ mode: "sold_out" });
+        return;
+      }
 
-        if (total >= window.maxBoxes) {
-          res.json({ mode: "sold_out" });
-          return;
-        }
+      const [{ total }] = await db
+        .select({ total: count() })
+        .from(ordersTable)
+        .where(
+          and(
+            eq(ordersTable.bakeWindowId, window.id),
+            or(
+              eq(ordersTable.status, "pending"),
+              eq(ordersTable.status, "confirmed"),
+            ),
+          ),
+        );
+
+      const limitRows = await db
+        .select()
+        .from(siteSettingsTable)
+        .where(
+          or(
+            eq(siteSettingsTable.key, "max_small_boxes"),
+            eq(siteSettingsTable.key, "max_sourdough_boules"),
+          ),
+        );
+      const limitsMap: Record<string, string> = {};
+      for (const row of limitRows) limitsMap[row.key] = row.value;
+
+      const maxSmall = parseInt(limitsMap.max_small_boxes ?? "99");
+      const maxBoule = parseInt(limitsMap.max_sourdough_boules ?? "99");
+
+      const wanderingBoxSoldOut = window.maxBoxes === 0 || total >= window.maxBoxes;
+      const smallBoxSoldOut = !Number.isNaN(maxSmall) && maxSmall === 0;
+      const bouleSoldOut = !Number.isNaN(maxBoule) && maxBoule === 0;
+
+      if (wanderingBoxSoldOut && smallBoxSoldOut && bouleSoldOut) {
+        res.json({ mode: "sold_out" });
+        return;
       }
     }
 
