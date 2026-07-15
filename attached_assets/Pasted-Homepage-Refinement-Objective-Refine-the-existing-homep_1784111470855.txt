@@ -1,0 +1,221 @@
+Homepage Refinement
+Objective
+
+Refine the existing homepage while preserving the current website structure.
+
+This is not a redesign of the website.
+
+Do not replace the homepage with a new implementation.
+
+Do not change routing or page structure.
+
+Work with the existing homepage and only make the following improvements.
+
+1. Hero Section
+
+Replace the current hero with the supplied full-screen road photograph.
+
+Replace the current headline:
+
+Fit hard.
+Indulge freely.
+Travel deep.
+
+with:
+
+Mood first.
+Always.
+
+Keep:
+
+Full viewport height
+Existing navigation overlay
+Existing layout
+Existing animations
+Existing spacing
+
+The hero should feel cinematic, quiet and premium.
+
+Do not add buttons or marketing copy.
+
+2. Typography
+
+Use Cormorant Garamond as the primary editorial serif throughout the homepage.
+
+Use Cormorant Garamond Italic for:
+
+Hero headline
+Editorial headline
+Large display typography
+
+Use Cormorant Garamond Regular where a serif is needed without italics.
+
+Keep the existing sans-serif font for:
+
+Navigation
+Buttons
+Labels
+UI
+Small uppercase text
+
+Do not introduce additional font families.
+
+Typography should become one of the defining visual elements of Wandering Cocos.
+
+3. Hero Photo Credit
+
+In the bottom-right corner of the hero image, add a subtle editorial location marker identical in style to the location marker already used on the Join the Circle page.
+
+Use the same:
+
+Font
+Size
+Letter spacing
+Colour
+Opacity
+Positioning
+
+Text:
+
+WANDERING COCOS • CAPE TOWN TO HERMANUS ROAD • SOUTH AFRICA
+
+This should be elegant and unobtrusive.
+
+4. Editorial Section
+
+Replace only the section immediately below the hero.
+
+Create a premium editorial two-column layout.
+
+Desktop:
+
+Left column approximately 40%
+Right column approximately 60%
+
+Mobile:
+
+Stack vertically
+Text first
+Image second
+Left Column
+
+Start directly with the headline.
+
+Headline:
+
+Somewhere
+between the road
+and home.
+
+Supporting copy:
+
+This, over everything else.
+
+Do not add labels.
+
+Do not add buttons.
+
+Do not add links.
+
+Do not add extra paragraphs.
+
+Allow generous whitespace around the typography.
+
+Right Column
+
+Use the supplied mountain travel photograph.
+
+Before displaying it:
+
+Crop away the black bars at the top and bottom.
+Preserve the people.
+Preserve the dramatic clouds.
+Preserve the valley.
+Maintain natural colours.
+Do not oversaturate.
+Do not apply cinematic filters.
+No borders.
+No shadows.
+No rounded corners.
+
+Display it as a large editorial photograph.
+
+Editorial Location Marker
+
+Add the same subtle location marker used in the hero to the bottom-right corner of this photograph.
+
+Text:
+
+WANDERING COCOS • ALA ARCHA NATIONAL PARK • KYRGYZSTAN
+
+Use exactly the same styling as the hero location marker.
+
+5. Navigation
+
+Hide these navigation items:
+
+Recipes
+Coffee
+Shop
+Café
+
+Keep:
+
+Home
+Bakery
+Journal
+Join the Circle
+
+Do not delete any pages.
+
+Only remove these items from the visible navigation.
+
+6. Join the Circle
+
+Remove the outlined button styling.
+
+Make Join the Circle visually identical to the other navigation links.
+
+Remove the border.
+Remove the button appearance.
+Match the typography.
+Match the spacing.
+Match the hover behaviour.
+
+It should appear as a standard navigation item.
+
+7. Preserve
+
+Do not modify:
+
+Footer
+Bakery page
+Reserve page
+Journal page
+Existing colour palette
+Existing routing
+Existing animations
+
+Only implement the homepage refinements requested above.
+
+Design Direction
+
+The overall feeling should be:
+
+Editorial
+Premium
+Minimal
+Timeless
+Calm
+Quiet
+Confident
+
+Avoid modern startup aesthetics.
+
+Avoid glassmorphism.
+
+Avoid oversized call-to-actions.
+
+Avoid unnecessary visual effects.
+
+The homepage should feel like the opening spread of a beautifully designed travel journal where photography tells the story and typography quietly supports it. The objective is not to push visitors toward a sale immediately, but to invite them into the world of Wandering Cocos.

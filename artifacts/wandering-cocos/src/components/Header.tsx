@@ -89,8 +89,10 @@ const navLinks: NavLink[] = [
       { name: "Archives", href: "/archive" },
     ],
   },
-  { name: "JOIN THE CIRCLE", href: "/join", cta: true },
+  { name: "JOIN THE CIRCLE", href: "/join" },
 ];
+
+const HIDDEN_NAV = new Set(["RECIPES", "COFFEE", "SHOP", "CAFÉ"]);
 
 function DropdownItem({ link, location, navigate, onClose }: {
   link: NavLink;
@@ -237,7 +239,7 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-start gap-7 lg:gap-9 pt-5">
-            {navLinks.map(link => (
+            {navLinks.filter(l => !HIDDEN_NAV.has(l.name)).map(link => (
               <DropdownItem
                 key={link.name}
                 link={link}
@@ -286,7 +288,7 @@ export function Header() {
             </div>
 
             <nav className="flex-1 flex flex-col justify-center items-center gap-2 px-6 py-8">
-              {navLinks.map((link, i) => {
+              {navLinks.filter(l => !HIDDEN_NAV.has(l.name)).map((link, i) => {
                 const hasChildren = (link.children?.length ?? 0) > 0;
                 const isExpanded = mobileExpanded === link.name;
                 return (
