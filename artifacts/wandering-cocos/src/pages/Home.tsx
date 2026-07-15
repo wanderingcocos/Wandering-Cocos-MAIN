@@ -5,6 +5,9 @@ import { Footer } from "@/components/Footer";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { lifestyleMedia } from "@/data/lifestyleMedia";
 
+const heroRoad = `${import.meta.env.BASE_URL}images/hero-road.jpg`;
+const mountainPhoto = `${import.meta.env.BASE_URL}images/mountain-kyrgyz.png`;
+
 const pillars = [
   {
     id: "bakery",
@@ -231,85 +234,100 @@ export default function Home() {
       <Header />
 
       <main className="flex-grow">
-        {/* ── HERO — Skylight illumination ─────────────────────────── */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-background">
-          {/* Primary skylight — warm luminous center from above */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 65% at 50% -8%, rgba(255, 250, 228, 0.92) 0%, rgba(244, 235, 208, 0.55) 38%, transparent 68%)",
-            }}
+        {/* ── HERO — Road photograph ───────────────────────────────── */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a1a0f]">
+          <img
+            src={heroRoad}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none"
+            style={{ filter: "brightness(0.78)" }}
           />
-          {/* Secondary warm fill from below */}
           <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 130% 45% at 50% 112%, rgba(240, 228, 196, 0.32) 0%, transparent 65%)",
-            }}
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, rgba(8,18,10,0.3) 0%, rgba(8,18,10,0.08) 45%, rgba(8,18,10,0.55) 100%)" }}
           />
-          {/* Faint ambient grain */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.022]"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
-              backgroundRepeat: "repeat",
-              backgroundSize: "128px 128px",
-            }}
-          />
-
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="block text-[10px] tracking-[0.45em] uppercase font-medium mb-10"
-              style={{ color: "rgba(42, 72, 32, 0.45)" }}
-            >
-              Wandering Cocos
-            </motion.span>
-
+          <div className="relative z-10 text-center px-6">
             <motion.h1
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.05, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif italic leading-tight"
-              style={{ fontSize: "clamp(2.8rem, 6vw, 5.5rem)", color: "#1e3a18" }}
-            >
-              Fit hard.<br />
-              Indulge freely.<br />
-              Travel deep.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="mt-8 font-light leading-relaxed"
+              transition={{ duration: 1.15, delay: 0.15, ease: "easeOut" }}
               style={{
-                fontSize: "clamp(0.95rem, 1.4vw, 1.1rem)",
-                color: "rgba(42, 72, 32, 0.52)",
-                maxWidth: "420px",
-                margin: "2rem auto 0",
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 400,
+                fontSize: "clamp(3.4rem, 8.5vw, 7.5rem)",
+                lineHeight: 1.04,
+                color: "#ffffff",
+                letterSpacing: "-0.01em",
               }}
             >
-              A lifestyle built on discipline, good food, and open roads.
-            </motion.p>
+              Mood first.<br />Always.
+            </motion.h1>
+          </div>
+          <div
+            className="absolute bottom-4 right-5 z-10 pointer-events-none select-none"
+            style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.88)", fontWeight: 500 }}
+          >
+            Wandering Cocos &nbsp;&middot;&nbsp; Cape Town to Hermanus Road &nbsp;&middot;&nbsp; South Africa
+          </div>
+        </section>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.0, ease: "easeOut" }}
-              className="mt-12 flex items-center justify-center gap-3"
-            >
-              <span className="w-6 h-px" style={{ background: "rgba(42,72,32,0.25)" }} />
-              <span className="text-[9px] tracking-[0.32em] uppercase font-medium" style={{ color: "rgba(42,72,32,0.32)" }}>
-                Scroll to explore
-              </span>
-              <span className="w-6 h-px" style={{ background: "rgba(42,72,32,0.25)" }} />
-            </motion.div>
+        {/* ── EDITORIAL — Two-column ────────────────────────────────── */}
+        <section className="py-24 md:py-36 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-16 md:gap-12 lg:gap-20 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full md:w-[40%] order-1"
+              >
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    fontSize: "clamp(2.6rem, 4.5vw, 4.2rem)",
+                    lineHeight: 1.08,
+                    color: "#0f2419",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  Somewhere<br />between the road<br />and home.
+                </h2>
+                <p
+                  className="mt-8 font-light leading-relaxed"
+                  style={{ fontSize: "clamp(0.9rem, 1.1vw, 1rem)", color: "rgba(45,41,38,0.58)", letterSpacing: "0.02em" }}
+                >
+                  This, over everything else.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+                className="w-full md:w-[60%] order-2 relative overflow-hidden"
+                style={{ aspectRatio: "4/3" }}
+              >
+                <img
+                  src={mountainPhoto}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: "center 22%" }}
+                />
+                <div
+                  className="absolute bottom-4 right-5 z-10 pointer-events-none select-none"
+                  style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.88)", fontWeight: 500 }}
+                >
+                  Wandering Cocos &nbsp;&middot;&nbsp; Ala Archa National Park &nbsp;&middot;&nbsp; Kyrgyzstan
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
