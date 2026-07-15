@@ -500,44 +500,6 @@ export default function Reserve() {
               Pre-order Your Box
             </motion.h1>
 
-            {siteMode === "bake_day" && (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                custom={2}
-                variants={fadeUp}
-                className="mt-6 flex items-baseline gap-4 flex-wrap"
-              >
-                <span
-                  className="font-serif font-medium"
-                  style={{
-                    fontSize: "clamp(2rem, 3vw, 2.8rem)",
-                    color: "#ffffff",
-                  }}
-                >
-                  ₹{BOX_PRICE.toLocaleString("en-IN")}
-                </span>
-                <span
-                  className="font-light line-through"
-                  style={{
-                    fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
-                    color: "rgba(245,238,224,0.80)",
-                    textDecorationColor: "rgba(245,238,224,0.80)",
-                  }}
-                >
-                  ₹{BOX_ORIGINAL_PRICE.toLocaleString("en-IN")}
-                </span>
-                <span
-                  className="font-light tracking-wide"
-                  style={{
-                    fontSize: "clamp(0.75rem, 1vw, 0.85rem)",
-                    color: "rgba(245,238,224,0.85)",
-                  }}
-                >
-                  per box
-                </span>
-              </motion.div>
-            )}
 
             <motion.p
               initial="hidden"
