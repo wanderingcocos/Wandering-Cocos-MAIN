@@ -8,7 +8,7 @@ type BakeWindowItem = { id: number; bakeWindowId: number; name: string; descript
 
 type BakeWindow = {
   id: number; label: string; bakeDate: string; status: string;
-  boxPrice: number; originalPrice: number; maxBoxes: number;
+  boxPrice: number; originalPrice: number;
   notes: string | null; createdAt: string;
   items: BakeWindowItem[];
 };
@@ -187,7 +187,7 @@ function ItemsPanel({ windowId, items, token, onRefetch }: {
 function BakeWindowsTab({ token }: { token: string }) {
   const { data: windows, loading, refetch } = useAdminFetch<BakeWindow[]>(`${API}/admin/bake-windows`, token);
   const [creating, setCreating] = useState(false);
-  const [form, setForm] = useState({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 10, notes: "" });
+  const [form, setForm] = useState({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, notes: "" });
   const [saving, setSaving] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [editStatus, setEditStatus] = useState("");
@@ -219,7 +219,7 @@ function BakeWindowsTab({ token }: { token: string }) {
     setSaving(false);
     if (!res.ok) { setError(res.message); return; }
     setCreating(false);
-    setForm({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, maxBoxes: 10, notes: "" });
+    setForm({ label: "", bakeDate: "", status: "draft", boxPrice: 1299, originalPrice: 1999, notes: "" });
     refetch();
   }
 
@@ -287,11 +287,6 @@ function BakeWindowsTab({ token }: { token: string }) {
                 <input type="number" value={form.originalPrice} onChange={e => setForm(f => ({ ...f, originalPrice: Number(e.target.value) }))}
                   className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
               </div>
-              <div>
-                <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Available Today</label>
-                <input type="number" value={form.maxBoxes} onChange={e => setForm(f => ({ ...f, maxBoxes: Number(e.target.value) }))}
-                  className="w-full h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent" />
-              </div>
             </div>
             <div className="mb-5">
               <label className="text-[10px] tracking-widest uppercase text-[#2D2926] block mb-1">Notes</label>
@@ -333,7 +328,7 @@ function BakeWindowsTab({ token }: { token: string }) {
                   </div>
                   <p className="text-xs text-[#2D2926]">
                     {new Date(w.bakeDate + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}&nbsp;·&nbsp;
-                    ₹{w.boxPrice.toLocaleString("en-IN")}&nbsp;·&nbsp;Available: {w.maxBoxes}
+                    ₹{w.boxPrice.toLocaleString("en-IN")}
                   </p>
                   {w.notes && <p className="text-xs text-[#2D2926] mt-0.5 italic">{w.notes}</p>}
                 </div>
@@ -569,21 +564,16 @@ const DEFAULT_SETTINGS: { key: string; label: string; placeholder: string }[] = 
 ];
 
 const PRODUCT_LIMIT_SETTINGS: { key: string; label: string; placeholder: string }[] = [
+  { key: "max_wandering_boxes", label: "Wandering Box — available today (0 = sold out)", placeholder: "15" },
   { key: "max_small_boxes", label: "Small Wandering Box — available today (0 = sold out)", placeholder: "99" },
   { key: "max_sourdough_boules", label: "Artisanal Sourdough Boule — available today (0 = sold out)", placeholder: "99" },
 ];
 
 function SettingsTab({ token }: { token: string }) {
   const { data: settings, loading, refetch } = useAdminFetch<Setting[]>(`${API}/admin/settings`, token);
-  const { data: windows, refetch: refetchWindows } = useAdminFetch<BakeWindow[]>(`${API}/admin/bake-windows`, token);
   const [values, setValues] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [bigBoxMax, setBigBoxMax] = useState("");
-  const [savingBigBox, setSavingBigBox] = useState(false);
-  const [bigBoxSaved, setBigBoxSaved] = useState(false);
-
-  const activeWindow = windows?.find(w => w.status === "announced") ?? windows?.[0] ?? null;
 
   useEffect(() => {
     if (settings) {
@@ -592,10 +582,6 @@ function SettingsTab({ token }: { token: string }) {
       setValues(map);
     }
   }, [settings]);
-
-  useEffect(() => {
-    if (activeWindow) setBigBoxMax(String(activeWindow.maxBoxes));
-  }, [activeWindow?.id, activeWindow?.maxBoxes]);
 
   async function handleSave(key: string) {
     setSaving(key);
@@ -607,23 +593,6 @@ function SettingsTab({ token }: { token: string }) {
     setSaving(null);
     if (!res.ok) { setError(res.message); return; }
     refetch();
-  }
-
-  async function handleSaveBigBoxMax() {
-    if (!activeWindow) return;
-    const n = parseInt(bigBoxMax, 10);
-    if (isNaN(n) || n < 0) return;
-    setSavingBigBox(true);
-    const res = await apiCall(`${API}/admin/bake-windows/${activeWindow.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "x-admin-token": token },
-      body: JSON.stringify({ maxBoxes: n }),
-    });
-    setSavingBigBox(false);
-    if (!res.ok) { setError((res as { ok: false; message: string }).message); return; }
-    setBigBoxSaved(true);
-    setTimeout(() => setBigBoxSaved(false), 3000);
-    refetchWindows();
   }
 
   return (
@@ -641,38 +610,6 @@ function SettingsTab({ token }: { token: string }) {
           <p className="text-xs text-[#2D2926]">Loading…</p>
         ) : (
           <div className="space-y-4">
-            {/* Big Box — wired to active bake window */}
-            <div>
-              <label className="text-[10px] tracking-[0.22em] uppercase font-medium text-[#2D2926] block mb-1.5">
-                Wandering Box — available today
-                {activeWindow && (
-                  <span className="ml-2 text-[9px] font-normal normal-case tracking-normal"
-                    style={{ color: "rgba(45,41,38,0.45)" }}>
-                    (from active window: {activeWindow.label})
-                  </span>
-                )}
-              </label>
-              {activeWindow ? (
-                <div className="flex gap-3">
-                  <input
-                    type="number" min={0} value={bigBoxMax}
-                    onChange={e => setBigBoxMax(e.target.value)}
-                    placeholder="15"
-                    className="w-32 h-10 border border-border/50 bg-background text-foreground text-xs px-3 focus:outline-none focus:border-accent transition-colors"
-                  />
-                  <button onClick={handleSaveBigBoxMax} disabled={savingBigBox}
-                    className="text-xs tracking-[0.18em] uppercase font-medium px-5 h-10 bg-accent text-accent-foreground hover:bg-accent/90 transition-all disabled:opacity-40">
-                    {savingBigBox ? "Saving…" : bigBoxSaved ? "Saved ✓" : "Save"}
-                  </button>
-                </div>
-              ) : (
-                <p className="text-xs text-[#2D2926] italic">
-                  No bake window found. Create or set one to "announced" in the Bake Windows tab.
-                </p>
-              )}
-            </div>
-
-            {/* Small Box + Sourdough — site_settings */}
             {PRODUCT_LIMIT_SETTINGS.map(({ key, label, placeholder }) => (
               <div key={key}>
                 <label className="text-[10px] tracking-[0.22em] uppercase font-medium text-[#2D2926] block mb-1.5">{label}</label>

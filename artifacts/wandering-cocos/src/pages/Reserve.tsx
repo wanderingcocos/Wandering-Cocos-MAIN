@@ -326,7 +326,8 @@ export default function Reserve() {
     : true;
   const BOX_PRICE = bakeWindow?.boxPrice ?? 1299;
   const BOX_ORIGINAL_PRICE = bakeWindow?.originalPrice ?? 1999;
-  const MAX_BOXES = bakeWindow?.maxBoxes ?? 15;
+  const _parsedWandering = parseInt(siteSettings.max_wandering_boxes ?? "");
+  const MAX_BOXES = Number.isNaN(_parsedWandering) ? 99 : _parsedWandering;
   const _parsedSmall = parseInt(siteSettings.max_small_boxes ?? "");
   const MAX_SMALL = Number.isNaN(_parsedSmall) ? 99 : _parsedSmall;
   const _parsedBoule = parseInt(siteSettings.max_sourdough_boules ?? "");

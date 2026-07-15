@@ -58,6 +58,7 @@ router.get("/site-status", async (_req, res) => {
         .from(siteSettingsTable)
         .where(
           or(
+            eq(siteSettingsTable.key, "max_wandering_boxes"),
             eq(siteSettingsTable.key, "max_small_boxes"),
             eq(siteSettingsTable.key, "max_sourdough_boules"),
           ),
@@ -65,10 +66,11 @@ router.get("/site-status", async (_req, res) => {
       const limitsMap: Record<string, string> = {};
       for (const row of limitRows) limitsMap[row.key] = row.value;
 
-      const maxSmall = parseInt(limitsMap.max_small_boxes ?? "99");
-      const maxBoule = parseInt(limitsMap.max_sourdough_boules ?? "99");
+      const maxWandering = parseInt(limitsMap.max_wandering_boxes ?? "");
+      const maxSmall = parseInt(limitsMap.max_small_boxes ?? "");
+      const maxBoule = parseInt(limitsMap.max_sourdough_boules ?? "");
 
-      const wanderingBoxSoldOut = window.maxBoxes === 0 || total >= window.maxBoxes;
+      const wanderingBoxSoldOut = !Number.isNaN(maxWandering) && (maxWandering === 0 || total >= maxWandering);
       const smallBoxSoldOut = !Number.isNaN(maxSmall) && maxSmall === 0;
       const bouleSoldOut = !Number.isNaN(maxBoule) && maxBoule === 0;
 
