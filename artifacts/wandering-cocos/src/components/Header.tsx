@@ -320,23 +320,27 @@ export function Header() {
                     transition={{ delay: i * 0.07 + 0.1, duration: 0.4 }}
                     className="w-full flex flex-col items-center"
                   >
-                    <button
-                      onClick={() => {
-                        if (hasChildren) {
-                          setMobileExpanded(isExpanded ? null : link.name);
-                        } else {
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => {
                           navigate(link.href!);
                           setMobileMenuOpen(false);
                           setMobileExpanded(null);
-                        }
-                      }}
-                      className={`font-serif text-2xl transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer flex items-center gap-2 py-3 ${link.cta ? "text-accent border border-accent/50 px-8 font-sans text-sm" : "text-foreground hover:text-accent"}`}
-                    >
-                      {link.name}
+                        }}
+                        className={`font-serif text-2xl transition-colors duration-300 uppercase tracking-widest text-center cursor-pointer py-3 ${link.cta ? "text-accent border border-accent/50 px-8 font-sans text-sm" : "text-foreground hover:text-accent"}`}
+                      >
+                        {link.name}
+                      </button>
                       {hasChildren && (
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} strokeWidth={1.5} />
+                        <button
+                          onClick={() => setMobileExpanded(isExpanded ? null : link.name)}
+                          className="text-foreground/60 hover:text-accent transition-colors duration-300 p-2 cursor-pointer"
+                          aria-label={isExpanded ? "Collapse submenu" : "Expand submenu"}
+                        >
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} strokeWidth={1.5} />
+                        </button>
                       )}
-                    </button>
+                    </div>
 
                     <AnimatePresence>
                       {hasChildren && isExpanded && (
