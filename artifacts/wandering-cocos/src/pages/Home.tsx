@@ -235,7 +235,7 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* ── HERO — Road photograph ───────────────────────────────── */}
-        <section className="relative min-h-screen overflow-hidden bg-[#0a1a0f]">
+        <section className="relative min-h-screen overflow-hidden bg-[#0a1a0f] flex flex-col justify-end">
           <img
             src={heroRoad}
             alt=""
@@ -247,13 +247,12 @@ export default function Home() {
             className="absolute inset-0 z-0 pointer-events-none"
             style={{ background: "linear-gradient(to bottom, rgba(8,18,10,0.18) 0%, rgba(8,18,10,0.04) 40%, rgba(8,18,10,0.62) 100%)" }}
           />
-          {/* Headline — lower-left, ~68% down */}
+          {/* Headline — lower-left, natural flex position */}
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 z-10 px-8 md:px-14 lg:px-20"
-            style={{ top: "66vh" }}
+            className="relative z-10 px-8 md:px-14 lg:px-20 pb-16 md:pb-20 lg:pb-24"
           >
             <h1
               style={{
@@ -278,17 +277,17 @@ export default function Home() {
         </section>
 
         {/* ── EDITORIAL — Two-column ────────────────────────────────── */}
-        <section className="py-28 md:py-40 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
+        <section className="py-16 md:py-24 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-24 items-stretch">
+            <div className="flex flex-col md:flex-row gap-10 md:gap-12 lg:gap-16 items-start">
 
-              {/* Text — 38-40%, vertically centred relative to photo */}
+              {/* Text — 40%, aligned from top */}
               <motion.div
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full md:w-[38%] order-1 flex flex-col justify-center"
+                className="w-full md:w-[40%] order-1 flex flex-col"
               >
                 <h2
                   style={{
@@ -316,25 +315,24 @@ export default function Home() {
                 </p>
               </motion.div>
 
-              {/* Photo — 60-62%, fixed height ~720px, object-fit: contain, no crop */}
+              {/* Photo — 60%, 4:5 portrait aspect ratio, object-fit: cover */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
-                className="w-full md:w-[62%] order-2 relative flex items-center justify-center"
-                style={{ minHeight: "480px", height: "clamp(480px, 60vw, 740px)" }}
+                className="w-full md:w-[60%] order-2 relative aspect-[4/5] overflow-hidden"
               >
                 <img
                   src={editorialPhoto}
                   alt=""
                   aria-hidden="true"
-                  className="w-full h-full"
-                  style={{ objectFit: "contain", objectPosition: "center center", display: "block" }}
+                  className="absolute inset-0 w-full h-full"
+                  style={{ objectFit: "cover", objectPosition: "center center", display: "block" }}
                 />
                 <div
                   className="absolute bottom-2 right-3 z-10 pointer-events-none select-none"
-                  style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(60,50,40,0.5)", fontWeight: 500 }}
+                  style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.88)", fontWeight: 500 }}
                 >
                   Wandering Cocos &nbsp;&middot;&nbsp; Ala Archa National Park &nbsp;&middot;&nbsp; Kyrgyzstan
                 </div>

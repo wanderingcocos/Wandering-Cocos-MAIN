@@ -94,11 +94,12 @@ const navLinks: NavLink[] = [
 
 const HIDDEN_NAV = new Set(["RECIPES", "COFFEE", "SHOP", "CAFÉ"]);
 
-function DropdownItem({ link, location, navigate, onClose }: {
+function DropdownItem({ link, location, navigate, onClose, isTransparent = false }: {
   link: NavLink;
   location: string;
   navigate: (href: string) => void;
   onClose?: () => void;
+  isTransparent?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -117,18 +118,30 @@ function DropdownItem({ link, location, navigate, onClose }: {
     timerRef.current = setTimeout(() => setOpen(false), 120);
   }
 
+  const linkColor = isTransparent
+    ? "text-white/90 hover:text-white"
+    : "text-foreground/80 hover:text-accent";
+
   if (link.cta) {
     return (
       <button
         onClick={() => { navigate(link.href!); onClose?.(); }}
-        className="text-[10px] tracking-[0.16em] font-medium uppercase cursor-pointer transition-all duration-200 px-4 py-1.5 border"
+        className="text-[10px] tracking-[0.16em] font-medium uppercase cursor-pointer transition-all duration-500 px-4 py-1.5 border"
         style={{
-          color: "var(--foreground)",
-          borderColor: "rgba(45,41,38,0.35)",
+          color: isTransparent ? "rgba(255,255,255,0.9)" : "var(--foreground)",
+          borderColor: isTransparent ? "rgba(255,255,255,0.45)" : "rgba(45,41,38,0.35)",
           opacity: 0.85,
         }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,41,38,0.7)"; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.85"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,41,38,0.35)"; }}
+        onMouseEnter={e => {
+          const btn = e.currentTarget as HTMLButtonElement;
+          btn.style.opacity = "1";
+          btn.style.borderColor = isTransparent ? "rgba(255,255,255,0.8)" : "rgba(45,41,38,0.7)";
+        }}
+        onMouseLeave={e => {
+          const btn = e.currentTarget as HTMLButtonElement;
+          btn.style.opacity = "0.85";
+          btn.style.borderColor = isTransparent ? "rgba(255,255,255,0.45)" : "rgba(45,41,38,0.35)";
+        }}
       >
         {link.name}
       </button>
@@ -139,10 +152,10 @@ function DropdownItem({ link, location, navigate, onClose }: {
     return (
       <button
         onClick={() => { navigate(link.href!); onClose?.(); }}
-        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-500 ${linkColor} ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
       >
         {link.name}
-        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] ${isTransparent ? "bg-white" : "bg-accent"} transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
       </button>
     );
   }
@@ -157,10 +170,10 @@ function DropdownItem({ link, location, navigate, onClose }: {
       {/* Parent label — always visible */}
       <button
         onClick={() => { navigate(link.href!); onClose?.(); }}
-        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-200 text-foreground/80 hover:text-accent ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+        className={`text-[10px] tracking-[0.16em] font-medium relative overflow-hidden group py-1 uppercase cursor-pointer transition-colors duration-500 ${linkColor} ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
       >
         {link.name}
-        <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-accent transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
+        <span className={`absolute bottom-0 left-0 w-full h-[1px] ${isTransparent ? "bg-white" : "bg-accent"} transform ${isActive ? "translate-x-0" : "-translate-x-[101%] group-hover:translate-x-0"} transition-transform duration-300 ease-out`} />
       </button>
 
       {/* Child links — appear below parent on hover */}
@@ -179,7 +192,7 @@ function DropdownItem({ link, location, navigate, onClose }: {
                 <button
                   key={child.name}
                   onClick={() => { navigate(child.href); setOpen(false); onClose?.(); }}
-                  className={`text-[9px] tracking-[0.18em] uppercase font-medium transition-colors duration-150 leading-none py-0.5 cursor-pointer ${childActive ? "text-accent" : "text-foreground/50 hover:text-accent"}`}
+                  className={`text-[9px] tracking-[0.18em] uppercase font-medium transition-colors duration-500 leading-none py-0.5 cursor-pointer ${childActive ? (isTransparent ? "text-white" : "text-accent") : (isTransparent ? "text-white/60 hover:text-white" : "text-foreground/50 hover:text-accent")}`}
                 >
                   {child.name}
                 </button>
@@ -198,14 +211,18 @@ export function Header() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [location, navigate] = useLocation();
 
+  const isHome = location === "/";
+  const isTransparent = isHome && !isScrolled;
+
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 70);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const bgScrolled = "bg-background/95 backdrop-blur-md border-b border-border shadow-sm";
   const bgUnscrolled = "bg-background/90 backdrop-blur-sm border-b border-border/50";
+  const bgTransparent = "bg-transparent border-transparent";
 
   return (
     <>
@@ -213,7 +230,9 @@ export function Header() {
 
       <header
         className={`fixed top-[32px] left-0 right-0 z-50 transition-all duration-500 ease-out ${
-          isScrolled
+          isTransparent
+            ? `${bgTransparent} h-20 md:h-24`
+            : isScrolled
             ? `${bgScrolled} h-16 md:h-20`
             : `${bgUnscrolled} h-20 md:h-24`
         }`}
@@ -233,7 +252,8 @@ export function Header() {
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="Wandering Cocos"
-              className="h-full w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-full w-auto object-contain transition-all duration-500 group-hover:opacity-80"
+              style={isTransparent ? { filter: "brightness(0) invert(1)" } : undefined}
             />
           </button>
 
@@ -245,6 +265,7 @@ export function Header() {
                 link={link}
                 location={location}
                 navigate={navigate}
+                isTransparent={isTransparent}
               />
             ))}
           </nav>
@@ -253,7 +274,7 @@ export function Header() {
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="text-foreground/80 transition-colors duration-300"
+              className={`transition-colors duration-500 ${isTransparent ? "text-white/90" : "text-foreground/80"}`}
               aria-label="Open menu"
             >
               <Menu className="w-6 h-6 stroke-[1.5]" />
