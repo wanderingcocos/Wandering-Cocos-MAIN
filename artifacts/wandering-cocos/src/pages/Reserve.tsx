@@ -353,21 +353,21 @@ export default function Reserve() {
     },
     {
       id: "small_box",
-      name: "Mini Wandering Box",
+      name: "Small Wandering Box",
       price: 599,
       max: MAX_SMALL,
       badge: "New Addition",
       description:
-        "A mini wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
+        "A smaller wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
     },
     {
       id: "sourdough",
-      name: "Country Sourdough",
+      name: "Artisanal Sourdough Boule",
       price: 260,
       max: MAX_BOULE,
       badge: "à la carte",
       description:
-        "10-12 hours cold-fermented. Open crumb, Soft crust, zero additives. Available alongside or without the Wandering Box.",
+        "12-24 hours cold-fermented. Open crumb, Soft crust, zero additives. Available alongside or without the Wandering Box.",
     },
   ];
 
@@ -499,6 +499,7 @@ export default function Reserve() {
             >
               Pre-order Your Box
             </motion.h1>
+
 
             <motion.p
               initial="hidden"
