@@ -944,7 +944,7 @@ export default function Reserve() {
                       {!cartHasItems && (
                         <p className="text-[10px] text-[#2D2926] leading-relaxed">
                           Add at least one item above, then fill in your
-                          delivery details to place your pre-order. 
+                          delivery details to place your pre-order.
                         </p>
                       )}
                     </motion.div>
