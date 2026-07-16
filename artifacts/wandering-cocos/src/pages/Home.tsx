@@ -279,7 +279,7 @@ export default function Home() {
         {/* ── EDITORIAL — Two-column ────────────────────────────────── */}
         <section className="py-16 md:py-24 px-6 md:px-14 lg:px-20 bg-background border-t border-border/15">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-10 md:gap-12 lg:gap-16 items-start">
+            <div className="flex flex-col md:flex-row gap-10 md:gap-12 lg:gap-16 items-start md:items-center">
 
               {/* Text — 40%, aligned from top */}
               <motion.div

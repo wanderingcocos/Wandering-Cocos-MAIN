@@ -565,7 +565,7 @@ const DEFAULT_SETTINGS: { key: string; label: string; placeholder: string }[] = 
 
 const PRODUCT_LIMIT_SETTINGS: { key: string; label: string; placeholder: string }[] = [
   { key: "max_wandering_boxes", label: "Wandering Box — available today (0 = sold out)", placeholder: "15" },
-  { key: "max_small_boxes", label: "Small Wandering Box — available today (0 = sold out)", placeholder: "99" },
+  { key: "max_small_boxes", label: "Mini Wandering Box — available today (0 = sold out)", placeholder: "99" },
   { key: "max_sourdough_boules", label: "Artisanal Sourdough Boule — available today (0 = sold out)", placeholder: "99" },
 ];
 

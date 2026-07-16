@@ -353,21 +353,22 @@ export default function Reserve() {
     },
     {
       id: "small_box",
-      name: "Small Wandering Box",
+      name: "Mini Wandering Box",
       price: 599,
+      originalPrice: 699,
       max: MAX_SMALL,
       badge: "New Addition",
       description:
-        "A smaller wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
+        "A mini wandering experience. Choose any three bakes and build your own box, whether you're sharing with someone or keeping every bite for yourself.",
     },
     {
       id: "sourdough",
-      name: "Artisanal Sourdough Boule",
+      name: "Country Sourdough",
       price: 260,
       max: MAX_BOULE,
       badge: "à la carte",
       description:
-        "12-24 hours cold-fermented. Open crumb, Soft crust, zero additives. Available alongside or without the Wandering Box.",
+        "10–12 hours cold-fermented. Open crumb, soft crust, zero additives. Available alongside or without the Wandering Box.",
     },
   ];
 
@@ -685,6 +686,17 @@ export default function Reserve() {
                     ))}
                   </div>
                 )}
+                <p
+                  className="mt-8 mb-2 text-center font-light leading-relaxed"
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(45,41,38,0.48)",
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  Free delivery on orders ₹500 and above within 7 km of HSR Layout.{" "}
+                  Standard delivery charges apply beyond 7 km.
+                </p>
               </motion.div>
             )}
 
