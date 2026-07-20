@@ -498,7 +498,7 @@ export default function Reserve() {
                 color: "#ffffff",
               }}
             >
-              Pre-order Your Box
+              {siteMode === "popup" ? "Pre-Orders Paused" : "Pre-order Your Box"}
             </motion.h1>
 
 
@@ -516,7 +516,7 @@ export default function Reserve() {
               }}
             >
               {siteMode === "popup"
-                ? "We're at a pop-up this week. Online orders are paused. We'll be back very soon."
+                ? "We're baking at a pop-up this week. Online pre-orders are currently paused, but we'll be back for our next bake day."
                 : siteMode === "maintenance"
                   ? "We're baking in the background. Online orders will open with our next drop."
                   : siteMode === "chef_on_break"
@@ -720,20 +720,25 @@ export default function Reserve() {
                     Orders Paused
                   </p>
                   <p className="font-serif text-lg text-foreground leading-snug mb-4">
-                    We're at a pop-up this week.
+                    We're baking at a pop-up this week.
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed mb-6">
-                    Online orders are closed, but we'll be back next week.
+                    Online pre-orders are paused while we're at the pop-up, but we'll be back for our next bake day. Follow us on Instagram for behind-the-scenes moments, menu reveals, and the announcement of our next drop.
                   </p>
                   <a
-                    href="https://chat.whatsapp.com/HH1IixIyMcCCY8jHnrlHei"
+                    href="https://instagram.com/wandering.cocos"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium text-white transition-all hover:opacity-90"
-                    style={{ background: "#25D366" }}
+                    className="inline-flex items-center justify-center h-11 px-8 text-xs tracking-[0.2em] uppercase font-medium border border-foreground/30 text-foreground hover:border-foreground/50 transition-all"
                   >
-                    Join our WhatsApp Community
+                    Follow on Instagram
                   </a>
+                  <p
+                    className="mt-5 font-light leading-relaxed"
+                    style={{ fontSize: "12px", color: "rgba(45,41,38,0.48)", letterSpacing: "0.01em" }}
+                  >
+                    Prefer not to? Check back every Friday to see if we're baking that weekend and what's on the menu.
+                  </p>
                 </div>
               ) : siteMode === "maintenance" ? (
                 <div
