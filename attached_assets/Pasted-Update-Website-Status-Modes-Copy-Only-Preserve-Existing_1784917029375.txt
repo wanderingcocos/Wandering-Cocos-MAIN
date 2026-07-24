@@ -1,0 +1,102 @@
+Update Website Status Modes (Copy Only – Preserve Existing Logic)
+
+Do not modify any admin functionality, APIs, status logic, database, availability system, or scheduling. The existing status system works correctly. This task is copy and UI only.
+
+Status Modes
+Bake Day
+Pop-Up Mode
+Maintenance
+Gone Wandering (rename from Chef on Break)
+Sold Out (automatic)
+
+The homepage hero and status section should update dynamically based on the active mode.
+
+1. Bake Day
+
+Keep the existing experience and hero exactly as it is.
+
+No changes.
+
+2. Pop-Up Mode
+Hero Title
+
+Pre-Orders Paused
+
+Status Title
+
+We're Baking at a Pop-Up This Week
+
+Body
+
+Online pre-orders are paused while we're at a pop-up, but we'll be back for our next bake day.
+
+Follow us on Instagram for behind-the-scenes moments, menu reveals, and the announcement of our next drop.
+
+Primary CTA
+
+Follow on Instagram
+
+Secondary Note
+
+Prefer not to? Check back every Friday to see if we're baking that weekend and what's on the menu.
+
+3. Maintenance
+Hero Title
+
+A Fresh Batch is Coming
+
+Status Title
+
+Website Under Maintenance
+
+Body
+
+We're making a few improvements behind the scenes to keep everything running smoothly.
+
+We'll be back shortly.
+
+4. Gone Wandering (Rename "Chef on Break")
+
+Rename the status from Chef on Break to Gone Wandering everywhere in the UI while preserving all underlying logic.
+
+Hero Title
+
+Gone Wandering
+
+Status Title
+
+Gone Wandering
+
+Body
+
+Not everything in life needs to move fast.
+
+Some of our best bakes begin long before the dough is mixed, with care, intention, and a little time away from the oven.
+
+See you at the next bake.
+
+5. Sold Out
+Hero Title
+
+Sold Out
+
+Status Title
+
+That's a Wrap
+
+Body
+
+This week's bake has completely sold out.
+
+Thank you for making another bake day so special.
+
+We'll be back with a fresh menu for the next drop.
+
+Important Requirements
+Do not change any admin functionality.
+Do not modify bake windows.
+Do not change Site Status logic.
+Do not alter inventory, availability, pricing, checkout, APIs, or database.
+Only update the displayed copy and hero text based on the currently selected status.
+Keep the existing premium editorial design, spacing, typography, and animations consistent with the rest of the website.
+Ensure all transitions between modes remain smooth and maintain the luxury, minimal Wandering Cocos aesthetic.

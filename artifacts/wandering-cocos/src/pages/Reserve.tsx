@@ -475,7 +475,7 @@ export default function Reserve() {
               ) : siteMode === "maintenance" ? (
                 "Coming Back Soon · Baking In Progress"
               ) : siteMode === "chef_on_break" ? (
-                "Chef on Break · Back Soon"
+                "Gone Wandering · Back Soon"
               ) : (
                 <>
                   {bakeWindow ? bakeWindow.label : "The Weekend Edit"} ·{" "}
@@ -498,7 +498,15 @@ export default function Reserve() {
                 color: "#ffffff",
               }}
             >
-              {siteMode === "popup" ? "Pre-Orders Paused" : "Pre-order Your Box"}
+              {siteMode === "popup"
+                ? "Pre-Orders Paused"
+                : siteMode === "maintenance"
+                  ? "A Fresh Batch is Coming"
+                  : siteMode === "chef_on_break"
+                    ? "Gone Wandering"
+                    : siteMode === "sold_out"
+                      ? "Sold Out"
+                      : "Pre-order Your Box"}
             </motion.h1>
 
 
@@ -516,11 +524,11 @@ export default function Reserve() {
               }}
             >
               {siteMode === "popup"
-                ? "We're baking at a pop-up this week. Online pre-orders are currently paused, but we'll be back for our next bake day."
+                ? "Online pre-orders are paused while we're at a pop-up, but we'll be back for our next bake day."
                 : siteMode === "maintenance"
-                  ? "We're baking in the background. Online orders will open with our next drop."
+                  ? "We're making a few improvements behind the scenes. We'll be back shortly."
                   : siteMode === "chef_on_break"
-                    ? "Taking a short pause to recharge, live a little more presently, and come back inspired."
+                    ? "Some of our best bakes begin long before the dough is mixed — with care, intention, and a little time away from the oven."
                     : "Baked fresh on delivery day. Comes with a branded bag. Prepaid only. Limited bakes per drop."}
             </motion.p>
 
@@ -746,13 +754,16 @@ export default function Reserve() {
                   style={{ background: "hsl(38 25% 97%)" }}
                 >
                   <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-[#2D2926] mb-5">
-                    Coming Soon
+                    Website Under Maintenance
                   </p>
                   <p className="font-serif text-lg text-foreground leading-snug mb-4">
-                    Baking in progress.
+                    A Fresh Batch is Coming
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed">
-                    Check back soon — something delicious is on its way.
+                    We're making a few improvements behind the scenes to keep everything running smoothly.
+                  </p>
+                  <p className="text-sm text-[#2D2926] leading-relaxed mt-3">
+                    We'll be back shortly.
                   </p>
                 </div>
               ) : siteMode === "sold_out" ? (
@@ -761,14 +772,19 @@ export default function Reserve() {
                   style={{ background: "hsl(38 25% 97%)" }}
                 >
                   <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-[#2D2926] mb-5">
-                    Sold Out
+                    That's a Wrap
                   </p>
                   <p className="font-serif text-lg text-foreground leading-snug mb-4">
-                    All boxes are claimed.
+                    Sold Out
+                  </p>
+                  <p className="text-sm text-[#2D2926] leading-relaxed mb-2">
+                    This week's bake has completely sold out.
+                  </p>
+                  <p className="text-sm text-[#2D2926] leading-relaxed mb-2">
+                    Thank you for making another bake day so special.
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed mb-6">
-                    Every box for this bake is reserved. Follow us to be the
-                    first to know about the next drop.
+                    We'll be back with a fresh menu for the next drop.
                   </p>
                   <a
                     href="https://instagram.com/wandering.cocos"
@@ -785,19 +801,16 @@ export default function Reserve() {
                   style={{ background: "hsl(38 25% 97%)" }}
                 >
                   <p className="text-[9px] tracking-[0.3em] uppercase font-medium text-[#2D2926] mb-5">
-                    Chef on Break
+                    Gone Wandering
                   </p>
                   <p className="font-serif text-lg text-foreground leading-snug mb-5">
                     Not everything in life needs to move fast.
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed mb-5">
-                    Some things are better done slowly with care, intention, and
-                    love for the process. We're taking a short pause to recharge
-                    and come back inspired.
+                    Some of our best bakes begin long before the dough is mixed — with care, intention, and a little time away from the oven.
                   </p>
                   <p className="font-serif italic text-sm text-foreground/70 leading-relaxed">
-                    Life is not a race. Move at your own pace. Enjoy the
-                    process.
+                    See you at the next bake.
                   </p>
                 </div>
               ) : (
