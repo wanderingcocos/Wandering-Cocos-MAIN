@@ -807,7 +807,7 @@ export default function Reserve() {
                     Not everything in life needs to move fast.
                   </p>
                   <p className="text-sm text-[#2D2926] leading-relaxed mb-5">
-                    Some of our best bakes begin long before the dough is mixed — with care, intention, and a little time away from the oven.
+                    Some of our best bakes begin long before the dough is mixed, with care, intention, and a little time away from the oven.
                   </p>
                   <p className="font-serif italic text-sm text-foreground/70 leading-relaxed">
                     See you at the next bake.
